@@ -16,6 +16,8 @@ var cardConvertMap = {
 var PLACEBET = "Place your bet.";
 var BUSTED = "BUSTED";
 var HIT = "Hit or Stand?";
+var YOUWON = "You won!";
+var YOULOST = "You lost!";
 
 function convertCardPath(cardId){
   var face = cardId[0];
@@ -29,6 +31,7 @@ var app = angular.module('MuBoidApp', []);
 app.controller('MuBoidCtrl', function($scope) {
   $scope.msg = PLACEBET;
   $scope.cards = [];
+  $scope.dealerCards = [];
   $scope.betAmount = '200';
 
   var socket = io.connect('http://localhost:3000',{
@@ -47,6 +50,17 @@ app.controller('MuBoidCtrl', function($scope) {
     socket.emit('init', $scope.betAmount);
   };
 
+  $scope.stand = function() {
+    socket.emit('stand');
+    $scope.betPlaced = false;
+  };
+
+  socket.on('result', function(result){
+    console.info(result);
+    $scope.msg = result ? YOUWON : YOULOST;
+    $scope.$apply();
+  });
+
   socket.on('fail', function(msg){
     $scope.msg = msg;
     $scope.$apply();
@@ -58,13 +72,27 @@ app.controller('MuBoidCtrl', function($scope) {
   });
 
   socket.on('draw', function(msg) {
+    console.info(msg);
     $scope.cards = [];
+    $scope.dealerCards = [];
+
     msg.hands.forEach(function(hand){
       $scope.cards.push(convertCardPath((hand)));
     });
-    if(msg.count > 21){
+    msg.dealerHands.forEach(function(hand){
+      $scope.dealerCards.push(convertCardPath((hand)));
+    });
+
+    if(msg.dealerCount > 21){
+      $scope.msg = YOUWON;
+      $scope.betPlaced = false;
+    }
+    else if(msg.count > 21){
       $scope.msg = BUSTED;
       $scope.betPlaced = false;
+      if($scope.money <= 0){
+        $scope.gameover = true;
+      }
     }
     $scope.$apply();
   });

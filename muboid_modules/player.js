@@ -26,7 +26,6 @@ Player.prototype.count = function () {
     //if 11 busts, go with 1
     count +=  (count + 11) > 21 ? 1 : 11;
   }
-  console.info(count);
   return count;
 };
 

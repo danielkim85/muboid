@@ -1,18 +1,34 @@
 var Blackjack = require('../muboid_modules/blackjack.js');
 var Player = require('../muboid_modules/player.js');
 
-function draw(socket,blackjack,drawCount){
+function draw(socket,blackjack,betAmount){
+  var msg = {};
+  var hands;
+  if (betAmount !== undefined){
+    hands = blackjack.init(betAmount);
+    msg.hands = hands.playerHands;
+    msg.dealerHands = hands.dealerHands;
+  }
+  else{
+    hands = blackjack.draw(1);
+    msg.hands = hands.playerHands;
+    msg.dealerHands = hands.dealerHands;
+  }
+
   var count = blackjack.player.count();
-  var msg = {
-    hands: blackjack.draw(drawCount),
-    count : count
-  };
+  var dealerCount = blackjack.dealer.count();
+  msg.count = count;
+  msg.dealerCount = dealerCount;
 
   //hands busted, destroy hand cards,
-  if(count > 21){
-    blackjack.player.hands = [];
+  if(dealerCount > 21){
+    blackjack.didPlayerWin();
+    blackjack.reset();
   }
-  else if(count == 21){
+  else if(count > 21){
+    blackjack.reset();
+  }
+  else if(count === 21){
     //TODO : blackjack logic goes here.
   }
 
@@ -23,7 +39,8 @@ function MyIO(server) {
 
   io.on('connection', function(socket){
     var player = new Player('player1',5000);
-    var blackjack = new Blackjack(player);
+    var dealer =  new Player('dealer',0);
+    var blackjack = new Blackjack(player,dealer);
     socket.emit('money',blackjack.player.money);
 
     socket.on('disconnect', function () {
@@ -40,18 +57,24 @@ function MyIO(server) {
         return;
       }
 
-      draw(socket,blackjack,2);
+      draw(socket,blackjack,betAmount);
       socket.emit('newGame');
       socket.emit('money',blackjack.player.money);
     });
 
     socket.on('draw', function(){
-      draw(socket,blackjack,1);
+      draw(socket,blackjack);
     });
 
     //TODO : implement stand logic below
     socket.on('stand',function(){
-
+      var result = blackjack.didPlayerWin();
+      if(result){
+        socket.emit('money',blackjack.player.money);
+      }
+      blackjack.reset();
+      console.info('emitting result');
+      socket.emit('result',result);
     });
   });
 }
