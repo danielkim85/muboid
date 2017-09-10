@@ -34,7 +34,10 @@ app.controller('MuBoidCtrl', function($scope) {
   $scope.dealerCards = [];
   $scope.betAmount = '200';
 
-  var socket = io.connect('http://localhost:3000',{
+  var protocol = "http://";
+  var host =  window.location.hostname;
+  var port =  host === 'localhost' ? '3000' : '80';
+  var socket = io.connect(protocol + host + ':' + port,{
     'sync disconnect on unload': true
   });
 
@@ -83,8 +86,12 @@ app.controller('MuBoidCtrl', function($scope) {
       $scope.dealerCards.push(convertCardPath((hand)));
     });
 
-    if(msg.dealerCount > 21){
+    if(msg.dealerCount > 21 || msg.count === 21){
       $scope.msg = YOUWON;
+      $scope.betPlaced = false;
+    }
+    else if(msg.dealerCount === 21){
+      $scope.msg = YOULOST;
       $scope.betPlaced = false;
     }
     else if(msg.count > 21){

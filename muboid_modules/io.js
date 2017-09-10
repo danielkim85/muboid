@@ -20,18 +20,31 @@ function draw(socket,blackjack,betAmount){
   msg.count = count;
   msg.dealerCount = dealerCount;
 
-  //hands busted, destroy hand cards,
-  if(dealerCount > 21){
+  if(count === 21 && dealerCount === 21){
+    //push
+    blackjack.didPlayerWin();
+    blackjack.reset();
+  }
+  else if(count === 21){
+    //player blackjack
+    blackjack.didPlayerWin();
+    blackjack.reset();
+  }
+  else if(dealerCount === 21){
+    //player blackjack
+    blackjack.didPlayerWin();
+    blackjack.reset();
+  }
+  else if(dealerCount > 21){
+    //dealer bust
     blackjack.didPlayerWin();
     blackjack.reset();
   }
   else if(count > 21){
+    //player bust
     blackjack.reset();
   }
-  else if(count === 21){
-    //TODO : blackjack logic goes here.
-  }
-
+  blackjack.didPlayerWin();
   socket.emit('draw',msg);
 }
 function MyIO(server) {

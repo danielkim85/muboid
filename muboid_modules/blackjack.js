@@ -40,8 +40,16 @@ Blackjack.prototype.draw = function (numberOfCards) {
 };
 
 Blackjack.prototype.didPlayerWin = function () {
-  if(this.dealer.count() > 21 || this.player.count() > this.dealer.count()){
-    this.player.money += (this.betAmount*2);
+  var dealerCount = this.dealer.count();
+  var playerCount = this.player.count();
+
+  if(dealerCount === 21 && playerCount === 21){
+    this.player.money += parseInt(this.betAmount);
+    return true;
+  }
+  else if(dealerCount > 21 || playerCount > dealerCount){
+    var payout = playerCount === 21 ? 3 : 2;
+    this.player.money += (this.betAmount*payout);
     return true;
   }
   return false;

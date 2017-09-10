@@ -38,7 +38,7 @@
 
 					<div ng-hide="gameover" class="lead cards">
 						<div class="inner-container">
-							<p class="lead" ng-show="dealerCards.length > 0">Dealer's hand</p>
+							<p class="lead small" ng-show="dealerCards.length > 0">Dealer's hand</p>
 							<div class="card" ng-repeat="card in dealerCards track by $index">
 								<img ng-src="/images/playing-cards/{{ card }}" />
 							</div>
@@ -47,7 +47,7 @@
 
 					<div ng-hide="gameover" class="lead cards">
 						<div class="inner-container">
-							<p class="lead" ng-show="cards.length > 0">Your hand</p>
+							<p class="lead small" ng-show="cards.length > 0">Your hand</p>
 							<div class="card" ng-repeat="card in cards track by $index">
 								<img ng-src="/images/playing-cards/{{ card }}" />
 							</div>
