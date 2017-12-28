@@ -1,116 +1,66 @@
-var cardConvertMap = {
-  face:{
-    h:'hearts',
-    c:'clubs',
-    d:'diamonds',
-    s:'spades'
-  },
-  num:{
-    1:'ace',
-    11:'jack',
-    12:'queen',
-    13:'king'
+function shuffle(array) {
+  var currentIndex = array.length, temporaryValue, randomIndex;
+
+  // While there remain elements to shuffle...
+  while (0 !== currentIndex) {
+
+    // Pick a remaining element...
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+
+    // And swap it with the current element.
+    temporaryValue = array[currentIndex];
+    array[currentIndex] = array[randomIndex];
+    array[randomIndex] = temporaryValue;
   }
-};
 
-var PLACEBET = "Place your bet.";
-var BUSTED = "BUSTED";
-var HIT = "Hit or Stand?";
-var YOUWON = "You won!";
-var YOULOST = "You lost!";
-
-function convertCardPath(cardId){
-  var face = cardId[0];
-  var num = cardId.substring(1,cardId.length);
-  face = cardConvertMap.face[face];
-  num = cardConvertMap.num[num] === undefined ? num : cardConvertMap.num[num];
-  return num + '_of_' + face + '.png';
+  return array;
 }
 
-var app = angular.module('MuBoidApp', []);
-app.controller('MuBoidCtrl', function($scope) {
-  $scope.msg = PLACEBET;
-  $scope.cards = [];
-  $scope.dealerCards = [];
-  $scope.betAmount = '200';
+(function() {
+  var app = angular.module('MuBoidApp', ['youtube','clock']);
+  app.controller('MuBoidCtrl', function ($scope, $timeout,$window,youtubeFactory) {
 
-  var protocol = "http://";
-  var host =  window.location.hostname;
-  var port =  host === 'localhost' ? '3000' : '80';
-  var socket = io.connect(protocol + host + ':' + port,{
-    'sync disconnect on unload': true
-  });
+    var playlist = [];
 
-  $scope.draw = function() {
-    socket.emit('draw', {});
-  };
+    $scope.seconds = 0;
+    $scope.minutes = 0;
 
-  $scope.setBet = function(number) {
-    $scope.betAmount = number;
-  };
-
-  $scope.init = function() {
-    socket.emit('init', $scope.betAmount);
-  };
-
-  $scope.stand = function() {
-    socket.emit('stand');
-    $scope.betPlaced = false;
-  };
-
-  socket.on('result', function(result){
-    console.info(result);
-    $scope.msg = result ? YOUWON : YOULOST;
-    $scope.$apply();
-  });
-
-  socket.on('fail', function(msg){
-    $scope.msg = msg;
-    $scope.$apply();
-  });
-
-  socket.on('newGame', function(){
-    $scope.betPlaced = true;
-    $scope.msg = HIT;
-  });
-
-  socket.on('draw', function(msg) {
-    console.info(msg);
-    $scope.cards = [];
-    $scope.dealerCards = [];
-
-    msg.hands.forEach(function(hand){
-      $scope.cards.push(convertCardPath((hand)));
-    });
-    msg.dealerHands.forEach(function(hand){
-      $scope.dealerCards.push(convertCardPath((hand)));
-    });
-
-    if(msg.dealerCount > 21 || msg.count === 21){
-      $scope.msg = YOUWON;
-      $scope.betPlaced = false;
-    }
-    else if(msg.dealerCount === 21){
-      $scope.msg = YOULOST;
-      $scope.betPlaced = false;
-    }
-    else if(msg.count > 21){
-      $scope.msg = BUSTED;
-      $scope.betPlaced = false;
-      if($scope.money <= 0){
-        $scope.gameover = true;
+    function doSwitch(){
+      $scope.playing1 = !$scope.playing1;
+      $scope.playing2 = !$scope.playing1;
+      if($scope.playing1){
+        $scope.videoId2 = playlist.pop().id;
       }
+      else{
+        $scope.videoId1 = playlist.pop().id;
+      }
+      $scope.$apply();
+      $scope.minutes++;
     }
-    $scope.$apply();
-  });
 
-  socket.on('money', function(data) {
-    // Respond with a message including this clients' id sent from the server
-    $scope.money = data;
-    $scope.$apply();
-  });
+    $scope.$on('tikTok', function (event, data) {
+      $scope.seconds = data;
+    });
 
-  socket.on('connect', function(){});
-  socket.on('event', function(data){});
-  socket.on('disconnect', function(){});
-});
+    $scope.$on('youtubePlayerStateChanged', function (event, data) {
+      if(data.status === YT.PlayerState.ENDED){
+        doSwitch();
+      }
+    });
+
+    $window.onYouTubeIframeAPIReady = function() {
+      $scope.$broadcast('youtubeReady');
+    };
+
+    youtubeFactory.populatePlaylist()
+      .then(function (data) {
+        console.info('playlist size ' + data.length);
+        playlist = shuffle(data);
+        $scope.videoId1 = playlist.pop().id;
+        $scope.playing1 = true;
+        $scope.videoId2 = playlist.pop().id;
+        $scope.playing2 = false;
+      });
+  });
+})();

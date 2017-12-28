@@ -1,147 +1,27 @@
-/*
- * Globals
- */
-
-/* Links */
-a,
-a:focus,
-a:hover {
-	color: #fff;
-}
-
-/* Custom default button */
-.btn-default,
-.btn-default:hover,
-.btn-default:focus {
-	color: #333;
-	text-shadow: none; /* Prevent inheritence from `body` */
-	background-color: #fff;
-	border: 1px solid #fff;
-}
-
-
-/*
- * Base structure
- */
-
 html,
 body {
 	height: 100%;
 	background-color: #333;
-}
-body {
 	color: #fff;
-	text-align: center;
+	font-family: 'Press Start 2P', cursive;
 }
 
-/* Extra markup and styles for table-esque vertical and horizontal centering */
-.site-wrapper {
-	display: table;
-	width: 100%;
-	height: 600px;
-	/*height: 100%; */
-	/*min-height: 100%;*/
-}
-.site-wrapper-inner {
-	display: table-cell;
-	vertical-align: top;
-}
-.cover-container {
-	margin-right: auto;
-	margin-left: auto;
+#container youtube-player{
+	position:absolute;
 }
 
-/* Padding for spacing */
-.inner {
-	padding: 30px;
-}
-
-
-/*
- * Header
- */
-.masthead-brand {
-	font-weight: 300;
-}
-
-.masthead-nav > li {
-	font-weight: 300;
-	display: inline-block;
-}
-.masthead-nav > li + li {
-	margin-left: 20px;
-}
-
-@media (min-width: 768px) {
-	.masthead-brand {
-		float: left;
-	}
-	.masthead-nav {
-		float: right;
-	}
-}
-
-
-/*
- * Cover
- */
-
-.cover {
-	padding: 0 20px;
-}
-.cover .btn-lg {
-	padding: 10px 20px;
-	font-weight: bold;
-}
-
-/*
- * Affix and center
- */
-
-@media (min-width: 768px) {
-	/* Pull out the header and footer */
-	.masthead {
-		position: fixed;
-		top: 0;
-	}
-	/* Start the vertical centering */
-	.site-wrapper-inner {
-		vertical-align: middle;
-	}
-
-}
-
-/*
- * MuBoid
- */
-
-.inner-container{
-	display:inline-block;
-}
-.cards{
-	float:left;
-	height:140px;
+#header, #container{
 	width:100%;
-}
-.card{
 	float:left;
-	margin:5px;
 }
-.card img{
-	height:100px;
-}
-.action{
+
+#clock{
 	float:left;
-	width:100%;
+	font-size:40px;
+	margin:10px;
 }
-.action .dropdown{
-	float:left;
-	margin-right:4px;
-}
-.action button{
-	width:100px;
-}
-.small{
-	font-size:16px;
-	margin-bottom:10px;
+.g-signin2{
+	position:absolute;
+	bottom:0;
+	right:0;
 }
