@@ -6,7 +6,7 @@ angular.module('youtube', [])
         videoId:'@',
         playing:'@'
       },
-      templateUrl: 'templates/youtubePlayer.tpl.html',
+      templateUrl: 'youtube/youtubePlayer.tpl.html',
       link: function($scope,$element){
 
         //consts
@@ -36,6 +36,7 @@ angular.module('youtube', [])
 
         function onPlayerStateChange(event){
           if((event.data === YT.PlayerState.PLAYING || event.data === YT.PlayerState.ENDED) && !isBuffering){
+            //TODO call $parent scope function directly
             $scope.$emit('youtubePlayerStateChanged',{
               playerId: $scope.id,
               status: event.data
@@ -57,6 +58,7 @@ angular.module('youtube', [])
         function tikTok(){
           $timeout.cancel( timer );
           var elapsed = Math.ceil(player.getCurrentTime()) - START;
+          //TODO call $parent scope function directly
           $scope.$emit('tikTok',elapsed);
           timer = $timeout(tikTok,1000);
         }

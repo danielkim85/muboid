@@ -18,7 +18,7 @@ function shuffle(array) {
 }
 
 (function() {
-  var app = angular.module('MuBoidApp', ['youtube','clock']);
+  var app = angular.module('MuBoidApp', ['youtube','clock','welcome','footer']);
   app.controller('MuBoidCtrl', function ($scope, $timeout,$window,youtubeFactory) {
 
     var playlist = [];
@@ -53,14 +53,30 @@ function shuffle(array) {
       $scope.$broadcast('youtubeReady');
     };
 
+    //TODO error handling needed
     youtubeFactory.populatePlaylist()
       .then(function (data) {
         console.info('playlist size ' + data.length);
         playlist = shuffle(data);
-        $scope.videoId1 = playlist.pop().id;
-        $scope.playing1 = true;
-        $scope.videoId2 = playlist.pop().id;
-        $scope.playing2 = false;
+        //show welcome screen below
+        $scope.wait = true
       });
+
+    //firestarter
+    $scope.start = function(){
+      $scope.videoId1 = playlist.pop().id;
+      $scope.playing1 = true;
+      $scope.videoId2 = playlist.pop().id;
+      $scope.playing2 = false;
+      $scope.go = true;
+    };
+
+    //socket
+    var protocol = "http://";
+    var host =  window.location.hostname;
+    var port =  host === 'localhost' ? '3000' : '80';
+    $scope.socket = io.connect(protocol + host + ':' + port,{
+      'sync disconnect on unload': true
+    });
   });
 })();

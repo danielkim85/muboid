@@ -11,10 +11,10 @@ angular.module('clock', [])
         minutes:'@',
         seconds:'@'
       },
-      templateUrl: 'templates/clock.tpl.html',
+      templateUrl: 'clock/clock.tpl.html',
       link: function($scope,$element){
         $scope.$watch('seconds',function(newValue){
-          newValue = newValue < 0  || newValue > 59 ? 0 : newValue;
+          newValue = isNaN(newValue) || newValue < 0  || newValue > 59 ? 0 : newValue;
           $scope.seconds = pad(newValue,2)
         });
         $scope.$watch('minutes',function(newValue){

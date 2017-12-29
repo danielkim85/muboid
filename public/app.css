@@ -1,27 +1,35 @@
-html,
-body {
+html, body {
 	height: 100%;
 	background-color: #333;
 	color: #fff;
 	font-family: 'Press Start 2P', cursive;
 }
 
-#container youtube-player{
-	position:absolute;
+#main{
+	margin:10px;
+	width:640px;
 }
 
 #header, #container{
 	width:100%;
 	float:left;
+	font-size:20px;
+}
+
+#header{
+	margin-bottom:10px;
 }
 
 #clock{
 	float:left;
-	font-size:40px;
-	margin:10px;
 }
+
+#joinInfo{
+	float:right;
+}
+
 .g-signin2{
 	position:absolute;
-	bottom:0;
-	right:0;
+	bottom:0px;
+	right:0px;
 }
