@@ -26,7 +26,7 @@ angular.module('youtube', [])
         var containerOptions = {
           height: '360',
           width: '640',
-          playerVars: { 'autoplay': 0, 'controls': 1, 'rel': 0, 'showinfo': 0 },
+          playerVars: { 'autoplay': 0, 'controls': 0, 'rel': 0, 'showinfo': 0 },
           events: {
             'onReady': onReady,
             'onStateChange': onPlayerStateChange
@@ -108,7 +108,7 @@ angular.module('youtube', [])
         });
       }
     }
-  }).factory('youtubeFactory', function($http,$q){
+  }).factory('youtubeFactory', function($http,$q,$window){
 
     //helper functions
     function matchTags(tags){
@@ -132,16 +132,21 @@ angular.module('youtube', [])
       );
     }
 
+    const APIURL = 'https://www.googleapis.com/youtube/v3/';
     const APIKEY = 'AIzaSyAE_DMpfeQMKpKANohlNJMcgcwVpsummxo';
+
+
     const TARGET_LENGTH = 65;
-    const def = $q.defer();
+
     const MAGIC_WORD = 'vevo';
 
     var factory = {};
     var data = [];
-    var searchUrl = 'https://www.googleapis.com/youtube/v3/videos?part=snippet&chart=mostPopular&maxResults=50&regionCode=US&videoCategoryId=10&key=' + APIKEY;
 
-    factory.populatePlaylist = function(searchUrl_){
+    var playlistsUrl = APIURL + 'playlists&key=' + APIKEY;
+    var searchUrl = APIURL + 'videos?part=snippet&chart=mostPopular&maxResults=50&regionCode=US&videoCategoryId=10&key=' + APIKEY;
+
+    function doPopulatePlaylist(def,searchUrl_){
       searchUrl_ = searchUrl_ === undefined ? searchUrl : searchUrl_;
       $http.get(searchUrl_)
         .then(function(response){
@@ -158,12 +163,71 @@ angular.module('youtube', [])
           }
           else{
             searchUrl_ = searchUrl + '&pageToken=' + response.data.nextPageToken;
-            factory.populatePlaylist(searchUrl_);
+            doPopulatePlaylist(def,searchUrl_);
           }
         },function(response){
           console.error(response);
         });
+    }
+    factory.populatePlaylist = function(searchUrl_){
+      data = [];
+      const def = $q.defer();
+      doPopulatePlaylist(def);
       return def.promise;
     };
+
+    factory.getPlaylists = function($scope){
+      const def = $q.defer();
+      if(!$scope.signedIn){
+        gapi.auth2.getAuthInstance().signIn();
+        $scope.$parent.action = 'playlists';
+      }
+      else {
+        gapi.client.youtube.playlists.list({
+          'part': 'snippet',
+          'mine': true
+        }).then(function (response) {
+          def.resolve(response.result.items);
+        });
+      }
+      return def.promise;
+    };
+    function doGetPlaylist(def,playlistId,nextPageToken){
+      var params = {
+        'part': 'id,snippet',
+        'maxResults' : 50,
+        'playlistId': playlistId
+      };
+      if(nextPageToken !== undefined){
+        params.pageToken = nextPageToken;
+      }
+      gapi.client.youtube.playlistItems.list(params)
+        .then(function (response) {
+          response.result.items.forEach(function(item){
+            item.id = item.snippet.resourceId.videoId;
+            data.push(item)
+          });
+          if(response.result.nextPageToken === undefined){
+            def.resolve(response.result.items);
+          }
+          else{
+            doGetPlaylist(def,playlistId,response.result.nextPageToken);
+          }
+      });
+    }
+
+    factory.getPlaylist = function($scope,playlistId){
+      data = [];
+      const def = $q.defer();
+      if(!$scope.signedIn){
+        gapi.auth2.getAuthInstance().signIn();
+        $scope.$parent.action = 'playlist';
+      }
+      else {
+        doGetPlaylist(def,playlistId);
+      }
+      return def.promise;
+    };
+
     return factory;
   });

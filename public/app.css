@@ -1,5 +1,4 @@
 html, body {
-	height: 100%;
 	background-color: #333;
 	color: #fff;
 	font-family: 'Press Start 2P', cursive;
@@ -28,8 +27,9 @@ html, body {
 	float:right;
 }
 
-.g-signin2{
+.sign-action{
 	position:absolute;
-	bottom:0px;
+	bottom:1px;
 	right:0px;
+	z-index:1
 }

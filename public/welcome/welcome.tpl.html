@@ -2,7 +2,22 @@
 	Welcome!
 </div>
 <div>
-	<button type="button" class="btn btn-primary" ng-click="create()">Create</button>
+	<button type="button" class="btn btn-primary" ng-click="createDetail = true">Create</button>
+</div>
+<div ng-show="createDetail" class="submenu">
+	<div>
+		<button type="button" class="btn btn-secondary" ng-click="create()">Random</button>
+	</div>
+	<div>
+		<button type="button" class="btn btn-secondary" ng-click="getPlaylists()">YouTube Playlist</button>
+		<div class="subsubmenu">
+			<div ng-repeat="playlist in playlists" >
+				<button type="button" class="btn btn-info" ng-click="getPlaylist(playlist.id)">
+					{{playlist.snippet.title}}
+				</button>
+			</div>
+		</div>
+	</div>
 </div>
 <div>
 	<button type="button" class="btn btn-primary" ng-click="join()">Join</button>
