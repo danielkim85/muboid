@@ -1,12 +1,15 @@
 <div>
 	Welcome!
 </div>
+<div class="alert alert-danger" role="alert" ng-show="errMsg">
+	{{errMsg}}
+</div>
 <div>
 	<button type="button" class="btn btn-primary" ng-click="createDetail = true">Create</button>
 </div>
 <div ng-show="createDetail" class="submenu">
 	<div>
-		<button type="button" class="btn btn-secondary" ng-click="create()">Random</button>
+		<button type="button" class="btn btn-secondary" ng-click="random()">Random</button>
 	</div>
 	<div>
 		<button type="button" class="btn btn-secondary" ng-click="getPlaylists()">YouTube Playlist</button>
@@ -20,5 +23,8 @@
 	</div>
 </div>
 <div>
-	<button type="button" class="btn btn-primary" ng-click="join()">Join</button>
+	<div class="col-xs-3" style="padding-left:0px;">
+		<input class="form-control" id="ex2" type="text" ng-model="joinRoomName">
+	</div>
+	<button type="button" class="btn btn-primary" ng-click="join(joinRoomName)">Join</button>
 </div>

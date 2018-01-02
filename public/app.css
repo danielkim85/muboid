@@ -1,12 +1,16 @@
 html, body {
-	background-color: #333;
+	background-color: #323232;
 	color: #fff;
 	font-family: 'Press Start 2P', cursive;
+	height:100%;
 }
 
 #main{
-	margin:10px;
-	width:640px;
+	background-color: #4c4c4c;
+	margin:auto;
+	padding:10px;
+	height:100%;
+	width:660px;
 }
 
 #header, #container{
@@ -19,8 +23,14 @@ html, body {
 	margin-bottom:10px;
 }
 
-#clock{
-	float:left;
+#container{
+	margin-bottom:370px;
+}
+
+#go{
+	display:flex;
+	flex-flow:column;
+	height:100%;
 }
 
 #joinInfo{

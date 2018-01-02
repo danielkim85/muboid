@@ -1,0 +1,36 @@
+playlist, playlist #songContainer, playlist #songContainer{
+	float:left;
+}
+playlist #songContainer{
+	width:100%;
+	font-size:12px;
+	margin-top:5px;
+}
+playlist #info{
+	font-size:20px;
+}
+playlist{
+	height:100%;
+	overflow-x:auto;
+}
+
+playlist #songContainer{
+	padding-bottom:5px;
+	width:100%;
+}
+
+playlist #songContainer .song:first-child {
+	color:#337ab7;
+}
+
+playlist hr{
+	margin:5px 0;
+}
+playlist #info{
+	padding-bottom:5px;
+}
+
+playlist #playlistAction{
+	float:right;
+
+}

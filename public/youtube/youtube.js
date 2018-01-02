@@ -110,6 +110,11 @@ angular.module('youtube', [])
     }
   }).factory('youtubeFactory', function($http,$q,$window){
 
+    const MAGIC_WORD = 'vevo';
+    const TARGET_LENGTH = 65;
+    var factory = {};
+    var data = [];
+
     //helper functions
     function matchTags(tags){
       if(tags === undefined){
@@ -132,47 +137,47 @@ angular.module('youtube', [])
       );
     }
 
-    const APIURL = 'https://www.googleapis.com/youtube/v3/';
-    const APIKEY = 'AIzaSyAE_DMpfeQMKpKANohlNJMcgcwVpsummxo';
+    function doPopulatePlaylist(def,nextPageToken){
 
+      var params = {
+        'part': 'snippet',
+        'maxResults' : 50,
+        'chart' : 'mostPopular',
+        'regionCode' : 'US',
+        'videoCategoryId' : 10
+      };
 
-    const TARGET_LENGTH = 65;
+      if(nextPageToken !== undefined){
+        params.pageToken = nextPageToken;
+      }
 
-    const MAGIC_WORD = 'vevo';
-
-    var factory = {};
-    var data = [];
-
-    var playlistsUrl = APIURL + 'playlists&key=' + APIKEY;
-    var searchUrl = APIURL + 'videos?part=snippet&chart=mostPopular&maxResults=50&regionCode=US&videoCategoryId=10&key=' + APIKEY;
-
-    function doPopulatePlaylist(def,searchUrl_){
-      searchUrl_ = searchUrl_ === undefined ? searchUrl : searchUrl_;
-      $http.get(searchUrl_)
-        .then(function(response){
-
-          //do some processing below
-          response.data.items.forEach(function(item){
-            if(shouldAddtoPlaylist(item)){
-              data.push(item);
-            }
-          });
-
-          if(data.length >= TARGET_LENGTH){
-            def.resolve(data);
+      gapi.client.youtube.videos.list(params).then(function (response) {
+        //do some processing below
+        response.result.items.forEach(function(item){
+          if(shouldAddtoPlaylist(item)){
+            data.push({id:item.id,title:item.snippet.title});
           }
-          else{
-            searchUrl_ = searchUrl + '&pageToken=' + response.data.nextPageToken;
-            doPopulatePlaylist(def,searchUrl_);
-          }
-        },function(response){
-          console.error(response);
         });
+
+        if(data.length >= TARGET_LENGTH){
+          def.resolve(data);
+        }
+        else{
+          doPopulatePlaylist(def,response.result.nextPageToken);
+        }
+      });
     }
-    factory.populatePlaylist = function(searchUrl_){
+
+    factory.populatePlaylist = function($scope){
       data = [];
       const def = $q.defer();
-      doPopulatePlaylist(def);
+      if(!$scope.signedIn){
+        gapi.auth2.getAuthInstance().signIn();
+        $scope.$parent.action = 'random';
+      }
+      else{
+        doPopulatePlaylist(def);
+      }
       return def.promise;
     };
 
@@ -192,9 +197,10 @@ angular.module('youtube', [])
       }
       return def.promise;
     };
+
     function doGetPlaylist(def,playlistId,nextPageToken){
       var params = {
-        'part': 'id,snippet',
+        'part': 'snippet',
         'maxResults' : 50,
         'playlistId': playlistId
       };
@@ -205,7 +211,8 @@ angular.module('youtube', [])
         .then(function (response) {
           response.result.items.forEach(function(item){
             item.id = item.snippet.resourceId.videoId;
-            data.push(item)
+            item.title = item.snippet.title;
+            data.push(item);
           });
           if(response.result.nextPageToken === undefined){
             def.resolve(response.result.items);

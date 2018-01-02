@@ -13,6 +13,7 @@
 		<link rel='stylesheet' href='/welcome/welcome.css' />
 		<link rel='stylesheet' href='/youtube/youtube.css' />
 		<link rel='stylesheet' href='/clock/clock.css' />
+		<link rel='stylesheet' href='/playlist/playlist.css' />
 		<link rel='stylesheet' href='/app.css' />
 
 		<script src="https://code.jquery.com/jquery-2.2.4.min.js"
@@ -31,49 +32,43 @@
 		<script src="/third-party/socket.io.js"></script>
 		<script src="/welcome/welcome.js"></script>
 		<script src="/youtube/youtube.js"></script>
+		<script src="/playlist/playlist.js"></script>
 		<script src="/clock/clock.js"></script>
 		<script src="/footer/footer.js"></script>
 	</head>
 	<body ng-app="MuBoidApp" ng-controller="MuBoidCtrl">
 
-	<button type="button" class="btn btn-primary sign-action" id="authorize-button" style="display: none;">Sign in</button>
-	<button type="button" class="btn btn-primary sign-action" id="signout-button" style="display: none;">Sign Out</button>
+		<button type="button" class="btn btn-primary sign-action" id="authorize-button" style="display: none;">Sign in</button>
+		<button type="button" class="btn btn-primary sign-action" id="signout-button" style="display: none;">Sign Out</button>
 
-
-
-	<div id="main">
-		<div ng-show="wait">Loading ...</div>
-		<welcome ng-hide="go || wait"></welcome>
-		<div id="gameover" ng-show="gameover">GAME OVER</div>
-		<div ng-show="go && !gameover">
-			<div id="header">
-				<clock minutes="{{minutes}}" seconds="{{seconds}}"></clock>
-				<div id="joinInfo">
-					Join : {{roomName}}
+		<div id="main">
+			<div ng-show="wait">Loading ...</div>
+			<welcome ng-hide="go || wait || guest"></welcome>
+			<div id="gameover" ng-show="gameover">GAME OVER</div>
+			<div id="go">
+				<div ng-show="go && !gameover" id="header">
+					<clock minutes="{{minutes}}" seconds="{{seconds}}"></clock>
+					<div id="joinInfo">
+						Join : {{roomName}}
+					</div>
 				</div>
-			</div>
-			<div id="container">
-				<youtube-player id="player1" video-id="{{videoId1}}" playing="{{playing1}}"></youtube-player>
-				<youtube-player id="player2" video-id="{{videoId2}}" playing="{{playing2}}"></youtube-player>
+				<div ng-show="go && !gameover" id="container">
+					<youtube-player id="player1" video-id="{{videoId1}}" playing="{{playing1}}"></youtube-player>
+					<youtube-player id="player2" video-id="{{videoId2}}" playing="{{playing2}}"></youtube-player>
+				</div>
+				<playlist playlist-id="{{playlistId}}" ng-show="!gameover && playlist.length > 0"></playlist>
 			</div>
 		</div>
-	</div>
 
-	<footer></footer>
+		<footer></footer>
 
-	<script>
-    var tag = document.createElement('script');
-    tag.src = "https://www.youtube.com/iframe_api";
-    var firstScriptTag = document.getElementsByTagName('script')[0];
-    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-	</script>
+		<script>
+	    var tag = document.createElement('script');
+	    tag.src = "https://www.youtube.com/iframe_api";
+	    var firstScriptTag = document.getElementsByTagName('script')[0];
+	    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+		</script>
 
-	<script src="/app.js"></script>
-
-	<script async defer src="https://apis.google.com/js/api.js"
-	        onload="this.onload=function(){};handleClientLoad()"
-	        onreadystatechange="if (this.readyState === 'complete') this.onload()">
-	</script>
-
+		<script src="/app.js"></script>
 	</body>
 </html>

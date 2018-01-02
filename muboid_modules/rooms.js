@@ -1,5 +1,5 @@
 var Rooms = function (){
-  var rooms = [];
+  var rooms = {};
 
   this.makeRoomName = function(){
     var text = "";
@@ -13,19 +13,36 @@ var Rooms = function (){
 
   this.createRoom = function(){
 
-    if(rooms.length >= 100){
+    if(Object.keys(rooms).length >= 100){
       //TODO handle error better
       return null;
     }
 
     var roomName = this.makeRoomName();
-    while(rooms.indexOf(roomName) > 0){
-      console.info('regen');
+    while(roomName in rooms > 0){
       roomName = this.makeRoomName();
     }
-    rooms.push(roomName);
+    rooms[roomName] = {playlist:null};
     return roomName;
-  }
+  };
+
+  this.deleteRoom = function(roomName){
+    delete rooms[roomName];
+    return;
+  };
+
+  this.uploadPlaylist = function(roomName,playlist){
+    rooms[roomName].playlist = playlist;
+    return;
+  };
+
+  this.joinRoom = function(roomName){
+    if(!(roomName in rooms)){
+      return false;
+    }
+
+    return rooms[roomName].playlist;
+  };
 };
 
 module.exports = Rooms;
