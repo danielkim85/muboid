@@ -5,12 +5,17 @@ html, body {
 	height:100%;
 }
 
+body{
+	background: url("images/background.jpg");
+}
 #main{
-	background-color: #4c4c4c;
+	background-color: rgba(0, 0, 0, 0.5);
 	margin:auto;
-	padding:10px;
+	padding:20px;
 	height:100%;
-	width:660px;
+	width:680px;
+	display: flex;
+	flex-flow: column;
 }
 
 #header, #container{
@@ -30,7 +35,7 @@ html, body {
 #go{
 	display:flex;
 	flex-flow:column;
-	height:100%;
+
 }
 
 #joinInfo{
@@ -40,6 +45,6 @@ html, body {
 .sign-action{
 	position:absolute;
 	bottom:1px;
-	right:0px;
+	right:0;
 	z-index:1
 }

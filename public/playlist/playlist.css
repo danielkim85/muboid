@@ -1,22 +1,19 @@
-playlist, playlist #songContainer, playlist #songContainer{
+playlist, playlist #songContainer{
 	float:left;
-}
-playlist #songContainer{
-	width:100%;
-	font-size:12px;
-	margin-top:5px;
-}
-playlist #info{
-	font-size:20px;
-}
-playlist{
-	height:100%;
-	overflow-x:auto;
 }
 
 playlist #songContainer{
-	padding-bottom:5px;
 	width:100%;
+	font-size:12px;
+}
+
+playlist #info{
+	font-size:20px;
+}
+
+playlist{
+	display: flex;
+	flex-flow: column;
 }
 
 playlist #songContainer .song:first-child {
@@ -26,11 +23,38 @@ playlist #songContainer .song:first-child {
 playlist hr{
 	margin:5px 0;
 }
-playlist #info{
-	padding-bottom:5px;
-}
 
 playlist #playlistAction{
 	float:right;
+}
 
+playlist #search{
+	padding:10px 0px;
+}
+
+playlist #searchResult, playlist #songContainer{
+	overflow-x:auto;
+	flex-flow:column;
+	margin-bottom: 25px;
+}
+
+playlist #searchResult{
+	color:black;
+	background-color: white;
+	padding-top: 10px;
+}
+
+playlist #searchResult .song{
+	padding-left:10px;
+	cursor:pointer;
+}
+
+playlist .close{
+	color:red;
+	opacity:0.8;
+}
+
+playlist .close:hover{
+	color:red;
+	opacity:1;
 }

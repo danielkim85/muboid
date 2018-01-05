@@ -29,6 +29,7 @@
 		<meta name="google-signin-client_id" content="586555634098-j5ul1cm0c5bj7vo87d8u5volijrneh40.apps.googleusercontent.com">
 		<script src="https://apis.google.com/js/platform.js" async defer></script>
 
+		<script src="const.js"></script>
 		<script src="/third-party/socket.io.js"></script>
 		<script src="/welcome/welcome.js"></script>
 		<script src="/youtube/youtube.js"></script>
@@ -38,12 +39,12 @@
 	</head>
 	<body ng-app="MuBoidApp" ng-controller="MuBoidCtrl">
 
-		<button type="button" class="btn btn-primary sign-action" id="authorize-button" style="display: none;">Sign in</button>
-		<button type="button" class="btn btn-primary sign-action" id="signout-button" style="display: none;">Sign Out</button>
+		<button ng-hide="guest" type="button" class="btn btn-primary sign-action" id="authorize-button" style="display: none;">Sign in</button>
+		<button ng-hide="guest" type="button" class="btn btn-primary sign-action" id="signout-button" style="display: none;">Sign Out</button>
 
 		<div id="main">
 			<div ng-show="wait">Loading ...</div>
-			<welcome ng-hide="go || wait || guest"></welcome>
+			<welcome ng-hide="go || wait || guest || playlistReview"></welcome>
 			<div id="gameover" ng-show="gameover">GAME OVER</div>
 			<div id="go">
 				<div ng-show="go && !gameover" id="header">
@@ -60,7 +61,7 @@
 			</div>
 		</div>
 
-		<footer></footer>
+		<footer ng-hide="guest"></footer>
 
 		<script>
 	    var tag = document.createElement('script');

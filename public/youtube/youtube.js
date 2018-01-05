@@ -1,5 +1,5 @@
 angular.module('youtube', [])
-  .directive('youtubePlayer', function($timeout,$q,$window){
+  .directive('youtubePlayer', function($timeout){
     return{
       scope:{
         id:'@',
@@ -9,19 +9,10 @@ angular.module('youtube', [])
       templateUrl: 'youtube/youtubePlayer.tpl.html',
       link: function($scope,$element){
 
-        //consts
-        const START = 30;
-        const END = 90;
-
         var player;
         var playerReady = false;
         var isBuffering = true;
         var timer;
-
-        var playerOptions = {
-          'startSeconds': START,
-          'endSeconds': END
-        };
 
         var containerOptions = {
           height: '360',
@@ -46,6 +37,9 @@ angular.module('youtube', [])
 
         function onReady(){
           playerReady = true;
+          if($scope.videoId === ''){
+            return;
+          }
           queueVideo($scope.videoId);
           if($scope.playing === 'false'){
             buffer();
@@ -58,10 +52,10 @@ angular.module('youtube', [])
         function tikTok(){
           $timeout.cancel( timer );
           var elapsed = Math.ceil(player.getCurrentTime()) - START;
-          //TODO call $parent scope function directly
-          $scope.$emit('tikTok',elapsed);
+          $scope.$parent.updateClock(elapsed);
           timer = $timeout(tikTok,1000);
         }
+
         function play(){
           player.setVolume(100);
           isBuffering = false;
@@ -83,6 +77,14 @@ angular.module('youtube', [])
         }
 
         function queueVideo(videoId){
+
+          var playerOptions = {
+            'startSeconds': START
+          };
+          if(END >= 0){
+            playerOptions.endSeconds = END;
+          }
+
           playerOptions.videoId = videoId;
           player.cueVideoById(playerOptions);
         }
@@ -103,15 +105,13 @@ angular.module('youtube', [])
           }
         });
 
-        $scope.$on('youtubeReady', function (event, data) {
+        $scope.$on('youtubeReady', function () {
           player = new YT.Player($element.children()[0], containerOptions);
         });
       }
     }
-  }).factory('youtubeFactory', function($http,$q,$window){
+  }).factory('youtubeFactory', function($http,$q){
 
-    const MAGIC_WORD = 'vevo';
-    const TARGET_LENGTH = 65;
     var factory = {};
     var data = [];
 
@@ -210,12 +210,10 @@ angular.module('youtube', [])
       gapi.client.youtube.playlistItems.list(params)
         .then(function (response) {
           response.result.items.forEach(function(item){
-            item.id = item.snippet.resourceId.videoId;
-            item.title = item.snippet.title;
-            data.push(item);
+            data.push({id:item.snippet.resourceId.videoId, title:item.snippet.title});
           });
           if(response.result.nextPageToken === undefined){
-            def.resolve(response.result.items);
+            def.resolve(data);
           }
           else{
             doGetPlaylist(def,playlistId,response.result.nextPageToken);
@@ -236,5 +234,29 @@ angular.module('youtube', [])
       return def.promise;
     };
 
+
+    factory.search = function($scope,q){
+      data = [];
+      const def = $q.defer();
+      gapi.client.youtube.search.list({
+        part: 'snippet',
+        q: q,
+        videoDuration: 'medium',
+        videoCategoryId: 10,
+        type: 'video',
+        maxResults : 50
+      })
+        .then(function (response) {
+          response.result.items.forEach(function(item){
+            data.push({
+              id:item.id.videoId,
+              title:item.snippet.title,
+              owner:$scope.socket.id
+            });
+          });
+          def.resolve(data);
+        });
+      return def.promise;
+    }
     return factory;
   });

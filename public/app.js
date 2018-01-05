@@ -1,23 +1,19 @@
 
 var app = angular.module('MuBoidApp', ['youtube','clock','welcome','footer','playlist']);
-app.controller('MuBoidCtrl', function ($scope, $timeout,$window,youtubeFactory) {
-
+app.controller('MuBoidCtrl', function ($scope, $timeout,$window) {
   $scope.wait = true;
 
   //youtube api functions
-  const CLIENT_ID = '586555634098-j5ul1cm0c5bj7vo87d8u5volijrneh40.apps.googleusercontent.com';
-  const DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/youtube/v3/rest"];
-  const SCOPES = 'https://www.googleapis.com/auth/youtube.readonly';
   $scope.signedIn = false;
 
   var authorizeButton = document.getElementById('authorize-button');
   var signoutButton = document.getElementById('signout-button');
 
-  function handleAuthClick(event) {
+  function handleAuthClick() {
     gapi.auth2.getAuthInstance().signIn();
   }
 
-  function handleSignoutClick(event) {
+  function handleSignoutClick() {
     gapi.auth2.getAuthInstance().signOut();
   }
 
@@ -60,6 +56,7 @@ app.controller('MuBoidCtrl', function ($scope, $timeout,$window,youtubeFactory) 
       signoutButton.style.display = 'none';
     }
     $scope.wait = false;
+    $scope.$apply();
   }
 
   $scope.playlist = [];
@@ -67,9 +64,15 @@ app.controller('MuBoidCtrl', function ($scope, $timeout,$window,youtubeFactory) 
   $scope.seconds = 0;
   $scope.minutes = 0;
 
-  $scope.$on('tikTok', function (event, data) {
-    $scope.seconds = data;
-  });
+  $scope.updateClock = function(elapsed) {
+    if(END === 0){
+      $scope.minutes = Math.floor(elapsed/60);
+      $scope.seconds = elapsed%60;
+    }
+    else{
+      $scope.seconds = elapsed;
+    }
+  };
 
   $scope.$on('youtubePlayerStateChanged', function (event, data) {
     if(data.status === YT.PlayerState.ENDED){
@@ -88,7 +91,7 @@ app.controller('MuBoidCtrl', function ($scope, $timeout,$window,youtubeFactory) 
     }
 
     $scope.playlist.shift();
-    $scope.socket.emit('uploadPlaylist',{roomName:$scope.roomName, playlist:$scope.playlist});
+    $scope.uploadPlaylist();
 
     $scope.playing1 = !$scope.playing1;
     $scope.playing2 = !$scope.playing1;
@@ -101,13 +104,16 @@ app.controller('MuBoidCtrl', function ($scope, $timeout,$window,youtubeFactory) 
         $scope.videoId1 = $scope.playlist[1].id;
       }
     }
-    //$scope.$broadcast('songChanged', nowVideoId);
+
     $scope.$apply();
-    $scope.minutes++;
+    if(END > 0){
+      $scope.minutes++;
+    }
   }
 
   //firestarter
   $scope.start = function(){
+    $scope.uploadPlaylist();
     $scope.socket.emit('uploadPlaylist',{roomName:$scope.roomName, playlist:$scope.playlist});
     $scope.wait = false;
     //$scope.$broadcast('songChanged', $scope.playlist[0].id);
@@ -116,6 +122,11 @@ app.controller('MuBoidCtrl', function ($scope, $timeout,$window,youtubeFactory) 
     $scope.videoId2 = $scope.playlist[1].id;
     $scope.playing2 = false;
     $scope.go = true;
+    $scope.$apply();
+  };
+
+  $scope.uploadPlaylist = function(){
+    $scope.socket.emit('uploadPlaylist',{roomName:$scope.roomName, playlist:$scope.playlist});
   };
 
   //socket
@@ -125,7 +136,6 @@ app.controller('MuBoidCtrl', function ($scope, $timeout,$window,youtubeFactory) 
   $scope.socket = io.connect(protocol + host + ':' + port,{
     'sync disconnect on unload': true
   });
-
 
   window.onbeforeunload = function() {
     $scope.socket.emit('leave',$scope.roomName,!$scope.guest);

@@ -28,12 +28,12 @@ var Rooms = function (){
 
   this.deleteRoom = function(roomName){
     delete rooms[roomName];
-    return;
+
   };
 
   this.uploadPlaylist = function(roomName,playlist){
     rooms[roomName].playlist = playlist;
-    return;
+
   };
 
   this.joinRoom = function(roomName){

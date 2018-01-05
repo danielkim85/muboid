@@ -1,16 +1,34 @@
 <div id="info">
 	PLAYLIST
 	<div id="playlistAction" ng-hide="$parent.go || $parent.guest">
-		<button type="button" class="btn btn-primary" ng-click="start()">Start</button>
+		<button type="button" class="btn btn-danger" ng-click="start()">Start</button>
+		<button type="button" class="btn btn-primary" ng-click="refresh(playlistId)">Refresh</button>
 		<button type="button" class="btn btn-primary" ng-click="manage()">
 			Manage
 		</button>
 	</div>
 </div>
-<div id="songContainer">
+
+<div id="search">
+	<input type="text" class="form-control" ng-model="searchTerm" placeholder="Search for...">
+</div>
+
+<div id="searchResult" ng-show="searchResult.length > 0">
+	<div class="song" ng-repeat="song in searchResult track by $index" ng-click="queue(song)">
+		<div videoId = {{song.id}}>
+			{{song.title}}
+		</div>
+		<hr />
+	</div>
+</div>
+
+<div id="songContainer" ng-show="searchResult.length == 0">
 	<div class="song" ng-repeat="song in $parent.playlist track by $index" >
 		<div videoId = {{song.id}}>
 			{{song.title}}
+			<button ng-click="remove($index)" ng-show="song.owner === $parent.$parent.socket.id" type="button" class="close" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>
 		</div>
 		<hr />
 	</div>

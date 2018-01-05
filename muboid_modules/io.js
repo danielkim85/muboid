@@ -4,6 +4,8 @@ function MyIO(server) {
   var io = require('socket.io')(server);
   var rooms = new Rooms();
 
+  // noinspection Annotator
+  // noinspection Annotator
   io.on('connection', function(socket){
 
     socket.on('disconnect', function () {
@@ -13,6 +15,7 @@ function MyIO(server) {
       //create
       var roomName = rooms.createRoom();
       if(roomName !== null){
+        socket.join(roomName);
         socket.emit('created',roomName);
       }
     });
@@ -20,6 +23,7 @@ function MyIO(server) {
     socket.on('leave', function(roomName,isDelete){
       socket.leave(roomName);
       if(isDelete){
+        // noinspection Annotator
         socket.broadcast.to(roomName).emit('gameover');
         rooms.deleteRoom(roomName);
       }

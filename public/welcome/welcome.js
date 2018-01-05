@@ -22,7 +22,7 @@ angular.module('welcome', ['youtube'])
       scope:{
       },
       templateUrl: 'welcome/welcome.tpl.html',
-      link: function($scope,$element){
+      link: function($scope){
 
         var socket = $scope.$parent.socket;
 
@@ -38,6 +38,7 @@ angular.module('welcome', ['youtube'])
 
         $scope.getPlaylist = function(playlistId){
           $scope.$parent.$wait = true;
+          $scope.$parent.playlistReview = true;
           youtubeFactory.getPlaylist($scope.$parent, playlistId)
             .then(function (songs) {
               random = false;
@@ -47,11 +48,12 @@ angular.module('welcome', ['youtube'])
             });
         };
 
-        $scope.$on('getPlaylist', function (event, data) {
+        $scope.$on('getPlaylist', function () {
           $scope.getPlaylist();
         });
 
         $scope.random = function(){
+          $scope.$parent.wait = true;
           youtubeFactory.populatePlaylist($scope.$parent)
             .then(function (data) {
               console.info('playlist size ' + data.length);
@@ -60,7 +62,7 @@ angular.module('welcome', ['youtube'])
             });
         };
 
-        $scope.$on('random', function (event, data) {
+        $scope.$on('random', function () {
           $scope.random();
         });
 
@@ -71,12 +73,13 @@ angular.module('welcome', ['youtube'])
             });
         };
 
-        $scope.$on('getPlaylists', function (event, data) {
+        $scope.$on('getPlaylists', function () {
           $scope.getPlaylists();
         });
 
         $scope.join = function(joinRoomName){
           socket.emit('join',joinRoomName);
+          $scope.$parent.roomName = joinRoomName;
         };
 
         socket.on('joined', function(response){
@@ -87,7 +90,15 @@ angular.module('welcome', ['youtube'])
           $scope.errMsg = false;
           $scope.$parent.guest = true;
           $scope.$parent.playlist = response.msg;
+          $scope.$apply();
         });
+
+        $scope.changeDuration = function(duration){
+          var display = duration === -1 ? 'Full duration' : '60 seconds';
+          $scope.duration = display;
+          START = duration === -1 ? 0 : START;
+          END = duration === -1 ? 0 : END;
+        }
 
       }
     }

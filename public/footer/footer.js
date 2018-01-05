@@ -4,7 +4,7 @@ angular.module('footer', [])
       scope:{
       },
       templateUrl: 'footer/footer.tpl.html',
-      link: function($scope,$element){
+      link: function($scope){
 
         function isFullscreen(){
           return document.fullScreen ||
@@ -21,7 +21,7 @@ angular.module('footer', [])
           document.addEventListener('MSFullscreenChange', fsChanged, false);
         }
 
-        function fsChanged(event,type){
+        function fsChanged(){
           var fullscreen = isFullscreen();
 
           $('.action#fullscreen i').html(fullscreen ? 'computer' : 'tv');

@@ -12,7 +12,7 @@ angular.module('clock', [])
         seconds:'@'
       },
       templateUrl: 'clock/clock.tpl.html',
-      link: function($scope,$element){
+      link: function($scope){
         $scope.$watch('seconds',function(newValue){
           newValue = isNaN(newValue) || newValue < 0  || newValue > 59 ? 0 : newValue;
           $scope.seconds = pad(newValue,2)
