@@ -1,10 +1,20 @@
 welcome div{
 	margin-bottom:10px;
 }
+
 welcome .submenu{
 	margin-left:20px;
 }
+
 welcome .subsubmenu{
 	margin-top:10px;
 	margin-left:40px;
+}
+
+welcome #durationSlider .slider-handle{
+	background-image:-webkit-linear-gradient(top,#5bc0de 0,#46b8da 100%)
+}
+
+welcome #durationSlider{
+	margin-bottom:0px;
 }

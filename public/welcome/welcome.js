@@ -1,9 +1,7 @@
 function shuffle(array) {
   var currentIndex = array.length, temporaryValue, randomIndex;
-
   // While there remain elements to shuffle...
   while (0 !== currentIndex) {
-
     // Pick a remaining element...
     randomIndex = Math.floor(Math.random() * currentIndex);
     currentIndex -= 1;
@@ -37,14 +35,13 @@ angular.module('welcome', ['youtube'])
         });
 
         $scope.getPlaylist = function(playlistId){
-          $scope.$parent.$wait = true;
+          $scope.$parent.wait = true;
           $scope.$parent.playlistReview = true;
           youtubeFactory.getPlaylist($scope.$parent, playlistId)
             .then(function (songs) {
-              random = false;
               $scope.$parent.playlistId = playlistId;
               $scope.$parent.playlist = songs;
-              //$scope.create();
+              $scope.$parent.wait = false;
             });
         };
 
@@ -54,11 +51,12 @@ angular.module('welcome', ['youtube'])
 
         $scope.random = function(){
           $scope.$parent.wait = true;
+          $scope.$parent.playlistReview = true;
           youtubeFactory.populatePlaylist($scope.$parent)
             .then(function (data) {
               console.info('playlist size ' + data.length);
               $scope.$parent.playlist = shuffle(data);
-              $scope.create();
+              $scope.$parent.wait = false;
             });
         };
 
@@ -93,13 +91,31 @@ angular.module('welcome', ['youtube'])
           $scope.$apply();
         });
 
+        var duration_ = 60;
         $scope.changeDuration = function(duration){
-          var display = duration === -1 ? 'Full duration' : '60 seconds';
+          if(duration === DEFAULT_MAX){
+            $('#duration').slider('setValue', DEFAULT_MAX);
+          }
+          duration_ = duration;
+          var display = duration === DEFAULT_MAX ? 'Max' : duration + ' seconds';
           $scope.duration = display;
-          START = duration === -1 ? 0 : START;
-          END = duration === -1 ? 0 : END;
-        }
+          START = duration === DEFAULT_MAX ? 0 : START;
+          END = duration === DEFAULT_MAX ? 0 : START + duration;
+        };
 
+        $('#duration').slider({
+          formatter: function(value) {
+            return value === DEFAULT_MAX ? 'Max' : value + ' seconds';
+          }
+        });
+
+        $('#duration').on("slide", function(slideEvt) {
+          if(duration_ !== slideEvt.value){
+            $scope.changeDuration(slideEvt.value);
+            $scope.$apply();
+          }
+        });
+        $scope.changeDuration(duration_);
       }
     }
   });

@@ -12,6 +12,7 @@ playlist #info{
 }
 
 playlist{
+	padding-top:10px;
 	display: flex;
 	flex-flow: column;
 }

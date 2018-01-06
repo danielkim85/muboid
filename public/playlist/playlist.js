@@ -24,6 +24,7 @@ angular.module('playlist', [])
             .then(function (songs) {
               $scope.$parent.playlistId = playlistId;
               $scope.$parent.playlist = songs;
+              $scope.$parent.$wait = false;
             });
         };
 
@@ -31,7 +32,9 @@ angular.module('playlist', [])
           $scope.searchTerm = '';
           var index = $scope.$parent.go || $scope.$parent.guest ? 2 : 0;
           $scope.$parent.playlist.splice(index,0,song);
-          $scope.$parent.uploadPlaylist();
+          if($scope.$parent.go){
+            $scope.$parent.uploadPlaylist();
+          }
         };
 
         $scope.remove = function(index){

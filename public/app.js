@@ -106,7 +106,7 @@ app.controller('MuBoidCtrl', function ($scope, $timeout,$window) {
     }
 
     $scope.$apply();
-    if(END > 0){
+    if(END - START === 60){
       $scope.minutes++;
     }
   }

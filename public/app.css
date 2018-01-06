@@ -32,12 +32,6 @@ body{
 	margin-bottom:370px;
 }
 
-#go{
-	display:flex;
-	flex-flow:column;
-
-}
-
 #joinInfo{
 	float:right;
 }

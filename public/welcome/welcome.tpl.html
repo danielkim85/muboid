@@ -13,14 +13,12 @@
 		1. Duration of each song : {{duration}}
 	</div>
 	<div>
-		<button type="button" class="btn btn-info" ng-click="changeDuration(60)">60 seconds</button>
-	</div>
-	<div>
-		<button type="button" class="btn btn-info" ng-click="changeDuration(-1)">Full duration</button>
+		<input id="duration" data-slider-id='durationSlider' type="text" data-slider-min="15" data-slider-max="135" data-slider-step="15" data-slider-value="60"/>
+		<button type="button" class="btn btn-info" ng-click="changeDuration(135)">Max</button>
 	</div>
 </div>
 
-<div ng-show="createDetail && duration !== undefined" class="submenu">
+<div ng-show="createDetail && duration !== undefined" class="submenu" style="margin-bottom:20px;">
 	<div>
 		2. Pick your songs.
 	</div>
