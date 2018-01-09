@@ -137,7 +137,7 @@ angular.module('youtube', [])
       );
     }
 
-    function doPopulatePlaylist(def,nextPageToken){
+    function doPopulatePlaylist($scope,def,nextPageToken){
 
       var params = {
         'part': 'snippet',
@@ -155,7 +155,11 @@ angular.module('youtube', [])
         //do some processing below
         response.result.items.forEach(function(item){
           if(shouldAddtoPlaylist(item)){
-            data.push({id:item.id,title:item.snippet.title});
+            data.push({
+              id:item.id,
+              owner:$scope.user,
+              title:item.snippet.title
+            });
           }
         });
 
@@ -163,7 +167,7 @@ angular.module('youtube', [])
           def.resolve(data);
         }
         else{
-          doPopulatePlaylist(def,response.result.nextPageToken);
+          doPopulatePlaylist($scope,def,response.result.nextPageToken);
         }
       });
     }
@@ -176,7 +180,7 @@ angular.module('youtube', [])
         $scope.$parent.action = 'random';
       }
       else{
-        doPopulatePlaylist(def);
+        doPopulatePlaylist($scope,def);
       }
       return def.promise;
     };
@@ -198,7 +202,7 @@ angular.module('youtube', [])
       return def.promise;
     };
 
-    function doGetPlaylist(def,playlistId,nextPageToken){
+    function doGetPlaylist($scope,def,playlistId,nextPageToken){
       var params = {
         'part': 'snippet',
         'maxResults' : 50,
@@ -210,13 +214,17 @@ angular.module('youtube', [])
       gapi.client.youtube.playlistItems.list(params)
         .then(function (response) {
           response.result.items.forEach(function(item){
-            data.push({id:item.snippet.resourceId.videoId, title:item.snippet.title});
+            data.push({
+              id:item.snippet.resourceId.videoId,
+              owner:$scope.user,
+              title:item.snippet.title
+            });
           });
           if(response.result.nextPageToken === undefined){
             def.resolve(data);
           }
           else{
-            doGetPlaylist(def,playlistId,response.result.nextPageToken);
+            doGetPlaylist($scope,def,playlistId,response.result.nextPageToken);
           }
       });
     }
@@ -229,7 +237,7 @@ angular.module('youtube', [])
         $scope.$parent.action = 'playlist';
       }
       else {
-        doGetPlaylist(def,playlistId);
+        doGetPlaylist($scope,def,playlistId);
       }
       return def.promise;
     };
@@ -251,7 +259,7 @@ angular.module('youtube', [])
             data.push({
               id:item.id.videoId,
               title:item.snippet.title,
-              owner:$scope.socket.id
+              owner:$scope.user
             });
           });
           def.resolve(data);

@@ -30,11 +30,9 @@ angular.module('playlist', [])
 
         $scope.queue = function(song){
           $scope.searchTerm = '';
-          var index = $scope.$parent.go || $scope.$parent.guest ? 2 : 0;
+          var index = $scope.$parent.roomName || $scope.$parent.guest ? 2 : 0;
           $scope.$parent.playlist.splice(index,0,song);
-          if($scope.$parent.go){
-            $scope.$parent.uploadPlaylist();
-          }
+          $scope.$parent.uploadPlaylist();
         };
 
         $scope.remove = function(index){
@@ -60,15 +58,6 @@ angular.module('playlist', [])
           }
         });
 
-        socket.on('joined', function(response){
-          if(!response.success){
-            $scope.errMsg = response.msg;
-            return;
-          }
-          $scope.errMsg = false;
-          $scope.$parent.guest = true;
-          $scope.$parent.playlist = response.msg;
-        });
 
         socket.on('playlistUpdated', function(response){
           $scope.$parent.playlist = response;
@@ -78,6 +67,17 @@ angular.module('playlist', [])
         socket.on('gameover', function(){
           $scope.$parent.gameover = true;
           $scope.$parent.$apply();
+        });
+
+        $("#songContainer").sortable({
+          items: "> div:not(.locked)",
+          tolerance: 'pointer',
+          revert: 'invalid',
+          placeholder: 'span2 well placeholder tile',
+          forceHelperSize: true,
+          update: function(event,ui){
+            $scope.$parent.sortComplete();
+          }
         });
       }
     }

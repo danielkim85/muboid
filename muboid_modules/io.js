@@ -4,8 +4,6 @@ function MyIO(server) {
   var io = require('socket.io')(server);
   var rooms = new Rooms();
 
-  // noinspection Annotator
-  // noinspection Annotator
   io.on('connection', function(socket){
 
     socket.on('disconnect', function () {
@@ -20,13 +18,14 @@ function MyIO(server) {
       }
     });
 
-    socket.on('leave', function(roomName,isDelete){
+    socket.on('leave', function(roomName,user,isDelete){
       socket.leave(roomName);
       if(isDelete){
-        // noinspection Annotator
         socket.broadcast.to(roomName).emit('gameover');
         rooms.deleteRoom(roomName);
+        return;
       }
+      rooms.leaveRoom(roomName,user);
     });
 
     socket.on('uploadPlaylist', function(data){
@@ -34,15 +33,13 @@ function MyIO(server) {
       socket.broadcast.to(data.roomName).emit('playlistUpdated',data.playlist);
     });
 
-    socket.on('join', function(roomName){
-      var ret = rooms.joinRoom(roomName);
-      if(!ret){
-        socket.emit('joined',{success:0,msg:'Room not found.'});
-      }
-      else{
+    socket.on('join', function(roomName,user){
+      var ret = rooms.joinRoom(roomName,user);
+
+      if(ret){
         socket.join(roomName);
-        socket.emit('joined',{success:1,msg:ret});
       }
+      socket.emit('joined',ret);
     });
 
   });

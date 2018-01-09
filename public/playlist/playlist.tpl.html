@@ -1,9 +1,15 @@
 <div id="info">
 	PLAYLIST
-	<div id="playlistAction" ng-hide="$parent.go || $parent.guest">
+	<div id="playlistAction" ng-hide="$parent.roomName|| $parent.guest">
 		<button type="button" class="btn btn-danger" ng-click="start()">Start</button>
-		<button type="button" class="btn btn-primary" ng-click="refresh(playlistId)">Refresh</button>
-		<button type="button" class="btn btn-primary" ng-click="manage()">
+		<button type="button"
+						ng-show="$parent.playlistId !== undefined"
+						class="btn btn-primary"
+						ng-click="refresh(playlistId)">Refresh</button>
+		<button type="button"
+						ng-show="$parent.playlistId !== undefined"
+						class="btn btn-primary"
+						ng-click="manage()">
 			Manage
 		</button>
 	</div>
@@ -14,7 +20,7 @@
 </div>
 
 <div id="searchResult" ng-show="searchResult.length > 0">
-	<div class="song" ng-repeat="song in searchResult track by $index" ng-click="queue(song)">
+	<div class="song" ng-repeat="song in searchResult" ng-click="queue(song)">
 		<div videoId = {{song.id}}>
 			{{song.title}}
 		</div>
@@ -23,10 +29,21 @@
 </div>
 
 <div id="songContainer" ng-show="searchResult.length == 0">
-	<div class="song" ng-repeat="song in $parent.playlist track by $index" >
-		<div videoId = {{song.id}}>
-			{{song.title}}
-			<button ng-click="remove($index)" ng-show="song.owner === $parent.$parent.socket.id" type="button" class="close" aria-label="Close">
+	<div ng-repeat="song in $parent.playlist"
+			 ng-class="{locked: $parent.$parent.roomName && $index <= 1 , song:true}">
+		<div class="titleContainer" videoId = {{song.id}} songOwner = {{song.owner}}>
+			<span class="glyphicon glyphicon-lock" ng-show="$parent.$parent.roomName && $index <= 1"></span>
+			<span class="title">
+				{{song.title}}
+			</span>
+			<span class="owner" ng-show="song.owner.name">
+				- added by {{song.owner.name}}
+			</span>
+			<button ng-click="remove($index)"
+							ng-show="(!$parent.$parent.guest ||
+											song.owner.socketId === $parent.$parent.user.socketId) &&
+											!($parent.$parent.roomName && $index <= 1)"
+							type="button" class="close" aria-label="Close">
 				<span aria-hidden="true">&times;</span>
 			</button>
 		</div>

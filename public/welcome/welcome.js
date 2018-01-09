@@ -32,9 +32,11 @@ angular.module('welcome', ['youtube'])
           $scope.$parent.roomName = roomName;
           $scope.$parent.wait = true;
           $scope.$parent.start();
+          $scope.$apply();
         });
 
         $scope.getPlaylist = function(playlistId){
+          $scope.$parent.user = {socketId:socket.id};
           $scope.$parent.wait = true;
           $scope.$parent.playlistReview = true;
           youtubeFactory.getPlaylist($scope.$parent, playlistId)
@@ -50,6 +52,7 @@ angular.module('welcome', ['youtube'])
         });
 
         $scope.random = function(){
+          $scope.$parent.user = {socketId:socket.id};
           $scope.$parent.wait = true;
           $scope.$parent.playlistReview = true;
           youtubeFactory.populatePlaylist($scope.$parent)
@@ -76,25 +79,37 @@ angular.module('welcome', ['youtube'])
         });
 
         $scope.join = function(joinRoomName){
-          socket.emit('join',joinRoomName);
-          $scope.$parent.roomName = joinRoomName;
+          if(!joinRoomName){
+            $scope.joinDetail = true;
+            return;
+          }
+
+          socket.emit('join',joinRoomName,{
+            name:$scope.username,
+            socketId:socket.id
+          });
         };
+
 
         socket.on('joined', function(response){
           if(!response.success){
             $scope.errMsg = response.msg;
+            $scope.$apply();
             return;
           }
+          $scope.$parent.user = response.data.user;
+          $scope.$apply();
           $scope.errMsg = false;
           $scope.$parent.guest = true;
-          $scope.$parent.playlist = response.msg;
+          $scope.$parent.playlist = response.data.playlist;
+          $scope.$parent.roomName = response.data.roomName;
           $scope.$apply();
         });
 
         var duration_ = 60;
         $scope.changeDuration = function(duration){
           if(duration === DEFAULT_MAX){
-            $('#duration').slider('setValue', DEFAULT_MAX);
+            $('#duration').bootstrapSlider('setValue', DEFAULT_MAX);
           }
           duration_ = duration;
           var display = duration === DEFAULT_MAX ? 'Max' : duration + ' seconds';
@@ -103,7 +118,7 @@ angular.module('welcome', ['youtube'])
           END = duration === DEFAULT_MAX ? 0 : START + duration;
         };
 
-        $('#duration').slider({
+        $('#duration').bootstrapSlider({
           formatter: function(value) {
             return value === DEFAULT_MAX ? 'Max' : value + ' seconds';
           }
@@ -115,6 +130,7 @@ angular.module('welcome', ['youtube'])
             $scope.$apply();
           }
         });
+
         $scope.changeDuration(duration_);
       }
     }

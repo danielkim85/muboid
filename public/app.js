@@ -84,6 +84,40 @@ app.controller('MuBoidCtrl', function ($scope, $timeout,$window) {
     $scope.$broadcast('youtubeReady');
   };
 
+  $scope.sortComplete = function(){
+    var playlist = [];
+    $('playlist #songContainer div').each(function(){
+      var videoId = $(this).find('.titleContainer').attr('videoId');
+      var title = $(this).find('.title').text().trim();
+      if(videoId){
+        var songOwner = $(this).find('.titleContainer').attr('songOwner');
+        var data = {
+          id:videoId,
+          title:title,
+          owner:JSON.parse(songOwner)
+        };
+        playlist.push(data);
+      }
+    });
+    $scope.playlist = playlist;
+    $scope.$apply();
+    $scope.uploadPlaylist();
+  };
+
+  function registerSort(){
+    $("#songContainer").sortable('destroy');
+    $("#songContainer").sortable({
+      items: "> div:not(.locked)",
+      tolerance: 'pointer',
+      revert: 'invalid',
+      placeholder: 'span2 well placeholder tile',
+      forceHelperSize: true,
+      update: function(event,ui){
+        $scope.sortComplete();
+      }
+    });
+  }
+
   function doSwitch(){
     if($scope.playlist.length <= 1){
       $scope.gameover = true;
@@ -109,24 +143,26 @@ app.controller('MuBoidCtrl', function ($scope, $timeout,$window) {
     if(END - START === 60){
       $scope.minutes++;
     }
+    registerSort();
   }
 
   //firestarter
   $scope.start = function(){
     $scope.uploadPlaylist();
-    $scope.socket.emit('uploadPlaylist',{roomName:$scope.roomName, playlist:$scope.playlist});
     $scope.wait = false;
-    //$scope.$broadcast('songChanged', $scope.playlist[0].id);
     $scope.videoId1 = $scope.playlist[0].id;
     $scope.playing1 = true;
     $scope.videoId2 = $scope.playlist[1].id;
     $scope.playing2 = false;
-    $scope.go = true;
+
     $scope.$apply();
+    registerSort();
   };
 
   $scope.uploadPlaylist = function(){
-    $scope.socket.emit('uploadPlaylist',{roomName:$scope.roomName, playlist:$scope.playlist});
+    if($scope.roomName){
+      $scope.socket.emit('uploadPlaylist',{roomName:$scope.roomName, playlist:$scope.playlist});
+    }
   };
 
   //socket
@@ -138,7 +174,7 @@ app.controller('MuBoidCtrl', function ($scope, $timeout,$window) {
   });
 
   window.onbeforeunload = function() {
-    $scope.socket.emit('leave',$scope.roomName,!$scope.guest);
+    $scope.socket.emit('leave',$scope.roomName,$scope.user,!$scope.guest);
     return undefined;
   };
 

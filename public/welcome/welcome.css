@@ -18,3 +18,16 @@ welcome #durationSlider .slider-handle{
 welcome #durationSlider{
 	margin-bottom:0px;
 }
+
+welcome #joinDetail, welcome #joinDetail div{
+	float:left;
+	width:100%;
+}
+
+welcome #joinDetail input{
+	color:black;
+}
+
+welcome .btn-primary{
+	width:150px;
+}

@@ -20,8 +20,9 @@
 		<script src="https://code.jquery.com/jquery-2.2.4.min.js"
 		        integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
 		        crossorigin="anonymous"></script>
-		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
 
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
+		<script type="text/javascript" src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 		<script src="/third-party//bootstrap-slider.min.js"></script>
 		<!--
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
@@ -32,8 +33,9 @@
 		<meta name="google-signin-client_id" content="586555634098-j5ul1cm0c5bj7vo87d8u5volijrneh40.apps.googleusercontent.com">
 		<script src="https://apis.google.com/js/platform.js" async defer></script>
 
-		<script src="const.js"></script>
 		<script src="/third-party/socket.io.js"></script>
+
+		<script src="const.js"></script>
 		<script src="/welcome/welcome.js"></script>
 		<script src="/youtube/youtube.js"></script>
 		<script src="/playlist/playlist.js"></script>
@@ -49,14 +51,14 @@
 			<div ng-show="wait">Loading ...</div>
 			<welcome ng-hide="go || wait || guest || playlistReview"></welcome>
 			<div id="gameover" ng-show="gameover">GAME OVER</div>
-			<div id="go">
-				<div ng-show="go && !gameover" id="header">
+			<div id="go" ng-show="roomName && !gameover && !guest">
+				<div id="header">
 					<clock minutes="{{minutes}}" seconds="{{seconds}}"></clock>
 					<div id="joinInfo">
 						Join : {{roomName}}
 					</div>
 				</div>
-				<div ng-show="go && !gameover" id="container">
+				<div id="container">
 					<youtube-player id="player1" video-id="{{videoId1}}" playing="{{playing1}}"></youtube-player>
 					<youtube-player id="player2" video-id="{{videoId2}}" playing="{{playing2}}"></youtube-player>
 				</div>

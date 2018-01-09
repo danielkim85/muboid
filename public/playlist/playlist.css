@@ -4,7 +4,7 @@ playlist, playlist #songContainer{
 
 playlist #songContainer{
 	width:100%;
-	font-size:12px;
+	font-size:10px;
 }
 
 playlist #info{
@@ -12,7 +12,7 @@ playlist #info{
 }
 
 playlist{
-	padding-top:10px;
+
 	display: flex;
 	flex-flow: column;
 }
@@ -53,9 +53,37 @@ playlist #searchResult .song{
 playlist .close{
 	color:red;
 	opacity:0.8;
+	top: 1px;
+	position: relative;
+	float:right;
+	font-size:12px;
 }
 
 playlist .close:hover{
 	color:red;
 	opacity:1;
+}
+
+playlist .song{
+	cursor:move;
+}
+
+playlist .owner{
+	color:#449d44;
+}
+
+playlist .placeholder {
+	border: 1px solid #2e6da4;
+	background-color: #337ab7 !important;
+	-webkit-box-shadow: 0px 0px 10px #888;
+	-moz-box-shadow: 0px 0px 10px #888;
+	box-shadow: 0px 0px 10px #888;
+}
+
+playlist #songContainer .locked{
+	cursor:pointer;
+}
+
+playlist .glyphicon-lock{
+	top:-1px;
 }

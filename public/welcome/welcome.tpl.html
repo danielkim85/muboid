@@ -1,14 +1,17 @@
 <div>
 	Welcome!
 </div>
+
 <div class="alert alert-danger" role="alert" ng-show="errMsg">
 	{{errMsg}}
 </div>
-<div>
-	<button type="button" class="btn btn-primary" ng-click="createDetail = true">Start</button>
+
+<div ng-hide="joinDetail">
+	<button type="button" class="btn btn-primary"
+					ng-click="createDetail = true">Start</button>
 </div>
 
-<div ng-show="createDetail" class="submenu">
+<div ng-show="createDetail && !joinDetail" class="submenu">
 	<div>
 		1. Duration of each song : {{duration}}
 	</div>
@@ -37,12 +40,20 @@
 	</div>
 </div>
 
-<div>
-	... or ...
-</div>
-<div>
-	<div class="col-xs-3" style="padding-left:0;">
-		<input class="form-control" id="ex2" type="text" ng-model="joinRoomName">
+<div ng-show="joinDetail && !createDetail" id="joinDetail">
+	<div>
+		<input class="col-xs-6" class="form-control" type="text"
+					 placeholder="Room #"
+					 ng-model="joinRoomName">
 	</div>
-	<button type="button" class="btn btn-primary" ng-click="join(joinRoomName)">Join</button>
+	<div>
+		<input class="col-xs-6" class="form-control" type="text"
+					 placeholder="Your Name"
+					 ng-model="username">
+	</div>
+</div>
+
+<div ng-hide="createDetail">
+	<button type="button" class="btn btn-primary"
+					ng-click="join(joinRoomName)">Join</button>
 </div>
