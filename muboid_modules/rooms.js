@@ -34,7 +34,9 @@ var Rooms = function (){
     }
     rooms[roomName] = {
       playlist:null,
-      guests:[]
+      guests:[],
+      admins:[],
+      adminPwd:null
     };
     return roomName;
   };
