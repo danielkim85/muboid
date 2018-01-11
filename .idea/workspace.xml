@@ -2,18 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7763fbd8-c9a1-45cb-817b-6ee52df4d29d" name="Default" comment="">
-      <change beforePath="" afterPath="$PROJECT_DIR$/Gruntfile.js" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/Gruntfile" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app.js" afterPath="$PROJECT_DIR$/app.js" />
-      <change beforePath="$PROJECT_DIR$/muboid_modules/rooms.js" afterPath="$PROJECT_DIR$/muboid_modules/rooms.js" />
-      <change beforePath="$PROJECT_DIR$/package.json" afterPath="$PROJECT_DIR$/package.json" />
-      <change beforePath="$PROJECT_DIR$/public/playlist/playlist.css" afterPath="$PROJECT_DIR$/public/playlist/playlist.css" />
-      <change beforePath="$PROJECT_DIR$/public/third-party/bootstrap-slider.min.css" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/public/third-party/bootstrap-slider.min.js" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/public/third-party/socket.io.js" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/views/index.ejs" afterPath="$PROJECT_DIR$/views/index.ejs" />
+      <change beforePath="$PROJECT_DIR$/.idea/codeStyleSettings.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/muboid.iml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/bin_www.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/public/third-party/socket.io.js.map" afterPath="" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -94,7 +91,7 @@
         <entry file="file://$PROJECT_DIR$/.gitignore">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="28">
-              <caret line="2" column="6" lean-forward="false" selection-start-line="2" selection-start-column="6" selection-end-line="2" selection-end-column="6" />
+              <caret line="2" column="6" lean-forward="true" selection-start-line="2" selection-start-column="6" selection-end-line="2" selection-end-column="6" />
               <folding />
             </state>
           </provider>
@@ -434,7 +431,7 @@
       <workItem from="1515204499432" duration="29639000" />
       <workItem from="1515450952424" duration="21207000" />
       <workItem from="1515478906143" duration="688000" />
-      <workItem from="1515641008375" duration="3431000" />
+      <workItem from="1515641008375" duration="3737000" />
     </task>
     <task id="LOCAL-00001" summary="test commit">
       <created>1504581377278</created>
@@ -520,11 +517,18 @@
       <option name="project" value="LOCAL" />
       <updated>1515472458480</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="grunt added">
+      <created>1515644726558</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1515644726559</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="343702000" />
+    <option name="totallyTimeSpent" value="344008000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -598,7 +602,8 @@
     <MESSAGE value="everything should be good except tv mode layout" />
     <MESSAGE value="random mode workflow changed to review playlist first" />
     <MESSAGE value="creator gets to remove guest added song." />
-    <option name="LAST_COMMIT_MESSAGE" value="creator gets to remove guest added song." />
+    <MESSAGE value="grunt added" />
+    <option name="LAST_COMMIT_MESSAGE" value="grunt added" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -905,7 +910,7 @@
     <entry file="file://$PROJECT_DIR$/.gitignore">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="28">
-          <caret line="2" column="6" lean-forward="false" selection-start-line="2" selection-start-column="6" selection-end-line="2" selection-end-column="6" />
+          <caret line="2" column="6" lean-forward="true" selection-start-line="2" selection-start-column="6" selection-end-line="2" selection-end-column="6" />
           <folding />
         </state>
       </provider>
