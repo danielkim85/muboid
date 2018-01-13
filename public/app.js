@@ -118,12 +118,14 @@ app.controller('MuBoidCtrl', function ($scope, $timeout,$window) {
     });
   }
 
+  //song changes from player 1 to player 2
   function doSwitch(){
     if($scope.playlist.length <= 1){
       $scope.gameover = true;
       return;
     }
 
+    //remove the first song
     $scope.socket.emit('removeSong',$scope.roomName, 0, $scope.user);
     $scope.playlist.shift();
 
