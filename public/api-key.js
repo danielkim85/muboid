@@ -1,1 +1,1 @@
-const CLIENT_ID = 'YOUTUBE_API_CLIENT_ID';
+const CLIENT_ID = '';
