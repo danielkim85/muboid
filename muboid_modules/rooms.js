@@ -1,15 +1,19 @@
 var Rooms = function (){
+  var _ = require('lodash');
+
   var rooms = {};
 
-  this.nameExists = function(roomName,myName){
+  //helper
+  function nameExists(roomName,myName){
     var ret = false;
+    //TODOD inefficient
     rooms[roomName].guests.forEach(function(guest){
       if(guest.name === myName){
         ret = true;
       }
     });
     return ret;
-  };
+  }
 
   this.makeRoomName = function(){
     var text = "";
@@ -21,7 +25,7 @@ var Rooms = function (){
     return text.toUpperCase();
   };
 
-  this.createRoom = function(){
+  this.createRoom = function(user){
 
     if(Object.keys(rooms).length >= 100){
       //TODO handle error better
@@ -36,6 +40,7 @@ var Rooms = function (){
       playlist:null,
       guests:[],
       admins:[],
+      owner:user,
       adminPwd:null
     };
     return roomName;
@@ -46,13 +51,89 @@ var Rooms = function (){
 
   };
 
-  this.uploadPlaylist = function(roomName,playlist){
+  this.sortPlaylist = function(roomName,playlist){
     if(!(roomName in rooms)){
       return {
         success:false,
         msg:'Room not found.'
       };
     }
+
+    //ac
+    var origPlaylist = _.sortBy(rooms[roomName].playlist,'id');
+    var targetPlaylist = _.sortBy(playlist,'id');
+    var diff = _(targetPlaylist)
+      .differenceBy(origPlaylist, 'id', 'owner.socketId')
+      .map(_.partial(_.pick, _, 'id', 'owner'))
+      .value();
+
+    if(diff.legnth > 0){
+      return {
+        success:false,
+        msg:'Unauthorized'
+      };
+    }
+
+    rooms[roomName].playlist = playlist;
+
+  };
+
+  this.removeSong = function(roomName,index, user){
+    if(!(roomName in rooms)){
+      return {
+        success:false,
+        msg:'Room not found.'
+      };
+    }
+
+    var room = rooms[roomName];
+    var playlist = rooms[roomName].playlist;
+
+    if(playlist[index].owner.socketId !== user.socketId && room.owner.socketId !== user.socketId){
+      return {
+        success:false,
+        msg:'Unathorized'
+      };
+    }
+
+    playlist.splice(index,1);
+    return {
+      success:true,
+      data:playlist
+    };
+  };
+
+  this.addSong = function(roomName,index,song){
+    if(!(roomName in rooms)){
+      return {
+        success:false,
+        msg:'Room not found.'
+      };
+    }
+    var playlist = rooms[roomName].playlist;
+    playlist.splice(index,0,song);
+    return {
+      success:true,
+      data:playlist
+    };;
+  };
+
+  this.uploadPlaylist = function(roomName,playlist,user){
+    if(!(roomName in rooms)){
+      return {
+        success:false,
+        msg:'Room not found.'
+      };
+    }
+
+    var room = rooms[roomName];
+    if(room.owner.socketId !== user.socketId){
+      return {
+        success:false,
+        msg:'Unauthorized'
+      };
+    }
+
     rooms[roomName].playlist = playlist;
 
   };
@@ -89,7 +170,7 @@ var Rooms = function (){
       };
     }
 
-    if(this.nameExists(roomName,user.name)){
+    if(nameExists(roomName,user.name)){
       return {
         success:false,
         msg:'Name already exists.'

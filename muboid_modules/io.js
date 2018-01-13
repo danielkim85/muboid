@@ -9,9 +9,8 @@ function MyIO(server) {
     socket.on('disconnect', function () {
     });
 
-    socket.on('create', function(){
-      //create
-      var roomName = rooms.createRoom();
+    socket.on('create', function(user){
+      var roomName = rooms.createRoom(user);
       if(roomName !== null){
         socket.join(roomName);
         socket.emit('created',roomName);
@@ -28,9 +27,29 @@ function MyIO(server) {
       rooms.leaveRoom(roomName,user);
     });
 
-    socket.on('uploadPlaylist', function(data){
-      rooms.uploadPlaylist(data.roomName,data.playlist);
-      socket.broadcast.to(data.roomName).emit('playlistUpdated',data.playlist);
+    socket.on('removeSong', function(roomName,index,user){
+      var ret = rooms.removeSong(roomName,index,user);
+      if(!ret.success){
+        return false;
+      }
+      socket.broadcast.to(roomName).emit('playlistUpdated',ret.data);
+    });
+
+    socket.on('addSong', function(roomName,index, song){
+      var ret = rooms.addSong(roomName,index, song);
+      if(!ret.success){
+        return false;
+      }
+      socket.broadcast.to(roomName).emit('playlistUpdated',ret.data);
+    });
+
+    socket.on('uploadPlaylist', function(roomName,playlist,user){
+      rooms.uploadPlaylist(roomName,playlist,user);
+    });
+
+    socket.on('sortPlaylist', function(roomName,playlist){
+      rooms.sortPlaylist(roomName,playlist);
+      socket.broadcast.to(roomName).emit('playlistUpdated',playlist);
     });
 
     socket.on('join', function(roomName,user){

@@ -11,7 +11,12 @@ angular.module('playlist', [])
 
         $scope.start = function(){
           $scope.$parent.wait = true;
-          socket.emit('create');
+          $scope.$parent.user = {
+            name:'owner',
+            socketId:socket.id
+          };
+
+          socket.emit('create',$scope.$parent.user);
         };
 
         $scope.manage = function(){
@@ -31,13 +36,13 @@ angular.module('playlist', [])
         $scope.queue = function(song){
           $scope.searchTerm = '';
           var index = $scope.$parent.roomName || $scope.$parent.guest ? 2 : 0;
+          socket.emit('addSong',$scope.$parent.roomName, index, song);
           $scope.$parent.playlist.splice(index,0,song);
-          $scope.$parent.uploadPlaylist();
         };
 
         $scope.remove = function(index){
+          socket.emit('removeSong',$scope.$parent.roomName, index, $scope.$parent.user);
           $scope.$parent.playlist.splice(index,1);
-          $scope.$parent.uploadPlaylist();
         };
 
         $scope.$watch('searchTerm',function(newValue){

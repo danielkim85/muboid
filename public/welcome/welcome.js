@@ -24,10 +24,6 @@ angular.module('welcome', ['youtube'])
 
         var socket = $scope.$parent.socket;
 
-        $scope.create = function(){
-          socket.emit('create');
-        };
-
         socket.on('created', function(roomName){
           $scope.$parent.roomName = roomName;
           $scope.$parent.wait = true;

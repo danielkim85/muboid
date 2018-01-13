@@ -101,7 +101,7 @@ app.controller('MuBoidCtrl', function ($scope, $timeout,$window) {
     });
     $scope.playlist = playlist;
     $scope.$apply();
-    $scope.uploadPlaylist();
+    $scope.sortPlaylist();
   };
 
   function registerSort(){
@@ -124,8 +124,8 @@ app.controller('MuBoidCtrl', function ($scope, $timeout,$window) {
       return;
     }
 
+    $scope.socket.emit('removeSong',$scope.roomName, 0, $scope.user);
     $scope.playlist.shift();
-    $scope.uploadPlaylist();
 
     $scope.playing1 = !$scope.playing1;
     $scope.playing2 = !$scope.playing1;
@@ -148,7 +148,7 @@ app.controller('MuBoidCtrl', function ($scope, $timeout,$window) {
 
   //firestarter
   $scope.start = function(){
-    $scope.uploadPlaylist();
+    $scope.socket.emit('uploadPlaylist',$scope.roomName, $scope.playlist,$scope.user);
     $scope.wait = false;
     $scope.videoId1 = $scope.playlist[0].id;
     $scope.playing1 = true;
@@ -159,9 +159,9 @@ app.controller('MuBoidCtrl', function ($scope, $timeout,$window) {
     registerSort();
   };
 
-  $scope.uploadPlaylist = function(){
+  $scope.sortPlaylist = function(){
     if($scope.roomName){
-      $scope.socket.emit('uploadPlaylist',{roomName:$scope.roomName, playlist:$scope.playlist});
+      $scope.socket.emit('sortPlaylist',$scope.roomName, $scope.playlist);
     }
   };
 

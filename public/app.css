@@ -8,6 +8,7 @@ html, body {
 body{
 	background: url("images/background.jpg");
 }
+
 #main{
 	background-color: rgba(0, 0, 0, 0.5);
 	margin:auto;
@@ -41,4 +42,12 @@ body{
 	bottom:1px;
 	right:0;
 	z-index:1
+}
+
+#wallpaper{
+	position: absolute;
+	right: 5px;
+	color: white;
+	top: 5px;
+	font-size: 10px;
 }
