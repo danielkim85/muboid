@@ -1,12 +1,10 @@
+//helper function to shuffle array
 function shuffle(array) {
   var currentIndex = array.length, temporaryValue, randomIndex;
   // While there remain elements to shuffle...
   while (0 !== currentIndex) {
-    // Pick a remaining element...
     randomIndex = Math.floor(Math.random() * currentIndex);
     currentIndex -= 1;
-
-    // And swap it with the current element.
     temporaryValue = array[currentIndex];
     array[currentIndex] = array[randomIndex];
     array[randomIndex] = temporaryValue;
@@ -24,6 +22,7 @@ angular.module('welcome', ['youtube'])
 
         var socket = $scope.$parent.socket;
 
+        //server tells me room has been created
         socket.on('created', function(roomName){
           $scope.$parent.roomName = roomName;
           $scope.$parent.wait = true;
@@ -31,13 +30,37 @@ angular.module('welcome', ['youtube'])
           $scope.$apply();
         });
 
-        $scope.getPlaylist = function(playlistId){
+        var myPlaylistId;
+        var isRandom = true;
+        $scope.start = function(){
+          if(!$scope.createDetail) {
+            $scope.createDetail = true;
+            $scope.getPlaylists();
+            return;
+          }
+
+          if(isRandom){
+            $scope.random();
+            return;
+          }
+
+          $scope.getPlaylist();
+        };
+
+        //get songs for single playlist
+        $scope.getPlaylistId = function(playlistId,$event,random){
+          isRandom = random;
+          $('welcome .list-group-item').removeClass('active');
+          myPlaylistId = playlistId;
+        };
+
+        $scope.getPlaylist = function(){
           $scope.$parent.user = {socketId:socket.id};
           $scope.$parent.wait = true;
           $scope.$parent.playlistReview = true;
-          youtubeFactory.getPlaylist($scope.$parent, playlistId)
+          youtubeFactory.getPlaylist($scope.$parent, myPlaylistId)
             .then(function (songs) {
-              $scope.$parent.playlistId = playlistId;
+              $scope.$parent.playlistId = myPlaylistId;
               $scope.$parent.playlist = songs;
               $scope.$parent.wait = false;
             });
@@ -47,6 +70,7 @@ angular.module('welcome', ['youtube'])
           $scope.getPlaylist();
         });
 
+        //create random songs from youtube
         $scope.random = function(){
           $scope.$parent.user = {socketId:socket.id};
           $scope.$parent.wait = true;
@@ -63,9 +87,12 @@ angular.module('welcome', ['youtube'])
           $scope.random();
         });
 
+        //get user's list of playlists
         $scope.getPlaylists = function(){
+          $scope.$parent.wait = true;
           youtubeFactory.getPlaylists($scope.$parent)
             .then(function (data) {
+              $scope.$parent.wait = false;
               $scope.playlists = data;
             });
         };
@@ -86,7 +113,7 @@ angular.module('welcome', ['youtube'])
           });
         };
 
-
+        //server tells me i have joined a room
         socket.on('joined', function(response){
           if(!response.success){
             $scope.errMsg = response.msg;
@@ -102,7 +129,14 @@ angular.module('welcome', ['youtube'])
           $scope.$apply();
         });
 
+        $scope.back = function(){
+          $scope.joinDetail = false;
+          $scope.createDetail = false;
+        };
+
+        //default slider value
         var duration_ = 60;
+        //slider control
         $scope.changeDuration = function(duration){
           if(duration === DEFAULT_MAX){
             $('#duration').bootstrapSlider('setValue', DEFAULT_MAX);
@@ -127,6 +161,7 @@ angular.module('welcome', ['youtube'])
           }
         });
 
+        //set the slider default
         $scope.changeDuration(duration_);
       }
     }

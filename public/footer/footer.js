@@ -1,5 +1,5 @@
 angular.module('footer', [])
-  .directive('footer', function(){
+  .directive('footer', function($timeout){
     return{
       scope:{
       },
@@ -25,13 +25,35 @@ angular.module('footer', [])
           var fullscreen = isFullscreen();
 
           $('.action#fullscreen i').html(fullscreen ? 'computer' : 'tv');
-          $('.action#fullscreen span').html(fullscreen ? 'COMPUTER' : 'TV');
+          $('.action#fullscreen span').html(fullscreen ? 'SWITCH TO COMPUTER' : 'SWITCH TO TV');
 
           if(fullscreen){
             //adjust screen
+            $('#main').css('width','100%');
+            $('#main').css('padding','0px');
+            $('#header').css('font-size','40px');
+            $('#header').css('position','absolute');
+            $('#header').css('z-index','100');
+            $('#header').css('padding','15px');
+            $('#headerBackground').show();
+            $timeout(function(){
+              var width = $(window).width();
+              var height = ((width * 9) / 16) - 5;
+              $('#player1, #player2').attr('width',width + 'px');
+              $('#player1, #player2').attr('height',height + 'px');
+            },1000);
           }
           else{
             //adjust screen
+            $('#main').css('width','');
+            $('#main').css('padding','');
+            $('#header').css('font-size','');
+            $('#header').css('position','');
+            $('#header').css('z-index','');
+            $('#header').css('padding','');
+            $('#player1, #player2').attr('width',PLAYER_WIDTH + 'px');
+            $('#player1, #player2').attr('height',PLAYER_HEIGHT + 'px');
+            $('#headerBackground').hide();
           }
         }
 

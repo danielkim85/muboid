@@ -6,39 +6,39 @@
 	{{errMsg}}
 </div>
 
-<div ng-hide="joinDetail">
-	<button type="button" class="btn btn-primary"
-					ng-click="createDetail = true">Start</button>
-</div>
-
-<div ng-show="createDetail && !joinDetail" class="submenu">
+<div ng-show="createDetail && !joinDetail">
 	<div>
-		1. Duration of each song : {{duration}}
+		Duration of song : {{duration}}
 	</div>
 	<div>
 		<input id="duration" data-slider-id='durationSlider' type="text" data-slider-min="15" data-slider-max="135" data-slider-step="15" data-slider-value="60"/>
 		<button type="button" class="btn btn-info" ng-click="changeDuration(135)">Max</button>
 	</div>
+
+	<div>
+		Pick your playlist
+	</div>
+	<div>
+		<ul class="list-group">
+			<li class="list-group-item active"
+					ng-click="getPlaylistId(playlist.id,$event,true)">Random songs</li>
+			<li class="list-group-item"
+					ng-repeat="playlist in playlists"
+					ng-click="getPlaylistId(playlist.id,$event)">
+				{{playlist.snippet.title}}
+			</li>
+		</ul>
+	</div>
 </div>
 
-<div ng-show="createDetail && duration !== undefined" class="submenu" style="margin-bottom:20px;">
-	<div>
-		2. Pick your songs.
-	</div>
-	<div>
-		<button type="button" class="btn btn-info" ng-click="random()">Random Songs</button>
-	</div>
-	<div>
-		<button type="button" class="btn btn-info" ng-click="getPlaylists()">From YouTube Playlist</button>
-		<div class="subsubmenu">
-			<div ng-repeat="playlist in playlists" >
-				<button type="button" class="btn btn-success" ng-click="getPlaylist(playlist.id)">
-					{{playlist.snippet.title}}
-				</button>
-			</div>
-		</div>
-	</div>
+<div ng-hide="joinDetail">
+	<button ng-show="!joinDetail && createDetail"
+					type="button" class="btn "
+					ng-click="back()">Back</button>
+	<button type="button" class="btn btn-primary"
+					ng-click="start()">Start</button>
 </div>
+
 
 <div ng-show="joinDetail && !createDetail" id="joinDetail">
 	<div>
@@ -54,6 +54,9 @@
 </div>
 
 <div ng-hide="createDetail">
+	<button ng-show="joinDetail && !createDetail"
+					type="button" class="btn "
+					ng-click="back()">Back</button>
 	<button type="button" class="btn btn-primary"
 					ng-click="join(joinRoomName)">Join</button>
 </div>

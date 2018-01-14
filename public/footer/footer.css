@@ -4,6 +4,7 @@ footer{
 	position:absolute;
 	bottom:0;
 	height:36px;
+	z-index:100;
 }
 
 footer .action{
@@ -11,12 +12,12 @@ footer .action{
 	height:100%;
 	cursor:pointer;
 	margin-left:10px;
-
 }
 
 footer .action .material-icons {
 	position:relative;
 	top: 6px;
+	margin-right:5px;
 }
 
 footer .action span{

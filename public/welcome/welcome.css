@@ -2,10 +2,6 @@ welcome div{
 	margin-bottom:10px;
 }
 
-welcome .submenu{
-	margin-left:20px;
-}
-
 welcome .subsubmenu{
 	margin-top:10px;
 	margin-left:40px;
@@ -30,4 +26,12 @@ welcome #joinDetail input{
 
 welcome .btn-primary{
 	width:150px;
+}
+
+welcome .list-group-item{
+	color:black;
+}
+
+welcome .list-group-item{
+	cursor:pointer;
 }

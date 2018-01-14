@@ -25,6 +25,14 @@ body{
 	font-size:20px;
 }
 
+#headerBackground{
+	width:100%;
+	position:absolute;
+	z-index:99;
+	opacity:0.5;
+	display:none;
+	height:85px;
+}
 #header{
 	margin-bottom:10px;
 }
@@ -50,4 +58,17 @@ body{
 	color: white;
 	top: 5px;
 	font-size: 10px;
+}
+
+@media only screen and (max-width: 768px) {
+	/* For mobile phones: */
+	#main{
+		width:100%;
+	}
+	#wallpaper{
+		display:none;
+	}
+	.col-xs-6{
+		width:100%;
+	}
 }

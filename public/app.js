@@ -118,6 +118,12 @@ app.controller('MuBoidCtrl', function ($scope, $timeout,$window) {
     });
   }
 
+  $scope.sortPlaylist = function(){
+    if($scope.roomName){
+      $scope.socket.emit('sortPlaylist',$scope.roomName, $scope.playlist);
+    }
+  };
+
   //song changes from player 1 to player 2
   function doSwitch(){
     if($scope.playlist.length <= 1){
@@ -159,12 +165,6 @@ app.controller('MuBoidCtrl', function ($scope, $timeout,$window) {
 
     $scope.$apply();
     registerSort();
-  };
-
-  $scope.sortPlaylist = function(){
-    if($scope.roomName){
-      $scope.socket.emit('sortPlaylist',$scope.roomName, $scope.playlist);
-    }
   };
 
   //socket

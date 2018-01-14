@@ -15,8 +15,8 @@ angular.module('youtube', [])
         var timer;
 
         var containerOptions = {
-          height: '360',
-          width: '640',
+          height: PLAYER_HEIGHT,
+          width: PLAYER_WIDTH,
           playerVars: { 'autoplay': 0, 'controls': 0, 'rel': 0, 'showinfo': 0 },
           events: {
             'onReady': onReady,

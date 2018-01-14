@@ -6,6 +6,8 @@ const SCOPES = 'https://www.googleapis.com/auth/youtube.readonly';
 const DEFAULT_MAX = 135;
 var START = 30;
 var END = 90;
+var PLAYER_WIDTH = 640;
+var PLAYER_HEIGHT = 360;
 
 //youtube playlist constants
 const MAGIC_WORD = 'vevo';
