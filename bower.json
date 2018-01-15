@@ -1,0 +1,20 @@
+{
+  "name": "muboid",
+  "description": "",
+  "main": "",
+  "authors": [
+    "DK <danielkim@soulkast.com>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/danielkim85/muboid",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jqueryui-touch-punch": "https://github.com/furf/jquery-ui-touch-punch.git"
+  }
+}

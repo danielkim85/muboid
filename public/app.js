@@ -104,8 +104,15 @@ app.controller('MuBoidCtrl', function ($scope, $timeout,$window) {
     $scope.sortPlaylist();
   };
 
-  function registerSort(){
-    $("#songContainer").sortable('destroy');
+  $scope.registerSort = function(destroy){
+
+    if($scope.guest && !$scope.guestPerm.sortSong){
+      return;
+    }
+
+    if(destroy) {
+      $("#songContainer").sortable('destroy');
+    }
     $("#songContainer").sortable({
       items: "> div:not(.locked)",
       tolerance: 'pointer',
@@ -116,7 +123,7 @@ app.controller('MuBoidCtrl', function ($scope, $timeout,$window) {
         $scope.sortComplete();
       }
     });
-  }
+  };
 
   $scope.sortPlaylist = function(){
     if($scope.roomName){
@@ -151,7 +158,7 @@ app.controller('MuBoidCtrl', function ($scope, $timeout,$window) {
     if(END - START === 60){
       $scope.minutes++;
     }
-    registerSort();
+    $scope.registerSort(true);
   }
 
   //firestarter
@@ -164,7 +171,7 @@ app.controller('MuBoidCtrl', function ($scope, $timeout,$window) {
     $scope.playing2 = false;
 
     $scope.$apply();
-    registerSort();
+    $scope.registerSort();
   };
 
   //socket

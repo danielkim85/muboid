@@ -109,7 +109,7 @@ angular.module('youtube', [])
           player = new YT.Player($element.children()[0], containerOptions);
         });
       }
-    }
+    };
   }).factory('youtubeFactory', function($http,$q){
 
     var factory = {};
@@ -174,7 +174,7 @@ angular.module('youtube', [])
 
     factory.populatePlaylist = function($scope){
       data = [];
-      const def = $q.defer();
+      var def = $q.defer();
       if(!$scope.signedIn){
         gapi.auth2.getAuthInstance().signIn();
         $scope.$parent.action = 'random';
@@ -186,7 +186,7 @@ angular.module('youtube', [])
     };
 
     factory.getPlaylists = function($scope){
-      const def = $q.defer();
+      var def = $q.defer();
       if(!$scope.signedIn){
         gapi.auth2.getAuthInstance().signIn();
         $scope.$parent.action = 'playlists';
@@ -231,7 +231,7 @@ angular.module('youtube', [])
 
     factory.getPlaylist = function($scope,playlistId){
       data = [];
-      const def = $q.defer();
+      var def = $q.defer();
       if(!$scope.signedIn){
         gapi.auth2.getAuthInstance().signIn();
         $scope.$parent.action = 'playlist';
@@ -245,7 +245,7 @@ angular.module('youtube', [])
 
     factory.search = function($scope,q){
       data = [];
-      const def = $q.defer();
+      var def = $q.defer();
       gapi.client.youtube.search.list({
         part: 'snippet',
         q: q,
@@ -265,6 +265,6 @@ angular.module('youtube', [])
           def.resolve(data);
         });
       return def.promise;
-    }
+    };
     return factory;
   });

@@ -25,7 +25,7 @@ var Rooms = function (){
     return text;
   };
 
-  this.createRoom = function(user){
+  this.createRoom = function(roomConfig){
 
     if(Object.keys(rooms).length >= 100){
       //TODO handle error better
@@ -36,11 +36,15 @@ var Rooms = function (){
     while(roomName in rooms > 0){
       roomName = this.makeRoomName();
     }
+
+    //initial room configuration
     rooms[roomName] = {
       playlist:null,
       guests:[],
       admins:[],
-      owner:user,
+      owner:roomConfig.owner,
+      adminCode:roomConfig.adminCode,
+      guestPerm:roomConfig.guestPerm,
       adminPwd:null
     };
     return roomName;
@@ -59,7 +63,15 @@ var Rooms = function (){
       };
     }
 
-    //ac
+    var room = rooms[roomName];
+    if(!room.guestPerm.sortSong){
+      return {
+        success:false,
+        msg:'Unauthorized'
+      };
+    }
+
+    //enhance this to take orig index to dest index
     var origPlaylist = _.sortBy(rooms[roomName].playlist,'id');
     var targetPlaylist = _.sortBy(playlist,'id');
     var diff = _(targetPlaylist)
@@ -75,7 +87,10 @@ var Rooms = function (){
     }
 
     rooms[roomName].playlist = playlist;
-
+    return {
+      success:true,
+      data:playlist
+    };
   };
 
   this.removeSong = function(roomName,index, user){
@@ -110,12 +125,20 @@ var Rooms = function (){
         msg:'Room not found.'
       };
     }
+    var room = rooms[roomName];
+    if(!room.guestPerm.addSong){
+      return {
+        success:false,
+        msg:'Unauthorized'
+      };
+    }
+
     var playlist = rooms[roomName].playlist;
     playlist.splice(index,0,song);
     return {
       success:true,
       data:playlist
-    };;
+    };
   };
 
   this.uploadPlaylist = function(roomName,playlist,user){
@@ -135,7 +158,6 @@ var Rooms = function (){
     }
 
     rooms[roomName].playlist = playlist;
-
   };
 
   this.leaveRoom = function(roomName,user){
@@ -156,7 +178,15 @@ var Rooms = function (){
   };
 
   this.joinRoom = function(roomName,user){
-    if(user.name.toLowerCase() === 'user'){
+    console.info('join room');
+    if(!user.name){
+      return {
+        success:false,
+        msg:'Name cannot be empty'
+      };
+    }
+
+    if(user.name.toLowerCase() === 'owner'){
       return {
         success:false,
         msg:'Name is reserved.'
@@ -189,7 +219,8 @@ var Rooms = function (){
       data: {
         playlist:room.playlist,
         user:user,
-        roomName:roomName
+        roomName:roomName,
+        guestPerm:room.guestPerm
       }
     };
   };

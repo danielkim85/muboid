@@ -15,7 +15,7 @@
 	</div>
 </div>
 
-<div id="search">
+<div id="search" ng-hide="$parent.guest && !$parent.guestPerm.addSong">
 	<input type="text" class="form-control" ng-model="searchTerm" placeholder="Search for...">
 </div>
 

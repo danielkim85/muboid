@@ -20,7 +20,7 @@ welcome #joinDetail, welcome #joinDetail div{
 	width:100%;
 }
 
-welcome #joinDetail input{
+welcome input{
 	color:black;
 }
 
@@ -34,4 +34,8 @@ welcome .list-group-item{
 
 welcome .list-group-item{
 	cursor:pointer;
+}
+
+welcome .col-xs-8{
+	padding-left:0px;
 }

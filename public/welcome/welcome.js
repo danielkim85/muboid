@@ -30,9 +30,12 @@ angular.module('welcome', ['youtube'])
           $scope.$apply();
         });
 
+        $scope.$parent.guestPerm.addSong = true;
+        $scope.$parent.guestPerm.sortSong = true;
         var myPlaylistId;
         var isRandom = true;
         $scope.start = function(){
+          $scope.$parent.registerSort();
           if(!$scope.createDetail) {
             $scope.createDetail = true;
             $scope.getPlaylists();
@@ -51,6 +54,7 @@ angular.module('welcome', ['youtube'])
         $scope.getPlaylistId = function(playlistId,$event,random){
           isRandom = random;
           $('welcome .list-group-item').removeClass('active');
+          angular.element($event.currentTarget).addClass('active');
           myPlaylistId = playlistId;
         };
 
@@ -126,7 +130,9 @@ angular.module('welcome', ['youtube'])
           $scope.$parent.guest = true;
           $scope.$parent.playlist = response.data.playlist;
           $scope.$parent.roomName = response.data.roomName;
+          $scope.$parent.guestPerm  = response.data.guestPerm;
           $scope.$apply();
+          $scope.$parent.registerSort();
         });
 
         $scope.back = function(){
@@ -164,5 +170,5 @@ angular.module('welcome', ['youtube'])
         //set the slider default
         $scope.changeDuration(duration_);
       }
-    }
+    };
   });

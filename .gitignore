@@ -1,4 +1,5 @@
 node_modules/
+bower_components/
 public/third-party/
 public/images/background.jpg
 public/api-key.js

@@ -9,8 +9,8 @@ function MyIO(server) {
     socket.on('disconnect', function () {
     });
 
-    socket.on('create', function(user){
-      var roomName = rooms.createRoom(user);
+    socket.on('create', function(roomConfig){
+      var roomName = rooms.createRoom(roomConfig);
       if(roomName !== null){
         socket.join(roomName);
         socket.emit('created',roomName);
@@ -48,8 +48,11 @@ function MyIO(server) {
     });
 
     socket.on('sortPlaylist', function(roomName,playlist){
-      rooms.sortPlaylist(roomName,playlist);
-      socket.broadcast.to(roomName).emit('playlistUpdated',playlist);
+      var ret = rooms.sortPlaylist(roomName,playlist);
+      if(!ret.success){
+        return false;
+      }
+      socket.broadcast.to(roomName).emit('playlistUpdated',ret.data);
     });
 
     socket.on('join', function(roomName,user){

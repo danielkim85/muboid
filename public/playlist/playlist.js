@@ -15,8 +15,13 @@ angular.module('playlist', [])
             name:'owner',
             socketId:socket.id
           };
-
-          socket.emit('create',$scope.$parent.user);
+          console.info($scope.$parent.adminCode);
+          var roomConfig = {
+            owner : $scope.$parent.user,
+            adminCode : $scope.$parent.adminCode,
+            guestPerm : $scope.$parent.guestPerm
+          };
+          socket.emit('create',roomConfig);
         };
 
         $scope.manage = function(){
@@ -74,16 +79,6 @@ angular.module('playlist', [])
           $scope.$parent.$apply();
         });
 
-        $("#songContainer").sortable({
-          items: "> div:not(.locked)",
-          tolerance: 'pointer',
-          revert: 'invalid',
-          placeholder: 'span2 well placeholder tile',
-          forceHelperSize: true,
-          update: function(event,ui){
-            $scope.$parent.sortComplete();
-          }
-        });
       }
-    }
+    };
   });

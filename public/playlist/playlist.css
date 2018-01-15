@@ -11,6 +11,7 @@ playlist #songContainer{
 
 playlist #info{
 	font-size:20px;
+	padding-bottom:10px;
 }
 
 playlist{
@@ -32,7 +33,7 @@ playlist #playlistAction{
 }
 
 playlist #search{
-	padding:10px 0px;
+	padding-bottom:10px;
 }
 
 playlist #searchResult, playlist #songContainer{
@@ -88,4 +89,14 @@ playlist #songContainer .locked{
 
 playlist .glyphicon-lock{
 	top:-1px;
+}
+
+@media only screen and (max-width: 768px) {
+	/* For mobile phones: */
+	playlist .close {
+		margin-right: 10px;
+	}
+	playlist #searchResult, playlist #songContainer{
+		margin-bottom:00px;
+	}
 }

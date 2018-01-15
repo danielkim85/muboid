@@ -32,6 +32,7 @@ body{
 	opacity:0.5;
 	display:none;
 	height:85px;
+	background-color:black;
 }
 #header{
 	margin-bottom:10px;
@@ -49,7 +50,7 @@ body{
 	position:absolute;
 	bottom:1px;
 	right:0;
-	z-index:1
+	z-index:101;
 }
 
 #wallpaper{
@@ -58,6 +59,25 @@ body{
 	color: white;
 	top: 5px;
 	font-size: 10px;
+	font-family:sans-serif;
+}
+
+.form-check-inline {
+	display: -webkit-inline-box;
+	display: -ms-inline-flexbox;
+	display: inline-flex;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+	padding-left: 0;
+	margin-right: .75rem;
+}
+
+.form-check-label {
+	margin-top: 0px;
+	margin-bottom: -5px;
+	margin-left: 5px;
+	color:#ec971f;
 }
 
 @media only screen and (max-width: 768px) {
@@ -65,8 +85,8 @@ body{
 	#main{
 		width:100%;
 	}
-	#wallpaper{
-		display:none;
+	#wallpaper,footer,#signout-button{
+		display:none !important;
 	}
 	.col-xs-6{
 		width:100%;

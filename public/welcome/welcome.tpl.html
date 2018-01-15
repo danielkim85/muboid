@@ -6,13 +6,43 @@
 	{{errMsg}}
 </div>
 
-<div ng-show="createDetail && !joinDetail">
+<div ng-show="createDetail && !joinDetail" ng-init="$parent.guestPerm = {}">
 	<div>
-		Duration of song : {{duration}}
+		Song duration: <span style="color:#ec971f;">{{duration}}</span>
 	</div>
 	<div>
 		<input id="duration" data-slider-id='durationSlider' type="text" data-slider-min="15" data-slider-max="135" data-slider-step="15" data-slider-value="60"/>
 		<button type="button" class="btn btn-info" ng-click="changeDuration(135)">Max</button>
+	</div>
+
+	<div>
+		<span class="col-xs-8">Guests can add songs</span>
+		<div class="form-check form-check-inline">
+			<input class="form-check-input" type="radio" ng-model="$parent.guestPerm.addSong" ng-value="true" checked>
+			<label class="form-check-label">Yes</label>
+		</div>
+		<div class="form-check form-check-inline">
+			<input class="form-check-input" type="radio" ng-model="$parent.guestPerm.addSong" ng-value="false">
+			<label class="form-check-label" >No</label>
+		</div>
+	</div>
+
+	<div>
+		<span class="col-xs-8">Guests can sort songs</span>
+		<div class="form-check form-check-inline">
+			<input class="form-check-input" type="radio" ng-model="$parent.guestPerm.sortSong" ng-value="true" checked>
+			<label class="form-check-label">Yes</label>
+		</div>
+		<div class="form-check form-check-inline">
+			<input class="form-check-input" type="radio" ng-model="$parent.guestPerm.sortSong" ng-value="false">
+			<label class="form-check-label" >No</label>
+		</div>
+	</div>
+
+	<div style="float:left;width:100%;margin-bottom:20px;">
+		<input class="col-xs-6" class="form-control" type="text"
+					 placeholder="Admin # (optional)"
+					 ng-model="$parent.adminCode">
 	</div>
 
 	<div>
@@ -29,14 +59,15 @@
 			</li>
 		</ul>
 	</div>
+
 </div>
 
 <div ng-hide="joinDetail">
 	<button ng-show="!joinDetail && createDetail"
 					type="button" class="btn "
-					ng-click="back()">Back</button>
+					ng-click="back()">BACK</button>
 	<button type="button" class="btn btn-primary"
-					ng-click="start()">Start</button>
+					ng-click="start()">START</button>
 </div>
 
 
@@ -51,12 +82,17 @@
 					 placeholder="Your Name"
 					 ng-model="username">
 	</div>
+	<div>
+		<input class="col-xs-6" class="form-control" type="text"
+					 placeholder="Admin Code (optional)"
+					 ng-model="adminCode">
+	</div>
 </div>
 
 <div ng-hide="createDetail">
 	<button ng-show="joinDetail && !createDetail"
 					type="button" class="btn "
-					ng-click="back()">Back</button>
+					ng-click="back()">BACK</button>
 	<button type="button" class="btn btn-primary"
-					ng-click="join(joinRoomName)">Join</button>
+					ng-click="join(joinRoomName)">JOIN</button>
 </div>

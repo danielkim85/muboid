@@ -88,5 +88,5 @@ angular.module('footer', [])
           return isFullscreen() ? exitFullscreen() : launchIntoFullscreen();
         };
       }
-    }
+    };
   });
