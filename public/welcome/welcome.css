@@ -36,6 +36,6 @@ welcome .list-group-item{
 	cursor:pointer;
 }
 
-welcome .col-xs-8{
-	padding-left:0px;
+welcome .no-padding{
+	padding-left:0px !important;
 }

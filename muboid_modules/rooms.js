@@ -26,7 +26,6 @@ var Rooms = function (){
   };
 
   this.createRoom = function(roomConfig){
-
     if(Object.keys(rooms).length >= 100){
       //TODO handle error better
       return null;
@@ -55,7 +54,7 @@ var Rooms = function (){
 
   };
 
-  this.sortPlaylist = function(roomName,playlist){
+  this.sortPlaylist = function(roomName,playlist,user){
     if(!(roomName in rooms)){
       return {
         success:false,
@@ -64,7 +63,7 @@ var Rooms = function (){
     }
 
     var room = rooms[roomName];
-    if(!room.guestPerm.sortSong){
+    if(!room.guestPerm.sortSong && room.admins.indexOf(user.socketId) === -1){
       return {
         success:false,
         msg:'Unauthorized'
@@ -104,7 +103,9 @@ var Rooms = function (){
     var room = rooms[roomName];
     var playlist = rooms[roomName].playlist;
 
-    if(playlist[index].owner.socketId !== user.socketId && room.owner.socketId !== user.socketId){
+    if(playlist[index].owner.socketId !== user.socketId &&
+      room.owner.socketId !== user.socketId &&
+      room.admins.indexOf(user.socketId) === -1){
       return {
         success:false,
         msg:'Unathorized'
@@ -118,7 +119,7 @@ var Rooms = function (){
     };
   };
 
-  this.addSong = function(roomName,index,song){
+  this.addSong = function(roomName,index,song,user){
     if(!(roomName in rooms)){
       return {
         success:false,
@@ -126,7 +127,7 @@ var Rooms = function (){
       };
     }
     var room = rooms[roomName];
-    if(!room.guestPerm.addSong){
+    if(!room.guestPerm.addSong && room.admins.indexOf(user.socketId) === -1){
       return {
         success:false,
         msg:'Unauthorized'
@@ -177,8 +178,7 @@ var Rooms = function (){
     }
   };
 
-  this.joinRoom = function(roomName,user){
-    console.info('join room');
+  this.joinRoom = function(roomName,user,adminCode){
     if(!user.name){
       return {
         success:false,
@@ -207,12 +207,24 @@ var Rooms = function (){
       };
     }
 
+    var isAdmin = false;
     var room = rooms[roomName];
+    if(adminCode && room.adminCode){
+      if(adminCode !== room.adminCode){
+        return {
+          success:false,
+          msg:'Unauthorized'
+        };
+      }
+      isAdmin = true;
+      room.admins.push(user.socketId);
+    }
 
     room.guests.push({
       name:user.name,
       socketId:user.socketId
     });
+
 
     return {
       success:true,
@@ -220,6 +232,7 @@ var Rooms = function (){
         playlist:room.playlist,
         user:user,
         roomName:roomName,
+        isAdmin : isAdmin,
         guestPerm:room.guestPerm
       }
     };

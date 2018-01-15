@@ -15,7 +15,6 @@ angular.module('playlist', [])
             name:'owner',
             socketId:socket.id
           };
-          console.info($scope.$parent.adminCode);
           var roomConfig = {
             owner : $scope.$parent.user,
             adminCode : $scope.$parent.adminCode,
@@ -41,7 +40,7 @@ angular.module('playlist', [])
         $scope.queue = function(song){
           $scope.searchTerm = '';
           var index = $scope.$parent.roomName || $scope.$parent.guest ? 2 : 0;
-          socket.emit('addSong',$scope.$parent.roomName, index, song);
+          socket.emit('addSong',$scope.$parent.roomName, index, song, $scope.$parent.user);
           $scope.$parent.playlist.splice(index,0,song);
         };
 

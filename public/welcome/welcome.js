@@ -114,7 +114,7 @@ angular.module('welcome', ['youtube'])
           socket.emit('join',joinRoomName,{
             name:$scope.username,
             socketId:socket.id
-          });
+          },$scope.adminCode);
         };
 
         //server tells me i have joined a room
@@ -124,6 +124,7 @@ angular.module('welcome', ['youtube'])
             $scope.$apply();
             return;
           }
+          $scope.$parent.isAdmin = response.data.isAdmin;
           $scope.$parent.user = response.data.user;
           $scope.$apply();
           $scope.errMsg = false;

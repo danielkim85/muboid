@@ -33,7 +33,7 @@ module.exports = function(grunt) {
           {
             cwd: 'bower_components/jqueryui-touch-punch/',
             src: ['**'],
-            dest: 'public/third-party/jqueryui-touch-punch/jquery.ui.touch-punch.min.js',
+            dest: 'public/third-party/jqueryui-touch-punch/',
             expand: true
           }
         ]

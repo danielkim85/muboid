@@ -1,5 +1,5 @@
-<div>
-	Welcome!
+<div style="color:#449d44;margin-bottom:20px;">
+	Welcome to MuBOID.COM
 </div>
 
 <div class="alert alert-danger" role="alert" ng-show="errMsg">
@@ -16,7 +16,7 @@
 	</div>
 
 	<div>
-		<span class="col-xs-8">Guests can add songs</span>
+		<span class="col-xs-6 no-padding">Guests can add songs</span>
 		<div class="form-check form-check-inline">
 			<input class="form-check-input" type="radio" ng-model="$parent.guestPerm.addSong" ng-value="true" checked>
 			<label class="form-check-label">Yes</label>
@@ -28,7 +28,7 @@
 	</div>
 
 	<div>
-		<span class="col-xs-8">Guests can sort songs</span>
+		<span class="col-xs-6 no-padding">Guests can sort songs</span>
 		<div class="form-check form-check-inline">
 			<input class="form-check-input" type="radio" ng-model="$parent.guestPerm.sortSong" ng-value="true" checked>
 			<label class="form-check-label">Yes</label>
@@ -42,7 +42,7 @@
 	<div style="float:left;width:100%;margin-bottom:20px;">
 		<input class="col-xs-6" class="form-control" type="text"
 					 placeholder="Admin # (optional)"
-					 ng-model="$parent.adminCode">
+					 ng-model="$parent.wadminCode">
 	</div>
 
 	<div>

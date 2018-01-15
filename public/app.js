@@ -106,7 +106,7 @@ app.controller('MuBoidCtrl', function ($scope, $timeout,$window) {
 
   $scope.registerSort = function(destroy){
 
-    if($scope.guest && !$scope.guestPerm.sortSong){
+    if(!$scope.isAdmin && $scope.guest && !$scope.guestPerm.sortSong){
       return;
     }
 
@@ -127,7 +127,7 @@ app.controller('MuBoidCtrl', function ($scope, $timeout,$window) {
 
   $scope.sortPlaylist = function(){
     if($scope.roomName){
-      $scope.socket.emit('sortPlaylist',$scope.roomName, $scope.playlist);
+      $scope.socket.emit('sortPlaylist',$scope.roomName, $scope.playlist, $scope.user);
     }
   };
 

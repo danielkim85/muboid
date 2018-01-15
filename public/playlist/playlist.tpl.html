@@ -15,7 +15,7 @@
 	</div>
 </div>
 
-<div id="search" ng-hide="$parent.guest && !$parent.guestPerm.addSong">
+<div id="search" ng-hide="!$parent.isAdmin && $parent.guest && !$parent.guestPerm.addSong">
 	<input type="text" class="form-control" ng-model="searchTerm" placeholder="Search for...">
 </div>
 
@@ -40,7 +40,8 @@
 				- added by {{song.owner.name}}
 			</span>
 			<button ng-click="remove($index)"
-							ng-show="(!$parent.$parent.guest ||
+							ng-show="($parent.$parent.isAdmin ||
+												!$parent.$parent.guest ||
 											song.owner.socketId === $parent.$parent.user.socketId) &&
 											!($parent.$parent.roomName && $index <= 1)"
 							type="button" class="close" aria-label="Close">

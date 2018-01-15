@@ -53,15 +53,16 @@ body{
 	z-index:101;
 }
 
-#wallpaper{
+.sidebar{
 	position: absolute;
 	right: 5px;
-	color: white;
 	top: 5px;
 	font-size: 10px;
 	font-family:sans-serif;
 }
-
+.sidebar a{
+	color: white;
+}
 .form-check-inline {
 	display: -webkit-inline-box;
 	display: -ms-inline-flexbox;
@@ -85,7 +86,7 @@ body{
 	#main{
 		width:100%;
 	}
-	#wallpaper,footer,#signout-button{
+	.sidebar,footer,#signout-button{
 		display:none !important;
 	}
 	.col-xs-6{

@@ -35,8 +35,8 @@ function MyIO(server) {
       socket.broadcast.to(roomName).emit('playlistUpdated',ret.data);
     });
 
-    socket.on('addSong', function(roomName,index, song){
-      var ret = rooms.addSong(roomName,index, song);
+    socket.on('addSong', function(roomName,index, song,user){
+      var ret = rooms.addSong(roomName,index, song,user);
       if(!ret.success){
         return false;
       }
@@ -47,16 +47,16 @@ function MyIO(server) {
       rooms.uploadPlaylist(roomName,playlist,user);
     });
 
-    socket.on('sortPlaylist', function(roomName,playlist){
-      var ret = rooms.sortPlaylist(roomName,playlist);
+    socket.on('sortPlaylist', function(roomName,playlist,user){
+      var ret = rooms.sortPlaylist(roomName,playlist,user);
       if(!ret.success){
         return false;
       }
       socket.broadcast.to(roomName).emit('playlistUpdated',ret.data);
     });
 
-    socket.on('join', function(roomName,user){
-      var ret = rooms.joinRoom(roomName,user);
+    socket.on('join', function(roomName,user,adminCode){
+      var ret = rooms.joinRoom(roomName,user,adminCode);
 
       if(ret){
         socket.join(roomName);

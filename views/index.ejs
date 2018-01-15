@@ -1,7 +1,17 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>MUBOID::POWERHOUR</title>
+		<!-- Global site tag (gtag.js) - Google Analytics -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=UA-112484113-1"></script>
+		<script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-112484113-1');
+		</script>
+
+		<title>MuBOID</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<link rel="shortcut icon" href="http://www.soulkast.com/img/favicon.ico" type="image/x-icon">
 		<link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet">
@@ -34,7 +44,7 @@
 		<script src="https://apis.google.com/js/platform.js" async defer></script>
 
 		<script src="/third-party/socket.io/socket.io.slim.js"></script>
-		<script src="/third-party/jqueryui-touch-punch/jquery.ui.touch-punch.min.js/jquery.ui.touch-punch.js"></script>
+		<script src="/third-party/jqueryui-touch-punch/jquery.ui.touch-punch.min.js"></script>
 		<script src="api-key.js"></script>
 		<script src="const.js"></script>
 		<script src="/welcome/welcome.js"></script>
@@ -57,7 +67,7 @@
 				<div id="header">
 					<clock minutes="{{minutes}}" seconds="{{seconds}}"></clock>
 					<div id="joinInfo">
-						MUBOID.COM JOIN@ <span style="color:#c9302c">{{roomName}}</span>
+						MuBOID.COM JOIN @ <span style="color:#c9302c">{{roomName}}</span>
 					</div>
 				</div>
 				<div id="container">
@@ -70,9 +80,18 @@
 
 		<footer></footer>
 
-		<a id="wallpaper" href="https://wallpapersafari.com/w/HnlTDh/" target="_blank">
-			Wallpaper Credit
-		</a>
+		<div class="sidebar">
+			<div>
+				<a href="https://github.com/danielkim85/muboid" target="_blank">
+					Github Repo
+				</a>
+			</div>
+			<div>
+				<a href="https://wallpapersafari.com/w/HnlTDh/" target="_blank">
+					Wallpaper Credit
+				</a>
+			</div>
+		</div>
 
 		<script>
 	    var tag = document.createElement('script');
