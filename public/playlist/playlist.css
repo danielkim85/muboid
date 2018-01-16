@@ -20,15 +20,18 @@ playlist{
 	flex-flow: column;
 }
 
-playlist #songContainer .song:first-child {
+playlist #songContainer .song:first-child, playlist .glyphicon-lock {
 	color:#337ab7;
 }
 
+playlist .glyphicon-lock{
+	color:rgb(217, 83, 79);
+}
 playlist hr{
 	margin:10px 0;
 }
 
-playlist #playlistAction{
+playlist .playlist-action{
 	float:right;
 }
 
@@ -54,7 +57,7 @@ playlist #searchResult .song{
 }
 
 playlist .close{
-	color:red;
+	color:rgb(217, 83, 79);;
 	opacity:0.8;
 	top: 1px;
 	position: relative;
@@ -63,7 +66,7 @@ playlist .close{
 }
 
 playlist .close:hover{
-	color:red;
+	color:rgb(217, 83, 79);;
 	opacity:1;
 }
 

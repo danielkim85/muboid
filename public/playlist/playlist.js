@@ -38,16 +38,49 @@ angular.module('playlist', [])
         };
 
         $scope.queue = function(song){
+          var songCopy = $.extend(true,{},song);
           $scope.searchTerm = '';
-          var index = $scope.$parent.roomName || $scope.$parent.guest ? 2 : 0;
-          socket.emit('addSong',$scope.$parent.roomName, index, song, $scope.$parent.user);
-          $scope.$parent.playlist.splice(index,0,song);
+          var insertPosition = $scope.$parent.playlist.length >= 10 ? 10 : 0;
+          var index = $scope.$parent.roomName || $scope.$parent.guest ? 2 : insertPosition;
+
+          if(!songCopy.owner.name){
+            songCopy.owner.name = 'host';
+          }
+          socket.emit('addSong',$scope.$parent.roomName, index, songCopy, $scope.$parent.user);
+          $scope.$parent.playlist.splice(index,0,songCopy);
         };
 
         $scope.remove = function(index){
           socket.emit('removeSong',$scope.$parent.roomName, index, $scope.$parent.user);
           $scope.$parent.playlist.splice(index,1);
         };
+
+        $scope.lock = function(unlock){
+          socket.emit('lockRoom',{
+            roomName : $scope.$parent.roomName,
+            user : $scope.$parent.user,
+            unlock: unlock});
+          $scope.$parent.isRoomLocked = !unlock;
+        };
+
+        socket.on('locked', function(response){
+          $scope.$parent.isRoomLocked = response.data;
+          $scope.$parent.$apply();
+
+          if($scope.$parent.isAdmin || !$scope.$parent.guest) {
+            //if admin or not a guest do nothing
+            return;
+          }
+          if($scope.$parent.isRoomLocked){
+            //disable sort/remove/add/search
+            $scope.$parent.deregisterSort();
+            $scope.searchResult = [];
+          }
+          else{
+            //enable sort/remove/add/search
+            $scope.$parent.registerSort(true);
+          }
+        });
 
         $scope.$watch('searchTerm',function(newValue){
           if(newValue && newValue.length > 2){

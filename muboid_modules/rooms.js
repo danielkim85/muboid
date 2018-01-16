@@ -15,7 +15,7 @@ var Rooms = function (){
     return ret;
   }
 
-  this.makeRoomName = function(){
+  function makeRoomName(){
     var text = "";
     var possible = "0123456789";
 
@@ -23,7 +23,8 @@ var Rooms = function (){
       text += possible.charAt(Math.floor(Math.random() * possible.length));
 
     return text;
-  };
+  }
+  //end of helper
 
   this.createRoom = function(roomConfig){
     if(Object.keys(rooms).length >= 100){
@@ -31,16 +32,17 @@ var Rooms = function (){
       return null;
     }
 
-    var roomName = this.makeRoomName();
+    var roomName = makeRoomName();
     while(roomName in rooms > 0){
-      roomName = this.makeRoomName();
+      roomName = makeRoomName();
     }
 
     //initial room configuration
     rooms[roomName] = {
       playlist:null,
+      locked:false,
       guests:[],
-      admins:[],
+      admins:[roomConfig.owner.socketId],
       owner:roomConfig.owner,
       adminCode:roomConfig.adminCode,
       guestPerm:roomConfig.guestPerm,
@@ -51,18 +53,46 @@ var Rooms = function (){
 
   this.deleteRoom = function(roomName){
     delete rooms[roomName];
+  };
 
+  this.lockRoom = function(roomName,user,unlock){
+    if(!(roomName in rooms)){
+      return {
+        success:false,
+        msg:'Room not found'
+      };
+    }
+
+    var room = rooms[roomName];
+    if(room.owner.socketId !== user.socketId){
+      return {
+        success:false,
+        msg:'Unauthorized'
+      };
+    }
+    room.locked = !unlock;
+    return {
+      success:true,
+      data:room.locked
+    };
   };
 
   this.sortPlaylist = function(roomName,playlist,user){
     if(!(roomName in rooms)){
       return {
         success:false,
-        msg:'Room not found.'
+        msg:'Room not found'
       };
     }
 
     var room = rooms[roomName];
+    if(room.locked && room.owner.socketId !== user.socketId && room.admins.indexOf(user.socketId) === -1){
+      return {
+        success:false,
+        msg:'Room locked'
+      };
+    }
+
     if(!room.guestPerm.sortSong && room.admins.indexOf(user.socketId) === -1){
       return {
         success:false,
@@ -96,19 +126,25 @@ var Rooms = function (){
     if(!(roomName in rooms)){
       return {
         success:false,
-        msg:'Room not found.'
+        msg:'Room not found'
       };
     }
 
     var room = rooms[roomName];
-    var playlist = rooms[roomName].playlist;
+    if(room.locked && room.owner.socketId !== user.socketId && room.admins.indexOf(user.socketId) === -1){
+      return {
+        success:false,
+        msg:'Room locked'
+      };
+    }
 
+    var playlist = rooms[roomName].playlist;
     if(playlist[index].owner.socketId !== user.socketId &&
       room.owner.socketId !== user.socketId &&
       room.admins.indexOf(user.socketId) === -1){
       return {
         success:false,
-        msg:'Unathorized'
+        msg:'Unauthorized'
       };
     }
 
@@ -123,10 +159,17 @@ var Rooms = function (){
     if(!(roomName in rooms)){
       return {
         success:false,
-        msg:'Room not found.'
+        msg:'Room not found'
       };
     }
     var room = rooms[roomName];
+    if(room.locked && room.owner.socketId !== user.socketId && room.admins.indexOf(user.socketId) === -1){
+      return {
+        success:false,
+        msg:'Room locked'
+      };
+    }
+
     if(!room.guestPerm.addSong && room.admins.indexOf(user.socketId) === -1){
       return {
         success:false,
@@ -233,7 +276,8 @@ var Rooms = function (){
         user:user,
         roomName:roomName,
         isAdmin : isAdmin,
-        guestPerm:room.guestPerm
+        guestPerm:room.guestPerm,
+        locked:room.locked
       }
     };
   };

@@ -104,14 +104,22 @@ app.controller('MuBoidCtrl', function ($scope, $timeout,$window) {
     $scope.sortPlaylist();
   };
 
-  $scope.registerSort = function(destroy){
+  $scope.deregisterSort = function() {
+    $("#songContainer").sortable('destroy');
+  };
 
+  $scope.registerSort = function(destroy){
+    //if not admiin, and guest, and no sortSong
     if(!$scope.isAdmin && $scope.guest && !$scope.guestPerm.sortSong){
+      return;
+    }
+    //if not admin and room is locked
+    if(!$scope.isAdmin && $scope.isRoomLocked){
       return;
     }
 
     if(destroy) {
-      $("#songContainer").sortable('destroy');
+      $scope.deregisterSort();
     }
     $("#songContainer").sortable({
       items: "> div:not(.locked)",

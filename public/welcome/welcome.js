@@ -124,9 +124,10 @@ angular.module('welcome', ['youtube'])
             $scope.$apply();
             return;
           }
+          $scope.$parent.isRoomLocked = response.data.locked;
           $scope.$parent.isAdmin = response.data.isAdmin;
           $scope.$parent.user = response.data.user;
-          $scope.$apply();
+
           $scope.errMsg = false;
           $scope.$parent.guest = true;
           $scope.$parent.playlist = response.data.playlist;

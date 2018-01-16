@@ -27,6 +27,13 @@ function MyIO(server) {
       rooms.leaveRoom(roomName,user);
     });
 
+    socket.on('lockRoom', function(data){
+      var ret = rooms.lockRoom(data.roomName,data.user,data.unlock);
+      if(ret){
+        socket.broadcast.to(data.roomName).emit('locked',ret);
+      }
+    });
+
     socket.on('removeSong', function(roomName,index,user){
       var ret = rooms.removeSong(roomName,index,user);
       if(!ret.success){
@@ -58,7 +65,7 @@ function MyIO(server) {
     socket.on('join', function(roomName,user,adminCode){
       var ret = rooms.joinRoom(roomName,user,adminCode);
 
-      if(ret){
+      if(ret.success){
         socket.join(roomName);
       }
       socket.emit('joined',ret);

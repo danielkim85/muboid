@@ -1,21 +1,34 @@
 <div id="info">
+	<span class="glyphicon glyphicon-lock" ng-show="$parent.isRoomLocked"></span>
 	PLAYLIST
-	<div id="playlistAction" ng-hide="$parent.roomName|| $parent.guest">
-		<button type="button" class="btn btn-danger" ng-click="start()">Start</button>
+	<div class="playlist-action" ng-hide="$parent.roomName|| $parent.guest">
+		<button type="button" class="btn btn-danger" ng-click="start()">START</button>
 		<button type="button"
 						ng-show="$parent.playlistId !== undefined"
 						class="btn btn-primary"
-						ng-click="refresh(playlistId)">Refresh</button>
+						ng-click="refresh(playlistId)">REFRESH</button>
 		<button type="button"
 						ng-show="$parent.playlistId !== undefined"
 						class="btn btn-primary"
 						ng-click="manage()">
-			Manage
+			MANAGE
+		</button>
+	</div>
+
+	<div class="playlist-action" ng-show="$parent.roomName && !$parent.guest">
+		<button type="button" class="btn btn-danger" ng-click="lock($parent.isRoomLocked)">
+			<span ng-if="!$parent.isRoomLocked">
+				LOCK
+			</span>
+			<span ng-if="$parent.isRoomLocked">
+				UNLOCK
+			</span>
 		</button>
 	</div>
 </div>
 
-<div id="search" ng-hide="!$parent.isAdmin && $parent.guest && !$parent.guestPerm.addSong">
+<div id="search" ng-hide="(!$parent.isAdmin && $parent.guest && !$parent.guestPerm.addSong) ||
+													($parent.isRoomLocked && !$parent.isAdmin && $parent.guest)">
 	<input type="text" class="form-control" ng-model="searchTerm" placeholder="Search for...">
 </div>
 
@@ -32,7 +45,9 @@
 	<div ng-repeat="song in $parent.playlist"
 			 ng-class="{locked: $parent.$parent.roomName && $index <= 1 , song:true}">
 		<div class="titleContainer" videoId = {{song.id}} songOwner = {{song.owner}}>
-			<span class="glyphicon glyphicon-lock" ng-show="$parent.$parent.roomName && $index <= 1"></span>
+			<span class="glyphicon glyphicon-lock"
+						ng-show="$parent.$parent.roomName && $index <= 1"></span>
+			{{$index+1}}.
 			<span class="title">
 				{{song.title}}
 			</span>
@@ -42,7 +57,7 @@
 			<button ng-click="remove($index)"
 							ng-show="($parent.$parent.isAdmin ||
 												!$parent.$parent.guest ||
-											song.owner.socketId === $parent.$parent.user.socketId) &&
+											(song.owner.socketId === $parent.$parent.user.socketId && !$parent.$parent.isRoomLocked)) &&
 											!($parent.$parent.roomName && $index <= 1)"
 							type="button" class="close" aria-label="Close">
 				<span aria-hidden="true">&times;</span>
