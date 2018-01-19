@@ -50,6 +50,14 @@ function MyIO(server) {
       socket.broadcast.to(roomName).emit('playlistUpdated',ret.data);
     });
 
+    socket.on('likeSong', function(roomName,song,user,like){
+      var ret = rooms.likeSong(roomName,song,user,like);
+      if(!ret.success){
+        return false;
+      }
+      socket.broadcast.to(roomName).emit('songLiked',ret.data);
+    });
+
     socket.on('uploadPlaylist', function(roomName,playlist,user){
       rooms.uploadPlaylist(roomName,playlist,user);
     });

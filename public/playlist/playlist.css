@@ -1,6 +1,14 @@
 playlist{
 	font-size:10px;
 }
+
+playlist #nowPlaying{
+	font-size:15px;
+}
+
+playlist #nowPlaying{
+	color:#f0ad4e;
+}
 playlist, playlist #songContainer{
 	float:left;
 }
@@ -11,20 +19,30 @@ playlist #songContainer{
 
 playlist #info{
 	font-size:20px;
+}
+
+playlist #info > div{
 	padding-bottom:10px;
 }
 
-playlist{
+playlist #info .btn{
+	font-size:10px;
+	margin-top:-5px;
+}
 
+playlist{
 	display: flex;
 	flex-flow: column;
 }
 
-playlist #songContainer .song:first-child, playlist .glyphicon-lock {
-	color:#337ab7;
+playlist #songContainer .song:first-child {
+	color:#f0ad4e;
 }
 
-playlist .glyphicon-lock{
+playlist .glyphicon-lock, playlist .like{
+	color:#337ab7;
+}
+playlist .glyphicon-lock, playlist .hate{
 	color:rgb(217, 83, 79);
 }
 playlist hr{
@@ -57,7 +75,7 @@ playlist #searchResult .song{
 }
 
 playlist .close{
-	color:rgb(217, 83, 79);;
+	color:rgb(217, 83, 79);
 	opacity:0.8;
 	top: 1px;
 	position: relative;

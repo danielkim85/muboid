@@ -55,6 +55,11 @@ angular.module('playlist', [])
           $scope.$parent.playlist.splice(index,1);
         };
 
+        $scope.likeSong = function($event,like){
+          angular.element($event.currentTarget).addClass('md-inactive');
+          console.warn(like);
+        };
+
         $scope.lock = function(unlock){
           socket.emit('lockRoom',{
             roomName : $scope.$parent.roomName,
@@ -110,7 +115,6 @@ angular.module('playlist', [])
           $scope.$parent.gameover = true;
           $scope.$parent.$apply();
         });
-
       }
     };
   });

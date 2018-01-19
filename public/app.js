@@ -94,7 +94,9 @@ app.controller('MuBoidCtrl', function ($scope, $timeout,$window) {
         var data = {
           id:videoId,
           title:title,
-          owner:JSON.parse(songOwner)
+          owner:JSON.parse(songOwner),
+          likes:[],
+          hates:[]
         };
         playlist.push(data);
       }

@@ -185,6 +185,43 @@ var Rooms = function (){
     };
   };
 
+  this.likeSong = function(roomName,song,user,like){
+    if(!(roomName in rooms)){
+      return {
+        success:false,
+        msg:'Room not found'
+      };
+    }
+
+    var playlist = rooms[roomName].playlist;
+    if(playlist.length === 0){
+      return {
+        success:false,
+        msg:'No songs in playlist'
+      };
+    }
+
+    var targetSong = playlist[0];
+    if(targetSong.id !== song.id){
+      return {
+        success:false,
+        msg:'Song id does not match'
+      };
+    }
+
+    if(like){
+      targetSong.likes.push(user);
+    }
+    else{
+      targetSong.hates.push(user);
+    }
+    console.info(rooms);
+    return {
+      success:true,
+      data:targetSong
+    };
+  };
+
   this.uploadPlaylist = function(roomName,playlist,user){
     if(!(roomName in rooms)){
       return {

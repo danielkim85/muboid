@@ -158,7 +158,9 @@ angular.module('youtube', [])
             data.push({
               id:item.id,
               owner:$scope.user,
-              title:item.snippet.title
+              title:item.snippet.title,
+              likes : [],
+              hates : []
             });
           }
         });
@@ -217,7 +219,9 @@ angular.module('youtube', [])
             data.push({
               id:item.snippet.resourceId.videoId,
               owner:$scope.user,
-              title:item.snippet.title
+              title:item.snippet.title,
+              likes : [],
+              hates : []
             });
           });
           if(response.result.nextPageToken === undefined){
@@ -259,7 +263,9 @@ angular.module('youtube', [])
             data.push({
               id:item.id.videoId,
               title:item.snippet.title,
-              owner:$scope.user
+              owner:$scope.user,
+              likes : [],
+              hates : []
             });
           });
           def.resolve(data);

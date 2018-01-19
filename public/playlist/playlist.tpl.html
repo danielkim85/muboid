@@ -1,29 +1,47 @@
 <div id="info">
-	<span class="glyphicon glyphicon-lock" ng-show="$parent.isRoomLocked"></span>
-	PLAYLIST
-	<div class="playlist-action" ng-hide="$parent.roomName|| $parent.guest">
-		<button type="button" class="btn btn-danger" ng-click="start()">START</button>
-		<button type="button"
-						ng-show="$parent.playlistId !== undefined"
-						class="btn btn-primary"
-						ng-click="refresh(playlistId)">REFRESH</button>
-		<button type="button"
-						ng-show="$parent.playlistId !== undefined"
-						class="btn btn-primary"
-						ng-click="manage()">
-			MANAGE
-		</button>
+	<div ng-show="$parent.roomName">
+		<div>
+			NOW PLAYING
+			<span class="like" ng-hide="true">
+				<i class="material-icons" ng-click="likeSong($event,true)">thumb_up</i>
+				{{$parent.playlist[0].likes.length}}
+			</span>
+			<span class="hate" ng-hide="true">
+				<i class="material-icons hate">thumb_down</i>
+				{{$parent.playlist[0].hates.length}}
+			</span>
+		</div>
+		<div id="nowPlaying">
+			{{$parent.playlist[0].title}}
+		</div>
 	</div>
+	<div>
+		<span class="glyphicon glyphicon-lock" ng-show="$parent.isRoomLocked"></span>
+		PLAYLIST
+		<div class="playlist-action" ng-hide="$parent.roomName|| $parent.guest">
+			<button type="button" class="btn btn-danger" ng-click="start()">START</button>
+			<button type="button"
+							ng-show="$parent.playlistId !== undefined"
+							class="btn btn-primary"
+							ng-click="refresh(playlistId)">REFRESH</button>
+			<button type="button"
+							ng-show="$parent.playlistId !== undefined"
+							class="btn btn-primary"
+							ng-click="manage()">
+				MANAGE
+			</button>
+		</div>
 
-	<div class="playlist-action" ng-show="$parent.roomName && !$parent.guest">
-		<button type="button" class="btn btn-danger" ng-click="lock($parent.isRoomLocked)">
-			<span ng-if="!$parent.isRoomLocked">
-				LOCK
-			</span>
-			<span ng-if="$parent.isRoomLocked">
-				UNLOCK
-			</span>
-		</button>
+		<div class="playlist-action" ng-show="$parent.roomName && !$parent.guest">
+			<button type="button" class="btn btn-danger" ng-click="lock($parent.isRoomLocked)">
+				<span ng-if="!$parent.isRoomLocked">
+					LOCK
+				</span>
+				<span ng-if="$parent.isRoomLocked">
+					UNLOCK
+				</span>
+			</button>
+		</div>
 	</div>
 </div>
 
@@ -44,16 +62,22 @@
 <div id="songContainer" ng-show="searchResult.length == 0">
 	<div ng-repeat="song in $parent.playlist"
 			 ng-class="{locked: $parent.$parent.roomName && $index <= 1 , song:true}">
-		<div class="titleContainer" videoId = {{song.id}} songOwner = {{song.owner}}>
+		<div class="titleContainer"
+				 videoId = {{song.id}}
+				 songOwner = {{song.owner}}
+		 		 ng-hide="$index == 0 && $parent.$parent.roomName">
 			<span class="glyphicon glyphicon-lock"
 						ng-show="$parent.$parent.roomName && $index <= 1"></span>
-			{{$index+1}}.
+			<a title="Open this song in YouTube" href="https://www.youtube.com/watch?v={{song.id}}" target="_blank">
+				{{$index}}
+			</a>
 			<span class="title">
 				{{song.title}}
 			</span>
 			<span class="owner" ng-show="song.owner.name">
 				- added by {{song.owner.name}}
 			</span>
+
 			<button ng-click="remove($index)"
 							ng-show="($parent.$parent.isAdmin ||
 												!$parent.$parent.guest ||
