@@ -10,8 +10,11 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
+You will need Node.js > 6.X.
+
 ```
-Node.js
+npm install -g bower
+npm install -g grunt-cli
 ```
 
 ### Installing
