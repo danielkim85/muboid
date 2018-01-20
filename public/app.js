@@ -87,6 +87,11 @@ app.controller('MuBoidCtrl', function ($scope, $timeout,$window) {
     //$scope.$broadcast('youtubeReady');
   };
 
+  var tag = document.createElement('script');
+  tag.src = "https://www.youtube.com/iframe_api";
+  var firstScriptTag = document.getElementsByTagName('script')[0];
+  firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
   $scope.sortComplete = function(){
     var playlist = [];
     $('playlist #songContainer div').each(function(){
