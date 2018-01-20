@@ -105,7 +105,26 @@ angular.module('youtube', [])
           }
         });
 
+        var MAX_TRY = 10;
+        var tried = 0;
+        function checkYouTubeReady(){
+          tried++;
+          console.info('checkYouTubeReady called');
+          if($scope.$parent.youtubeReady){
+            console.info('youtubeReady called with');
+            console.info($element.children()[0]);
+            player = new YT.Player($element.children()[0], containerOptions);
+          } else{
+            if(tried <= MAX_TRY){
+              $timeout(checkYouTubeReady,1000);
+            }
+
+          }
+        }
+        $timeout(checkYouTubeReady,1000);
         $scope.$on('youtubeReady', function () {
+          console.info('youtubeReady called with');
+          console.info($element.children()[0]);
           player = new YT.Player($element.children()[0], containerOptions);
         });
       }
@@ -249,16 +268,18 @@ angular.module('youtube', [])
   factory.searchPlaylist = function($scope,q){
     data = [];
     var def = $q.defer();
+    var maxResults = 10;
     gapi.client.youtube.search.list({
       part: 'snippet',
       q: q,
       type: 'playlist',
-      maxResults : 10
+      maxResults : maxResults
     })
       .then(function (response) {
-        response.result.items.forEach(function(item){
-          data.push(item);
-        });
+        //for whatever reasons, it spills beyond the max results. so force return.
+        for(var i = 0; i < maxResults; i++){
+          data.push(response.result.items[i]);
+        }
         def.resolve(data);
       });
     return def.promise;
