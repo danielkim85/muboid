@@ -246,6 +246,23 @@ angular.module('youtube', [])
       return def.promise;
     };
 
+  factory.searchPlaylist = function($scope,q){
+    data = [];
+    var def = $q.defer();
+    gapi.client.youtube.search.list({
+      part: 'snippet',
+      q: q,
+      type: 'playlist',
+      maxResults : 10
+    })
+      .then(function (response) {
+        response.result.items.forEach(function(item){
+          data.push(item);
+        });
+        def.resolve(data);
+      });
+    return def.promise;
+  };
 
     factory.search = function($scope,q){
       data = [];
@@ -272,5 +289,6 @@ angular.module('youtube', [])
         });
       return def.promise;
     };
+
     return factory;
   });

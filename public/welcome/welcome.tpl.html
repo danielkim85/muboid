@@ -1,5 +1,11 @@
-<div style="color:#449d44;margin-bottom:20px;">
-	Welcome to MuBOID.COM
+<div style="margin-bottom:20px;">
+	Welcome to
+	<span style="color:red;">M</span>
+	<span style="color:orange;margin-left:-14px;">u</span>
+	<span style="color:yellow;margin-left:-14px;">B</span>
+	<span style="color:green;margin-left:-14px;">O</span>
+	<span style="color:blue;margin-left:-14px;">I</span>
+	<span style="color:violet;margin-left:-14px;">D</span>.COM
 </div>
 
 <div class="alert alert-danger" role="alert" ng-show="errMsg">
@@ -8,11 +14,19 @@
 
 <div ng-show="createDetail && !joinDetail" ng-init="$parent.guestPerm = {}">
 	<div>
-		Song duration: <span style="color:#ec971f;">{{duration}}</span>
+		<span class="col-xs-6 no-padding">Song duration</span>
+		<span style="color:#ec971f;">{{duration}}</span>
 	</div>
 	<div>
-		<input id="duration" data-slider-id='durationSlider' type="text" data-slider-min="15" data-slider-max="135" data-slider-step="15" data-slider-value="60"/>
-		<button type="button" class="btn btn-info" ng-click="changeDuration(135)">Max</button>
+		<input id="duration" type="text"
+					 data-slider-id='durationSlider'
+					 data-slider-min="0"
+					 data-slider-max="135"
+					 data-slider-step="15"
+					 data-slider-value="[30,90]"/>
+		<button type="button" class="btn btn-primary btn-sub"
+						style="width:50px;"
+						ng-click="changeDuration([0,135])">MAX</button>
 	</div>
 
 	<div>
@@ -40,13 +54,18 @@
 	</div>
 
 	<div style="float:left;width:100%;margin-bottom:20px;">
-		<input class="col-xs-6" class="form-control" type="text"
+		<span class="col-xs-6 no-padding">Allow multiple admins</span>
+		<input class="col-xs-6" type="text"
 					 placeholder="Admin Code (optional)"
 					 ng-model="$parent.adminCode">
 	</div>
 
 	<div>
-		Pick your playlist
+		<span class="col-xs-6 no-padding">Pick your playlist</span>
+		<button type="button" class="btn btn-primary btn-sub" style="width:75px;"
+						ng-click="lock($parent.isRoomLocked)">
+			MANAGE
+		</button>
 	</div>
 	<div>
 		<ul class="list-group">
@@ -54,12 +73,22 @@
 					ng-click="getPlaylistId(playlist.id,$event,true)">Random songs</li>
 			<li class="list-group-item"
 					ng-repeat="playlist in playlists"
+					playlistId="{{playlist.id}}"
 					ng-click="getPlaylistId(playlist.id,$event)">
+				{{playlist.snippet.title}}
+			</li>
+			<li class="list-group-item">
+				<input type="text" style="width:100%;"
+							 placeholder="Search playlist"
+							 ng-model="qPlaylist">
+			</li>
+			<li class="list-group-item"
+					ng-repeat="playlist in searchedPlaylist"
+					ng-click="searchedPlaylistClicked(playlist)">
 				{{playlist.snippet.title}}
 			</li>
 		</ul>
 	</div>
-
 </div>
 
 <div ng-hide="joinDetail">

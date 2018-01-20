@@ -13,7 +13,7 @@ function shuffle(array) {
 }
 
 angular.module('welcome', ['youtube'])
-  .directive('welcome', function(youtubeFactory){
+  .directive('welcome', function($timeout,youtubeFactory){
     return{
       scope:{
       },
@@ -54,10 +54,20 @@ angular.module('welcome', ['youtube'])
         $scope.getPlaylistId = function(playlistId,$event,random){
           isRandom = random;
           $('welcome .list-group-item').removeClass('active');
-          angular.element($event.currentTarget).addClass('active');
+          $('welcome .list-group-item[playlistId="' + playlistId + '"]').addClass('active');
           myPlaylistId = playlistId;
         };
 
+        $scope.searchedPlaylistClicked = function(playlist){
+          var playlistId = playlist.id.playlistId;
+          playlist.id = playlistId;
+          $scope.playlists.push(playlist);
+          $scope.searchedPlaylist = [];
+          $scope.qPlaylist = '';
+          $timeout(function(){
+            $scope.getPlaylistId(playlistId);
+          });
+        };
         $scope.getPlaylist = function(){
           $scope.$parent.user = {socketId:socket.id};
           $scope.$parent.wait = true;
@@ -142,34 +152,45 @@ angular.module('welcome', ['youtube'])
           $scope.createDetail = false;
         };
 
-        //default slider value
-        var duration_ = 60;
-        //slider control
-        $scope.changeDuration = function(duration){
-          if(duration === DEFAULT_MAX){
-            $('#duration').bootstrapSlider('setValue', DEFAULT_MAX);
+        $scope.$watch('qPlaylist',function(newValue){
+          if(newValue && newValue.length > 2){
+            youtubeFactory.searchPlaylist($scope.$parent,newValue)
+              .then(function(response){
+               $scope.searchedPlaylist = response;
+              });
           }
+          else{
+            $scope.searchedPlaylist = [];
+          }
+        });
+
+        //slider control
+        var duration_ = [30,90]
+        $scope.changeDuration = function(duration){
           duration_ = duration;
-          var display = duration === DEFAULT_MAX ? 'Max' : duration + ' seconds';
+          if(duration[0] === 0 && duration[1] === DEFAULT_MAX){
+            console.warn('set max');
+            $('#duration').bootstrapSlider('setValue', [0,DEFAULT_MAX]);
+          }
+          var display = duration[0] + 's - ' + (duration[1] === 135 ? 'MAX' : duration[1] + 's');
           $scope.duration = display;
-          START = duration === DEFAULT_MAX ? 0 : START;
-          END = duration === DEFAULT_MAX ? 0 : START + duration;
+          START = duration[0];
+          END = duration[1] === DEFAULT_MAX ? 0 : duration[1];
         };
 
         $('#duration').bootstrapSlider({
           formatter: function(value) {
-            return value === DEFAULT_MAX ? 'Max' : value + ' seconds';
+            return value;
           }
         });
 
         $('#duration').on("slide", function(slideEvt) {
-          if(duration_ !== slideEvt.value){
+          if(duration_[0] !== slideEvt.value[0] || duration_[1] !== slideEvt.value[1]){
             $scope.changeDuration(slideEvt.value);
             $scope.$apply();
           }
         });
 
-        //set the slider default
         $scope.changeDuration(duration_);
       }
     };

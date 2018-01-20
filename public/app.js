@@ -40,6 +40,7 @@ app.controller('MuBoidCtrl', function ($scope, $timeout,$window) {
     $scope.signedIn = isSignedIn;
     $scope.$apply();
     if (isSignedIn) {
+      $scope.username = gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getName();
       authorizeButton.style.display = 'none';
       signoutButton.style.display = 'block';
       if($scope.action === 'playlists'){

@@ -1,3 +1,9 @@
+welcome{
+	overflow-x:auto;
+	flex-flow:column;
+	margin-bottom:25px;
+}
+
 welcome div{
 	margin-bottom:10px;
 }
@@ -13,6 +19,7 @@ welcome #durationSlider .slider-handle{
 
 welcome #durationSlider{
 	margin-bottom:0px;
+	width:305px;
 }
 
 welcome #joinDetail, welcome #joinDetail div{
@@ -22,18 +29,22 @@ welcome #joinDetail, welcome #joinDetail div{
 
 welcome input{
 	color:black;
+	font-size:10px;
 }
 
 welcome .btn-primary{
 	width:150px;
 }
 
-welcome .list-group-item{
-	color:black;
+welcome .btn-sub{
+	font-size:10px;
+	padding:2px;
 }
 
 welcome .list-group-item{
+	color:black;
 	cursor:pointer;
+	font-size:10px;
 }
 
 welcome .no-padding{
