@@ -19,7 +19,8 @@ welcome #durationSlider .slider-handle{
 
 welcome #durationSlider{
 	margin-bottom:0px;
-	width:305px;
+	width:295px;
+	margin-left:10px;
 }
 
 welcome #joinDetail, welcome #joinDetail div{

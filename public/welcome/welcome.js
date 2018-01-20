@@ -147,6 +147,11 @@ angular.module('welcome', ['youtube'])
           $scope.$parent.registerSort();
         });
 
+        $scope.manage = function(username){
+          window.open('https://www.youtube.com/user/' + username + '/playlists');
+        };
+
+
         $scope.back = function(){
           $scope.joinDetail = false;
           $scope.createDetail = false;
@@ -165,11 +170,10 @@ angular.module('welcome', ['youtube'])
         });
 
         //slider control
-        var duration_ = [30,90]
+        var duration_ = [30,90];
         $scope.changeDuration = function(duration){
           duration_ = duration;
           if(duration[0] === 0 && duration[1] === DEFAULT_MAX){
-            console.warn('set max');
             $('#duration').bootstrapSlider('setValue', [0,DEFAULT_MAX]);
           }
           var display = duration[0] + 's - ' + (duration[1] === 135 ? 'MAX' : duration[1] + 's');
