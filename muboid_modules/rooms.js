@@ -4,6 +4,18 @@ var Rooms = function (){
   var rooms = {};
 
   //helper
+
+  Array.prototype.remove = function() {
+    var what, a = arguments, L = a.length, ax;
+    while (L && this.length) {
+      what = a[--L];
+      while ((ax = this.indexOf(what)) !== -1) {
+        this.splice(ax, 1);
+      }
+    }
+    return this;
+  };
+
   function nameExists(roomName,myName){
     var ret = false;
     //TODOD inefficient
@@ -185,7 +197,7 @@ var Rooms = function (){
     };
   };
 
-  this.likeSong = function(roomName,song,user,like){
+  this.likeSong = function(roomName,user,expression){
     if(!(roomName in rooms)){
       return {
         success:false,
@@ -202,20 +214,26 @@ var Rooms = function (){
     }
 
     var targetSong = playlist[0];
-    if(targetSong.id !== song.id){
+    if(targetSong.id !== expression.songId){
       return {
         success:false,
         msg:'Song id does not match'
       };
     }
 
-    if(like){
-      targetSong.likes.push(user);
+    //TODO prevent duplicate action
+    if(expression.liked){
+      if(targetSong.likes.indexOf(user.socketId) === -1) {
+        targetSong.hates.remove(user.socketId);
+        targetSong.likes.push(user.socketId);
+      }
     }
     else{
-      targetSong.hates.push(user);
+      if(targetSong.hates.indexOf(user.socketId) === -1) {
+        targetSong.likes.remove(user.socketId);
+        targetSong.hates.push(user.socketId);
+      }
     }
-    console.info(rooms);
     return {
       success:true,
       data:targetSong

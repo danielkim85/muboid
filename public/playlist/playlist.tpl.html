@@ -2,12 +2,16 @@
 	<div ng-show="$parent.roomName">
 		<div>
 			NOW PLAYING
-			<span class="like" ng-hide="true">
-				<i class="material-icons" ng-click="likeSong($event,true)">thumb_up</i>
+			<span class="like">
+				<i class="material-icons"
+					 ng-class="{ 'inactive': expression.songId === $parent.playlist[0].id && expression.liked }"
+					 ng-click="likeSong($event,true)">thumb_up</i>
 				{{$parent.playlist[0].likes.length}}
 			</span>
-			<span class="hate" ng-hide="true">
-				<i class="material-icons hate">thumb_down</i>
+			<span class="hate">
+				<i class="material-icons"
+					 ng-class="{ 'inactive': expression.songId === $parent.playlist[0].id && !expression.liked }"
+					 ng-click="likeSong($event,false)">thumb_down</i>
 				{{$parent.playlist[0].hates.length}}
 			</span>
 		</div>

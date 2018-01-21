@@ -55,10 +55,26 @@ angular.module('playlist', [])
           $scope.$parent.playlist.splice(index,1);
         };
 
-        $scope.likeSong = function($event,like){
-          angular.element($event.currentTarget).addClass('md-inactive');
-          console.warn(like);
+        $scope.expression = {
+          liked : null,
+          songId : null
         };
+
+        $scope.likeSong = function($event,like){
+          if(!angular.element($event.currentTarget).hasClass('inactive')){
+            $scope.expression.songId = $scope.$parent.playlist[0].id;
+            $scope.expression.liked = like;
+            socket.emit('likeSong',$scope.$parent.roomName, $scope.$parent.user, $scope.expression);
+          }
+        };
+
+        socket.on('songLiked', function(response){
+          if(response.id === $scope.$parent.playlist[0].id){
+            $scope.$parent.playlist[0].likes = response.likes;
+            $scope.$parent.playlist[0].hates = response.hates;
+            $scope.$apply();
+          }
+        });
 
         $scope.lock = function(unlock){
           socket.emit('lockRoom',{

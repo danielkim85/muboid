@@ -42,7 +42,7 @@ function MyIO(server) {
       socket.broadcast.to(roomName).emit('playlistUpdated',ret.data);
     });
 
-    socket.on('addSong', function(roomName,index, song,user){
+    socket.on('addSong', function(roomName,index,song,user){
       var ret = rooms.addSong(roomName,index, song,user);
       if(!ret.success){
         return false;
@@ -50,12 +50,13 @@ function MyIO(server) {
       socket.broadcast.to(roomName).emit('playlistUpdated',ret.data);
     });
 
-    socket.on('likeSong', function(roomName,song,user,like){
-      var ret = rooms.likeSong(roomName,song,user,like);
+    socket.on('likeSong', function(roomName,user,expression){
+      var ret = rooms.likeSong(roomName,user,expression);
       if(!ret.success){
         return false;
       }
       socket.broadcast.to(roomName).emit('songLiked',ret.data);
+      socket.emit('songLiked',ret.data);
     });
 
     socket.on('uploadPlaylist', function(roomName,playlist,user){
