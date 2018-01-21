@@ -109,10 +109,7 @@ angular.module('youtube', [])
         var tried = 0;
         function checkYouTubeReady(){
           tried++;
-          console.info('checkYouTubeReady called');
           if($scope.$parent.youtubeReady){
-            console.info('youtubeReady called with');
-            console.info($element.children()[0]);
             player = new YT.Player($element.children()[0], containerOptions);
           } else{
             if(tried <= MAX_TRY){
@@ -122,11 +119,6 @@ angular.module('youtube', [])
           }
         }
         $timeout(checkYouTubeReady,1000);
-        $scope.$on('youtubeReady', function () {
-          console.info('youtubeReady called with');
-          console.info($element.children()[0]);
-          player = new YT.Player($element.children()[0], containerOptions);
-        });
       }
     };
   }).factory('youtubeFactory', function($http,$q){

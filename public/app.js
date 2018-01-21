@@ -82,9 +82,7 @@ app.controller('MuBoidCtrl', function ($scope, $timeout,$window) {
   });
 
   $window.onYouTubeIframeAPIReady = function() {
-    console.error('setting youtubeReady');
     $scope.youtubeReady = true;
-    //$scope.$broadcast('youtubeReady');
   };
 
   var tag = document.createElement('script');
