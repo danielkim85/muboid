@@ -257,10 +257,10 @@ angular.module('youtube', [])
       return def.promise;
     };
 
+  var maxResults = 10;
   factory.searchPlaylist = function($scope,q){
     data = [];
     var def = $q.defer();
-    var maxResults = 10;
     gapi.client.youtube.search.list({
       part: 'snippet',
       q: q,
@@ -286,7 +286,7 @@ angular.module('youtube', [])
         videoDuration: 'medium',
         videoCategoryId: 10,
         type: 'video',
-        maxResults : 50
+        maxResults : maxResults
       })
         .then(function (response) {
           response.result.items.forEach(function(item){
