@@ -1,21 +1,25 @@
-<div id="info">
+<div id="info" class="accent20">
 	<div ng-show="$parent.roomName">
-		<div>
+		<div style="margin-bottom:10px;">
 			NOW PLAYING
 			<span class="like">
 				<i class="material-icons"
 					 ng-class="{ 'inactive': expression.songId === $parent.playlist[0].id && expression.liked }"
 					 ng-click="likeSong($event,true)">thumb_up</i>
-				{{$parent.playlist[0].likes.length}}
+				<span style="margin-left:-10px;">
+					{{$parent.playlist[0].likes.length}}
+				</span>
 			</span>
 			<span class="hate">
 				<i class="material-icons"
 					 ng-class="{ 'inactive': expression.songId === $parent.playlist[0].id && !expression.liked }"
 					 ng-click="likeSong($event,false)">thumb_down</i>
-				{{$parent.playlist[0].hates.length}}
+				<span style="margin-left:-10px;">
+					{{$parent.playlist[0].hates.length}}
+				</span>
 			</span>
 		</div>
-		<div id="nowPlaying">
+		<div id="nowPlaying" class="accent10">
 			{{$parent.playlist[0].title}}
 		</div>
 	</div>
@@ -51,7 +55,7 @@
 
 <div id="search" ng-hide="(!$parent.isAdmin && $parent.guest && !$parent.guestPerm.addSong) ||
 													($parent.isRoomLocked && !$parent.isAdmin && $parent.guest)">
-	<input type="text" class="form-control" ng-model="searchTerm" placeholder="Search for...">
+	<input type="text" class="form-control accent10" ng-model="searchTerm" placeholder="Search for...">
 </div>
 
 <div id="searchResult" ng-show="searchResult.length > 0">
@@ -64,8 +68,35 @@
 </div>
 
 <div id="songContainer" ng-show="searchResult.length == 0">
+
+	<div ng-repeat="song in $parent.history"
+			 class="locked history">
+		<div class="titleContainer inactive"
+				 videoId = {{song.id}}
+				 songOwner = {{song.owner}}>
+			<i class="material-icons like accent12"
+				 ng-show="song.likes.indexOf($parent.$parent.user.socketId) !== -1">thumb_up</i>
+			<i class="material-icons hate accent12"
+				 ng-show="song.hates.indexOf($parent.$parent.user.socketId) !== -1">thumb_down</i>
+			<span class="like" ng-show="song.likes.length > 0">
+				{{song.likes.length}}
+			</span>
+			<span class="hate" ng-show="song.hates.length > 0">
+				{{song.hates.length}}
+			</span>
+			<span class="title">
+				{{song.title}}
+			</span>
+			<span class="owner" ng-show="song.owner.name">
+				- added by {{song.owner.name}}
+			</span>
+			</button>
+		</div>
+		<hr />
+	</div>
+
 	<div ng-repeat="song in $parent.playlist"
-			 ng-class="{locked: $parent.$parent.roomName && $index <= 1 , song:true}">
+			 ng-class="{locked: $parent.$parent.roomName && $index <= 1,song:true,}">
 		<div class="titleContainer"
 				 videoId = {{song.id}}
 				 songOwner = {{song.owner}}
@@ -87,11 +118,11 @@
 												!$parent.$parent.guest ||
 											(song.owner.socketId === $parent.$parent.user.socketId && !$parent.$parent.isRoomLocked)) &&
 											!($parent.$parent.roomName && $index <= 1)"
-							type="button" class="close" aria-label="Close">
+							type="button" class="close accent12" aria-label="Close">
 				<span aria-hidden="true">&times;</span>
 			</button>
+			<hr />
 		</div>
-		<hr />
 	</div>
 </div>
 

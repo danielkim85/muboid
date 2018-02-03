@@ -1,14 +1,7 @@
-playlist{
-	font-size:10px;
-}
-
-playlist #nowPlaying{
-	font-size:15px;
-}
-
 playlist #nowPlaying{
 	color:#31b0d5;
 }
+
 playlist, playlist #songContainer{
 	float:left;
 }
@@ -17,17 +10,12 @@ playlist #songContainer{
 	width:100%;
 }
 
-playlist #info{
-	margin-top:10px;
-	font-size:20px;
-}
 
 playlist #info > div{
 	padding-bottom:10px;
 }
 
 playlist #info .btn{
-	font-size:10px;
 	margin-top:-5px;
 }
 
@@ -58,6 +46,10 @@ playlist #search{
 	padding-bottom:10px;
 }
 
+playlist #search input{
+	height:25px;
+}
+
 playlist #searchResult, playlist #songContainer{
 	overflow-x:auto;
 	flex-flow:column;
@@ -81,7 +73,6 @@ playlist .close{
 	top: 1px;
 	position: relative;
 	float:right;
-	font-size:12px;
 }
 
 playlist .close:hover{

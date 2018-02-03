@@ -1,6 +1,6 @@
 var Rooms = require('../muboid_modules/rooms.js');
 
-function MyIO(server) {
+function MuBoid(server) {
   var io = require('socket.io')(server);
   var rooms = new Rooms();
 
@@ -50,6 +50,14 @@ function MyIO(server) {
       socket.broadcast.to(roomName).emit('playlistUpdated',ret.data);
     });
 
+    socket.on('sortPlaylist', function(roomName,playlist,user){
+      var ret = rooms.sortPlaylist(roomName,playlist,user);
+      if(!ret.success){
+        return false;
+      }
+      socket.broadcast.to(roomName).emit('playlistUpdated',ret.data);
+    });
+
     socket.on('likeSong', function(roomName,user,expression){
       var ret = rooms.likeSong(roomName,user,expression);
       if(!ret.success){
@@ -63,13 +71,7 @@ function MyIO(server) {
       rooms.uploadPlaylist(roomName,playlist,user);
     });
 
-    socket.on('sortPlaylist', function(roomName,playlist,user){
-      var ret = rooms.sortPlaylist(roomName,playlist,user);
-      if(!ret.success){
-        return false;
-      }
-      socket.broadcast.to(roomName).emit('playlistUpdated',ret.data);
-    });
+
 
     socket.on('join', function(roomName,user,adminCode){
       var ret = rooms.joinRoom(roomName,user,adminCode);
@@ -83,4 +85,4 @@ function MyIO(server) {
   });
 }
 
-module.exports = MyIO;
+module.exports = MuBoid;

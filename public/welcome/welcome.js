@@ -54,7 +54,12 @@ angular.module('welcome', ['youtube'])
         $scope.getPlaylistId = function(playlistId,$event,random){
           isRandom = random;
           $('welcome .list-group-item').removeClass('active');
-          $('welcome .list-group-item[playlistId="' + playlistId + '"]').addClass('active');
+          if(random){
+            $('welcome .list-group-item:first').addClass('active');
+          }
+          else {
+            $('welcome .list-group-item[playlistId="' + playlistId + '"]').addClass('active');
+          }
           myPlaylistId = playlistId;
         };
 
@@ -143,8 +148,13 @@ angular.module('welcome', ['youtube'])
           $scope.$parent.playlist = response.data.playlist;
           $scope.$parent.roomName = response.data.roomName;
           $scope.$parent.guestPerm  = response.data.guestPerm;
+          $scope.$parent.history = response.data.history;
+
           $scope.$apply();
           $scope.$parent.registerSort();
+
+          var elem = $('.history:last').length > 0 ? $('.history:last')[0] :$('.song:first')[0];
+          elem.scrollIntoView();
         });
 
         $scope.manage = function(username){

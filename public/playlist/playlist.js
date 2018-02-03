@@ -123,7 +123,8 @@ angular.module('playlist', [])
 
 
         socket.on('playlistUpdated', function(response){
-          $scope.$parent.playlist = response;
+          $scope.$parent.playlist = response.playlist;
+          $scope.$parent.history = response.history;
           $scope.$parent.$apply();
         });
 

@@ -61,6 +61,7 @@ app.controller('MuBoidCtrl', function ($scope, $timeout,$window) {
   }
 
   $scope.playlist = [];
+  $scope.history = [];
 
   $scope.seconds = 0;
   $scope.minutes = 0;
@@ -92,7 +93,8 @@ app.controller('MuBoidCtrl', function ($scope, $timeout,$window) {
 
   $scope.sortComplete = function(){
     var playlist = [];
-    $('playlist #songContainer div').each(function(){
+
+    $('playlist #songContainer .song').each(function(){
       var videoId = $(this).find('.titleContainer').attr('videoId');
       var title = $(this).find('.title').text().trim();
       if(videoId){
@@ -110,6 +112,7 @@ app.controller('MuBoidCtrl', function ($scope, $timeout,$window) {
     $scope.playlist = playlist;
     $scope.$apply();
     $scope.sortPlaylist();
+
   };
 
   $scope.deregisterSort = function() {
@@ -156,8 +159,8 @@ app.controller('MuBoidCtrl', function ($scope, $timeout,$window) {
 
     //remove the first song
     $scope.socket.emit('removeSong',$scope.roomName, 0, $scope.user);
+    $scope.history.push($scope.playlist[0]);
     $scope.playlist.shift();
-
     $scope.playing1 = !$scope.playing1;
     $scope.playing2 = !$scope.playing1;
     //do not buffer on last song

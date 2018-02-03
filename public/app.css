@@ -3,10 +3,27 @@ html, body {
 	color: #fff;
 	font-family: 'Press Start 2P', cursive;
 	height:100%;
+	text-transform:uppercase;
+	font-size:10px;
 }
 
 body{
 	background: url("images/background.jpg");
+}
+
+.accent10 {
+	font-size:10px;
+}
+.accent12 {
+	font-size: 12px;
+}
+
+.accent20{
+	font-size:20px;
+}
+
+#go{
+	margin-bottom:10px;
 }
 
 #main{
@@ -22,7 +39,6 @@ body{
 #header, #container{
 	width:100%;
 	float:left;
-	font-size:20px;
 }
 
 #headerBackground{
@@ -44,6 +60,7 @@ body{
 
 #joinInfo{
 	float:right;
+	text-transform:none;
 }
 
 .sign-action{
@@ -57,7 +74,6 @@ body{
 	position: absolute;
 	right: 5px;
 	top: 5px;
-	font-size: 10px;
 	font-family:sans-serif;
 }
 .sidebar a{
@@ -81,6 +97,9 @@ body{
 	color:#ec971f;
 }
 
+.btn{
+	font-size:10px;
+}
 .material-icons{
 	cursor:pointer;
 }
@@ -91,9 +110,15 @@ body{
 		width:100%;
 	}
 	.sidebar,footer,#signout-button{
-		display:none !important;
+		//display:none !important;
+	}
+	.sidebar{
+		display:none;
 	}
 	.col-xs-6{
 		width:100%;
+	}
+	.accent20{
+		font-size:16px;
 	}
 }

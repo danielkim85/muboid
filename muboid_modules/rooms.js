@@ -36,6 +36,7 @@ var Rooms = function (){
 
     return text;
   }
+
   //end of helper
 
   this.createRoom = function(roomConfig){
@@ -52,6 +53,7 @@ var Rooms = function (){
     //initial room configuration
     rooms[roomName] = {
       playlist:null,
+      history:[],
       locked:false,
       guests:[],
       admins:[roomConfig.owner.socketId],
@@ -89,6 +91,7 @@ var Rooms = function (){
     };
   };
 
+  //sort, return current and past
   this.sortPlaylist = function(roomName,playlist,user){
     if(!(roomName in rooms)){
       return {
@@ -128,12 +131,17 @@ var Rooms = function (){
     }
 
     rooms[roomName].playlist = playlist;
+    var history = rooms[roomName].history;
     return {
       success:true,
-      data:playlist
+      data:{
+        playlist:playlist,
+        history:history
+      }
     };
   };
 
+  //remove, return current and past
   this.removeSong = function(roomName,index, user){
     if(!(roomName in rooms)){
       return {
@@ -151,6 +159,7 @@ var Rooms = function (){
     }
 
     var playlist = rooms[roomName].playlist;
+    var history = rooms[roomName].history;
     if(playlist[index].owner.socketId !== user.socketId &&
       room.owner.socketId !== user.socketId &&
       room.admins.indexOf(user.socketId) === -1){
@@ -159,14 +168,18 @@ var Rooms = function (){
         msg:'Unauthorized'
       };
     }
-
+    history.push(playlist[index]);
     playlist.splice(index,1);
     return {
       success:true,
-      data:playlist
+      data:{
+        playlist:playlist,
+        history:history
+      }
     };
   };
 
+  //add, return current and past
   this.addSong = function(roomName,index,song,user){
     if(!(roomName in rooms)){
       return {
@@ -190,10 +203,14 @@ var Rooms = function (){
     }
 
     var playlist = rooms[roomName].playlist;
+    var history = rooms[roomName].history;
     playlist.splice(index,0,song);
     return {
       success:true,
-      data:playlist
+      data:{
+        playlist:playlist,
+        history:history
+      }
     };
   };
 
@@ -221,7 +238,6 @@ var Rooms = function (){
       };
     }
 
-    //TODO prevent duplicate action
     if(expression.liked){
       if(targetSong.likes.indexOf(user.socketId) === -1) {
         targetSong.hates.remove(user.socketId);
@@ -328,6 +344,7 @@ var Rooms = function (){
       success:true,
       data: {
         playlist:room.playlist,
+        history:room.history,
         user:user,
         roomName:roomName,
         isAdmin : isAdmin,

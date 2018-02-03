@@ -20,7 +20,7 @@ welcome #durationSlider .slider-handle{
 welcome #durationSlider{
 	margin-bottom:0px;
 	width:295px;
-	margin-left:10px;
+	margin-right:12px;
 }
 
 welcome #joinDetail, welcome #joinDetail div{
@@ -30,7 +30,6 @@ welcome #joinDetail, welcome #joinDetail div{
 
 welcome input{
 	color:black;
-	font-size:10px;
 }
 
 welcome .btn-primary{
@@ -38,14 +37,12 @@ welcome .btn-primary{
 }
 
 welcome .btn-sub{
-	font-size:10px;
 	padding:2px;
 }
 
 welcome .list-group-item{
 	color:black;
 	cursor:pointer;
-	font-size:10px;
 }
 
 welcome .no-padding{
