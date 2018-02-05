@@ -76,9 +76,11 @@ body{
 	top: 5px;
 	font-family:sans-serif;
 }
+
 .sidebar a{
 	color: white;
 }
+
 .form-check-inline {
 	display: -webkit-inline-box;
 	display: -ms-inline-flexbox;
@@ -120,5 +122,14 @@ body{
 	}
 	.accent20{
 		font-size:16px;
+	}
+}
+
+//ios zoomin fix
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+	select,
+	textarea,
+	input {
+		font-size: 16px;
 	}
 }
