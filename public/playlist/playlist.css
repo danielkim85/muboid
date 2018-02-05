@@ -80,8 +80,9 @@ playlist .close:hover{
 	opacity:1;
 }
 
-playlist .song{
+playlist .handle{
 	cursor:move;
+	font-size:12px;
 }
 
 playlist .owner{

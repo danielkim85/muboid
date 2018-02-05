@@ -103,6 +103,15 @@
 		 		 ng-hide="$index == 0 && $parent.$parent.roomName">
 			<span class="glyphicon glyphicon-lock"
 						ng-show="$parent.$parent.roomName && $index <= 1"></span>
+			<i class="material-icons handle" style="font-size:12px;">sort</i>
+			<i class="material-icons"
+				 style="color:rgb(217, 83, 79);font-size:12px;"
+				 ng-click="remove($index)"
+				 ng-show="($parent.$parent.isAdmin ||
+												!$parent.$parent.guest ||
+											(song.owner.socketId === $parent.$parent.user.socketId && !$parent.$parent.isRoomLocked)) &&
+											!($parent.$parent.roomName && $index <= 1)">
+				delete_forever</i>
 			<a title="Open this song in YouTube" href="https://www.youtube.com/watch?v={{song.id}}" target="_blank">
 				{{$index}}
 			</a>
@@ -112,15 +121,6 @@
 			<span class="owner" ng-show="song.owner.name">
 				- added by {{song.owner.name}}
 			</span>
-
-			<button ng-click="remove($index)"
-							ng-show="($parent.$parent.isAdmin ||
-												!$parent.$parent.guest ||
-											(song.owner.socketId === $parent.$parent.user.socketId && !$parent.$parent.isRoomLocked)) &&
-											!($parent.$parent.roomName && $index <= 1)"
-							type="button" class="close accent12" aria-label="Close">
-				<span aria-hidden="true">&times;</span>
-			</button>
 			<hr />
 		</div>
 	</div>

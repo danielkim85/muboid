@@ -132,8 +132,10 @@ app.controller('MuBoidCtrl', function ($scope, $timeout,$window) {
     if(destroy) {
       $scope.deregisterSort();
     }
+
     $("#songContainer").sortable({
       items: "> div:not(.locked)",
+      handle: '.handle',
       tolerance: 'pointer',
       revert: 'invalid',
       placeholder: 'span2 well placeholder tile',
