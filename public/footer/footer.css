@@ -16,12 +16,20 @@ footer .action{
 
 footer .action .material-icons {
 	position:relative;
-	top: 6px;
+	top: 8px;
 	margin-right:5px;
+	font-size:15px;
 }
 
 footer .action span{
 	position:relative;
 	top:2px;
 	left:-10px;
+}
+
+footer #playerAction{
+	width:35px;
+	margin:0 auto;
+	margin-top:4px;
+	color:#337ab7;
 }

@@ -24,8 +24,7 @@ angular.module('footer', [])
         function fsChanged(){
           var fullscreen = isFullscreen();
 
-          $('.action#fullscreen i').html(fullscreen ? 'computer' : 'tv');
-          $('.action#fullscreen span').html(fullscreen ? 'SWITCH TO COMPUTER' : 'SWITCH TO TV');
+          $('.action#fullscreen span').html(fullscreen ? 'EXIT FULLSCREEN' : 'FULLSCREEN');
 
           if(fullscreen){
             //adjust screen
@@ -87,6 +86,7 @@ angular.module('footer', [])
         $scope.fullscreen = function(){
           return isFullscreen() ? exitFullscreen() : launchIntoFullscreen();
         };
+
       }
     };
   });

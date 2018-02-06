@@ -78,7 +78,7 @@ app.controller('MuBoidCtrl', function ($scope, $timeout,$window) {
 
   $scope.$on('youtubePlayerStateChanged', function (event, data) {
     if(data.status === YT.PlayerState.ENDED){
-      doSwitch();
+      $scope.doSwitch();
     }
   });
 
@@ -153,7 +153,7 @@ app.controller('MuBoidCtrl', function ($scope, $timeout,$window) {
   };
 
   //song changes from player 1 to player 2
-  function doSwitch(){
+  $scope.doSwitch = function(){
     if($scope.playlist.length <= 1){
       $scope.gameover = true;
       return;
@@ -165,6 +165,7 @@ app.controller('MuBoidCtrl', function ($scope, $timeout,$window) {
     $scope.playlist.shift();
     $scope.playing1 = !$scope.playing1;
     $scope.playing2 = !$scope.playing1;
+
     //do not buffer on last song
     if($scope.playlist.length >= 2) {
       if ($scope.playing1) {
@@ -175,8 +176,8 @@ app.controller('MuBoidCtrl', function ($scope, $timeout,$window) {
       }
     }
 
-    $scope.$apply();
     if(END - START === 60){
+      $scope.seconds = 0;
       $scope.minutes++;
     }
     $scope.registerSort(true);

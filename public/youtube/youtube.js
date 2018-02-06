@@ -72,7 +72,7 @@ angular.module('youtube', [])
           $timeout(function(){
             player.pauseVideo();
             $timeout.cancel( timer );
-            player.seekTo(30);
+            player.seekTo(START);
           },2000);
         }
 

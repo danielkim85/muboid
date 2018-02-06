@@ -108,9 +108,9 @@
 				 style="color:rgb(217, 83, 79);font-size:12px;"
 				 ng-click="remove($index)"
 				 ng-show="($parent.$parent.isAdmin ||
-												!$parent.$parent.guest ||
-											(song.owner.socketId === $parent.$parent.user.socketId && !$parent.$parent.isRoomLocked)) &&
-											!($parent.$parent.roomName && $index <= 1)">
+									!$parent.$parent.guest ||
+									(song.owner.socketId === $parent.$parent.user.socketId && !$parent.$parent.isRoomLocked)) &&
+									!($parent.$parent.roomName && $index <= 1)">
 				delete_forever</i>
 			<a title="Open this song in YouTube" href="https://www.youtube.com/watch?v={{song.id}}" target="_blank">
 				{{$index}}
