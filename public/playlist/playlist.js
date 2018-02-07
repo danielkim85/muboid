@@ -99,7 +99,7 @@ angular.module('playlist', [])
           }
           else{
             //enable sort/remove/add/search
-            $scope.$parent.registerSort(true);
+            $scope.$parent.registerSort(false);
           }
         });
 

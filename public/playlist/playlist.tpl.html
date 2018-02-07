@@ -69,7 +69,7 @@
 
 <div id="songContainer" ng-show="searchResult.length == 0">
 
-	<div ng-repeat="song in $parent.history"
+	<div ng-repeat="song in $parent.history track by $index"
 			 class="locked history">
 		<div class="titleContainer inactive"
 				 videoId = {{song.id}}
