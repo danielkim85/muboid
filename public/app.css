@@ -8,7 +8,8 @@ html, body {
 }
 
 body{
-	background: url("images/background.jpg");
+	background: url("https://cdn.gratisography.com/photos/421H.jpg");
+	background-size: 1920px;
 }
 
 .accent10 {
@@ -47,7 +48,7 @@ body{
 	z-index:99;
 	opacity:0.5;
 	display:none;
-	height:85px;
+	height:105px;
 	background-color:black;
 }
 #header{
@@ -105,6 +106,15 @@ body{
 
 .material-icons{
 	cursor:pointer;
+}
+
+.ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button,
+.ui-widget{
+	font-family:inherit;
+	font-size:inherit;
+}
+.ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button{
+	font-size:10px;
 }
 
 @media only screen and (max-width: 768px) {
