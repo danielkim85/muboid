@@ -40,8 +40,14 @@
 			</button>
 		</div>
 
-		<div class="playlist-action" ng-show="$parent.roomName && !$parent.guest">
-			<button type="button" class="btn btn-danger" ng-click="lock($parent.isRoomLocked)">
+		<div class="playlist-action" ng-show="$parent.roomName">
+			<button type="button" class="btn btn-primary"
+							ng-show="$parent.isAdmin" ng-click="$parent.doSwitch()">
+				NEXT
+			</button>
+			<button type="button" class="btn btn-danger"
+							ng-show="!$parent.guest"
+							ng-click="lock($parent.isRoomLocked)">
 				<span ng-if="!$parent.isRoomLocked">
 					LOCK
 				</span>
