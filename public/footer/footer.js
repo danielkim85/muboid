@@ -30,10 +30,16 @@ angular.module('footer', [])
             //adjust screen
             $('#main').css('width','100%');
             $('#main').css('padding','0px');
-            $('#header').css('font-size','40px');
+
             $('#header').css('position','absolute');
             $('#header').css('z-index','100');
             $('#header').css('padding','15px');
+
+            $('#nowPlayingContainer').css('position','absolute');
+            $('#nowPlayingContainer').css('z-index','100');
+            $('#nowPlayingContainer').css('top','45px');
+            $('#nowPlayingContainer').css('left','15px');
+
             $('#headerBackground').show();
             $timeout(function(){
               var width = $(window).width();
@@ -46,10 +52,16 @@ angular.module('footer', [])
             //adjust screen
             $('#main').css('width','');
             $('#main').css('padding','');
-            $('#header').css('font-size','');
+
             $('#header').css('position','');
             $('#header').css('z-index','');
             $('#header').css('padding','');
+
+            $('#nowPlayingContainer').css('position','');
+            $('#nowPlayingContainer').css('z-index','');
+            $('#nowPlayingContainer').css('top','');
+            $('#nowPlayingContainer').css('left','');
+
             $('#player1, #player2').attr('width',PLAYER_WIDTH + 'px');
             $('#player1, #player2').attr('height',PLAYER_HEIGHT + 'px');
             $('#headerBackground').hide();

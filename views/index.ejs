@@ -22,6 +22,8 @@
 
 		<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
 		      rel="stylesheet">
+		<link href="https://code.jquery.com/ui/1.12.1/themes/black-tie/jquery-ui.css"
+		      rel="stylesheet">
 		<link rel="stylesheet" href="/third-party/bootstrap-slider/css/bootstrap-slider.min.css" />
 
 		<link rel='stylesheet' href='/footer/footer.css' />
@@ -63,6 +65,7 @@
 			<div ng-show="wait">Loading ...</div>
 			<welcome ng-hide="go || wait || guest || playlistReview"></welcome>
 			<div id="gameover" ng-show="gameover">GAME OVER</div>
+
 			<div id="go" ng-show="roomName && !gameover && !guest">
 				<div id="headerBackground"></div>
 				<div id="header" class="accent20">
@@ -76,7 +79,9 @@
 					<youtube-player id="player2" video-id="{{videoId2}}" playing="{{playing2}}"></youtube-player>
 				</div>
 			</div>
-			<playlist playlist-id="{{playlistId}}" ng-show="!gameover && playlist.length > 0"></playlist>
+
+			<playlist playlist-id="{{playlistId}}" ng-show="!gameover && playlist.length > 0">
+			</playlist>
 		</div>
 
 		<footer ng-hide="guest"></footer>
@@ -88,7 +93,7 @@
 				</a>
 			</div>
 			<div>
-				<a href="https://wallpapersafari.com/w/HnlTDh/" target="_blank">
+				<a href="https://gratisography.com/" target="_blank">
 					Wallpaper Credit
 				</a>
 			</div>

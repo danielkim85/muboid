@@ -132,6 +132,21 @@ angular.module('playlist', [])
           $scope.$parent.gameover = true;
           $scope.$parent.$apply();
         });
+
+        $scope.$watchGroup(['$parentgameover', '$parent.playlist'], function(newValues) {
+          return;
+          //experiment modal dialog
+          if(!newValues[0] && newValues[1].length > 0){
+            $( "playlist" ).dialog({
+              height: 600,
+              width:600,
+              title:'Playlist'
+            });
+          }
+          else{
+            //hide
+          }
+        });
       }
     };
   });
