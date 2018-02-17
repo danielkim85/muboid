@@ -204,6 +204,10 @@ app.controller('MuBoidCtrl', function ($scope, $timeout,$window) {
     'sync disconnect on unload': true
   });
 
+  $scope.socket.on("disconnect", function(){
+    $scope.gameover = true;
+  });
+
   window.onbeforeunload = function() {
     $scope.socket.emit('leave',$scope.roomName,$scope.user,!$scope.guest);
     return undefined;
