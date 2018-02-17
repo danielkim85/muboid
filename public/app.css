@@ -8,7 +8,7 @@ html, body {
 }
 
 body{
-	background: url("https://cdn.gratisography.com/photos/421H.jpg");
+	background: url("https://cdn.gratisography.com/photos/391H.jpg");
 	background-size: 1920px;
 }
 
@@ -28,7 +28,7 @@ body{
 }
 
 #main{
-	background-color: rgba(0, 0, 0, 0.75);
+	background-color: rgba(0, 0, 0, 0.70);
 	margin:auto;
 	padding:20px;
 	height:100%;
