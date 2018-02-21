@@ -212,7 +212,7 @@ app.controller('MuBoidCtrl', function ($scope, $timeout,$window) {
     $scope.registerSort();
   };
 
-  $scope.initSocket = function(){
+  $scope.initSocket = function(callback){
     //socket
     var protocol = "http://";
     var host =  window.location.hostname;
@@ -246,6 +246,9 @@ app.controller('MuBoidCtrl', function ($scope, $timeout,$window) {
     });
 
     $scope.$broadcast('socketInit');
+    if(callback){
+      callback();
+    }
   };
 
   window.onbeforeunload = function() {
