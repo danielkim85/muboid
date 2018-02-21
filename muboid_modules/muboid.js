@@ -87,7 +87,6 @@ function MuBoid(server) {
       if(ret.success){
         socket.join(roomName);
       }
-      console.error(ret);
       socket.emit('joined',ret);
     });
 
