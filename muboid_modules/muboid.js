@@ -5,12 +5,13 @@ function MuBoid(server) {
   var rooms = new Rooms();
 
   io.on('connection', function(socket){
-
+    console.warn('connected with');
+    console.warn(socket.id);
     socket.on('disconnect', function () {
       console.warn('disconnect!');
-      socket.emit('disconnected');
     });
-
+    
+    //test remove later
     socket.on('clientDisconnect', function(socketId){
       console.warn('disconnect');
       io.sockets.connected[socketId].disconnect();
