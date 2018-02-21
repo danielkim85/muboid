@@ -69,7 +69,6 @@ function MuBoid(server) {
     });
 
     socket.on('join', function(roomName,user){
-      console.warn('join');
       var ret = rooms.joinRoom(roomName,user);
       if(ret.success){
         socket.join(roomName);

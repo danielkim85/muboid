@@ -170,15 +170,12 @@ angular.module('welcome', ['youtube'])
           else {
             $scope.$parent.wait = true;
             $scope.$parent.initSocket(function(){
-              console.info('join callback called');
               socket.emit('join',joinRoomName,{
                 name:$scope.$parent.name,
                 socketId:$scope.$parent.username
               });
             });
-
           }
-
         };
 
         $scope.$on('join', function () {
