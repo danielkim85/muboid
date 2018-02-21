@@ -229,7 +229,7 @@ app.controller('MuBoidCtrl', function ($scope, $timeout,$window) {
     }
   });
 
-  socket.on('disconnect', function(){
+  $scope.socket.on('disconnect', function(){
     $scope.wait = true;
   });
   var id;
