@@ -220,6 +220,13 @@ app.controller('MuBoidCtrl', function ($scope, $timeout,$window) {
 
   $scope.socket.on('connect', function(){
     alert($scope.roomName);
+    if($scope.roomName) {
+      $scope.socket.emit('join', $scope.roomName, {
+        name: $scope.username,
+        socketId: $scope.socket.id,
+        reconnect: true
+      }, $scope.adminCode);
+    }
   });
   var id;
   if(id = getParameterByName('disconnect')){
