@@ -209,7 +209,7 @@ app.controller('MuBoidCtrl', function ($scope, $timeout,$window) {
   });
 
   $scope.socket.on("disconnect", function(){
-    $scope.gameover = true;
+    $scope.reconnect = true;
   });
 
   window.onbeforeunload = function() {
