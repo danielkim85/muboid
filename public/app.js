@@ -212,32 +212,41 @@ app.controller('MuBoidCtrl', function ($scope, $timeout,$window) {
     $scope.registerSort();
   };
 
-  //socket
-  var protocol = "http://";
-  var host =  window.location.hostname;
-  var port =  host === 'localhost' ? '3000' : '80';
-  $scope.socket = io.connect(protocol + host + ':' + port,{
-    'sync disconnect on unload': true,
-    reconnection: true,
-    reconnectionDelay: 1000,
-    reconnectionDelayMax : 5000,
-    reconnectionAttempts: Infinity
-  });
+  $scope.initSocket = function(){
+    //socket
+    var protocol = "http://";
+    var host =  window.location.hostname;
+    var port =  host === 'localhost' ? '3000' : '80';
+    $scope.socket = io.connect(protocol + host + ':' + port,{
+      'sync disconnect on unload': true,
+      reconnection: true,
+      reconnectionDelay: 1000,
+      reconnectionDelayMax : 5000,
+      reconnectionAttempts: Infinity
+    });
 
-  $scope.socket.on('connect', function(){
-    if($scope.roomName && $scope.guest) {
-      $scope.wait = true;
-      $scope.socket.emit('join', $scope.roomName, {
-        name: $scope.name,
-        socketId: $scope.username
-      }, $scope.adminCode);
-    }
-  });
+    $scope.socket.on('connect', function(){
+      if($scope.roomName && $scope.guest) {
+        $scope.wait = true;
+        $scope.socket.emit('join', $scope.roomName, {
+          name: $scope.name,
+          socketId: $scope.username
+        });
+      }
+    });
 
-  $scope.socket.on('disconnect', function(){
-    $scope.wait = true;
-    $scope.$apply();
-  });
+    $scope.socket.on('disconnect', function(){
+      if(!$scope.guest){
+        window.location.reload();
+      }
+      else{
+        $scope.wait = true;
+        $scope.$apply();
+      }
+    });
+
+    $scope.$broadcast('socketInit');
+  };
 
   window.onbeforeunload = function() {
     $scope.socket.on('connect', function(){

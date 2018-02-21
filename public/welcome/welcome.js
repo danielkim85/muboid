@@ -20,14 +20,44 @@ angular.module('welcome', ['youtube'])
       templateUrl: 'welcome/welcome.tpl.html',
       link: function($scope){
 
-        var socket = $scope.$parent.socket;
+        var socket;
+        $scope.$on('socketInit', function () {
+          socket = $scope.$parent.socket;
 
-        //server tells me room has been created
-        socket.on('created', function(roomName){
-          $scope.$parent.roomName = roomName;
-          $scope.$parent.wait = true;
-          $scope.$parent.start();
-          $scope.$apply();
+          //server tells me room has been created
+          socket.on('created', function(roomName){
+            $scope.$parent.roomName = roomName;
+            $scope.$parent.wait = true;
+            $scope.$parent.start();
+            $scope.$apply();
+          });
+
+          //server tells me i have joined a room
+          socket.on('joined', function(response){
+            if(!response.success){
+              $scope.errMsg = response.msg;
+              $scope.$apply();
+              return;
+            }
+
+            $scope.$parent.isRoomLocked = response.data.locked;
+            $scope.$parent.isAdmin = response.data.isAdmin;
+            $scope.$parent.user = response.data.user;
+
+            $scope.errMsg = false;
+            $scope.$parent.guest = true;
+            $scope.$parent.playlist = response.data.playlist;
+            $scope.$parent.roomName = response.data.roomName;
+            $scope.$parent.guestPerm  = response.data.guestPerm;
+            $scope.$parent.history = response.data.history;
+
+            $scope.$parent.wait = false;
+            $scope.$apply();
+            $scope.$parent.registerSort();
+
+            var elem = $('.history:last').length > 0 ? $('.history:last')[0] :$('.song:first')[0];
+            elem.scrollIntoView();
+          });
         });
 
         $scope.$parent.guestPerm.addSong = true;
@@ -35,6 +65,8 @@ angular.module('welcome', ['youtube'])
         var myPlaylistId;
         var isRandom = true;
         $scope.start = function(){
+          $scope.$parent.initSocket();
+
           $scope.$parent.registerSort();
           if(!$scope.createDetail) {
             $scope.createDetail = true;
@@ -137,10 +169,11 @@ angular.module('welcome', ['youtube'])
           }
           else {
             $scope.$parent.wait = true;
+            $scope.$parent.initSocket();
             socket.emit('join',joinRoomName,{
               name:$scope.$parent.name,
               socketId:$scope.$parent.username
-            },$scope.adminCode);
+            });
           }
 
         };
@@ -149,38 +182,10 @@ angular.module('welcome', ['youtube'])
           $scope.join($scope.joinRoomName);
         });
 
-        //server tells me i have joined a room
-        socket.on('joined', function(response){
-          console.warn(response);
-          if(!response.success){
-            $scope.errMsg = response.msg;
-            $scope.$apply();
-            return;
-          }
-
-          $scope.$parent.isRoomLocked = response.data.locked;
-          $scope.$parent.isAdmin = response.data.isAdmin;
-          $scope.$parent.user = response.data.user;
-
-          $scope.errMsg = false;
-          $scope.$parent.guest = true;
-          $scope.$parent.playlist = response.data.playlist;
-          $scope.$parent.roomName = response.data.roomName;
-          $scope.$parent.guestPerm  = response.data.guestPerm;
-          $scope.$parent.history = response.data.history;
-
-          $scope.$parent.wait = false;
-          $scope.$apply();
-          $scope.$parent.registerSort();
-
-          var elem = $('.history:last').length > 0 ? $('.history:last')[0] :$('.song:first')[0];
-          elem.scrollIntoView();
-        });
 
         $scope.manage = function(username){
           window.open('https://www.youtube.com/user/' + username + '/playlists');
         };
-
 
         $scope.back = function(){
           $scope.joinDetail = false;

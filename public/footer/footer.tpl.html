@@ -1,4 +1,5 @@
-<div id="fullscreen" class="action" ng-click="fullscreen()">
+<div id="fullscreen" class="action" ng-click="fullscreen()"
+	ng-show="!$parent.guest && $parent.roomName">
 	<i class="material-icons">tv</i>
 	<span style="top:6px;">
 		FULLSCREEN

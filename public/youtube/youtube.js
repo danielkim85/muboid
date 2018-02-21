@@ -222,6 +222,8 @@ angular.module('youtube', [])
           'mine': true
         }).then(function (response) {
           def.resolve(response.result.items);
+        }, function(error){
+          def.resolve([]);
         });
       }
       return def.promise;

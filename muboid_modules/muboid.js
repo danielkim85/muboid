@@ -6,10 +6,7 @@ function MuBoid(server) {
 
   io.on('connection', function(socket){
 
-    console.info('connected');
-
     socket.on('create', function(roomConfig){
-      console.warn(roomConfig);
       var roomName = rooms.createRoom(roomConfig);
       if(roomName !== null){
         socket.join(roomName);
@@ -34,8 +31,8 @@ function MuBoid(server) {
       }
     });
 
-    socket.on('removeSong', function(roomName,index,user){
-      var ret = rooms.removeSong(roomName,index,user);
+    socket.on('removeSong', function(roomName,index,user,hard){
+      var ret = rooms.removeSong(roomName,index,user,hard);
       if(!ret.success){
         return false;
       }
@@ -71,9 +68,8 @@ function MuBoid(server) {
       rooms.uploadPlaylist(roomName,playlist,user);
     });
 
-    socket.on('join', function(roomName,user,adminCode){
-      console.warn(user);
-      var ret = rooms.joinRoom(roomName,user,adminCode);
+    socket.on('join', function(roomName,user){
+      var ret = rooms.joinRoom(roomName,user);
       if(ret.success){
         socket.join(roomName);
       }

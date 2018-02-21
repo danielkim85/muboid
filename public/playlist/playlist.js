@@ -7,7 +7,49 @@ angular.module('playlist', [])
       templateUrl: 'playlist/playlist.tpl.html',
       link: function($scope){
 
-        var socket = $scope.$parent.socket;
+        var socket;
+        $scope.$on('socketInit', function () {
+          socket = $scope.$parent.socket;
+
+          socket.on('songLiked', function(response){
+            if(response.id === $scope.$parent.playlist[0].id){
+              $scope.$parent.playlist[0].likes = response.likes;
+              $scope.$parent.playlist[0].hates = response.hates;
+              $scope.$apply();
+            }
+          });
+
+          socket.on('locked', function(response){
+            $scope.$parent.isRoomLocked = response.data;
+            $scope.$parent.$apply();
+
+            if($scope.$parent.isAdmin || !$scope.$parent.guest) {
+              //if admin or not a guest do nothing
+              return;
+            }
+            if($scope.$parent.isRoomLocked){
+              //disable sort/remove/add/search
+              $scope.$parent.deregisterSort();
+              $scope.searchResult = [];
+            }
+            else{
+              //enable sort/remove/add/search
+              $scope.$parent.registerSort(false);
+            }
+          });
+
+          socket.on('playlistUpdated', function(response){
+            $scope.$parent.playlist = response.playlist;
+            $scope.$parent.history = response.history;
+            $scope.$parent.$apply();
+          });
+
+          socket.on('gameover', function(){
+            $scope.$parent.gameover = true;
+            $scope.$parent.$apply();
+          });
+
+        });
 
         $scope.start = function(){
           $scope.$parent.wait = true;
@@ -17,7 +59,6 @@ angular.module('playlist', [])
           };
           var roomConfig = {
             owner : $scope.$parent.user,
-            adminCode : $scope.$parent.adminCode,
             guestPerm : $scope.$parent.guestPerm
           };
           socket.emit('create',roomConfig);
@@ -51,7 +92,7 @@ angular.module('playlist', [])
         };
 
         $scope.remove = function(index){
-          socket.emit('removeSong',$scope.$parent.roomName, index, $scope.$parent.user);
+          socket.emit('removeSong',$scope.$parent.roomName, index, $scope.$parent.user,true);
           $scope.$parent.playlist.splice(index,1);
         };
 
@@ -68,14 +109,6 @@ angular.module('playlist', [])
           }
         };
 
-        socket.on('songLiked', function(response){
-          if(response.id === $scope.$parent.playlist[0].id){
-            $scope.$parent.playlist[0].likes = response.likes;
-            $scope.$parent.playlist[0].hates = response.hates;
-            $scope.$apply();
-          }
-        });
-
         $scope.lock = function(unlock){
           socket.emit('lockRoom',{
             roomName : $scope.$parent.roomName,
@@ -83,25 +116,6 @@ angular.module('playlist', [])
             unlock: unlock});
           $scope.$parent.isRoomLocked = !unlock;
         };
-
-        socket.on('locked', function(response){
-          $scope.$parent.isRoomLocked = response.data;
-          $scope.$parent.$apply();
-
-          if($scope.$parent.isAdmin || !$scope.$parent.guest) {
-            //if admin or not a guest do nothing
-            return;
-          }
-          if($scope.$parent.isRoomLocked){
-            //disable sort/remove/add/search
-            $scope.$parent.deregisterSort();
-            $scope.searchResult = [];
-          }
-          else{
-            //enable sort/remove/add/search
-            $scope.$parent.registerSort(false);
-          }
-        });
 
         $scope.$watch('searchTerm',function(newValue){
           if(newValue && newValue.length > 2){
@@ -121,17 +135,6 @@ angular.module('playlist', [])
           }
         });
 
-
-        socket.on('playlistUpdated', function(response){
-          $scope.$parent.playlist = response.playlist;
-          $scope.$parent.history = response.history;
-          $scope.$parent.$apply();
-        });
-
-        socket.on('gameover', function(){
-          $scope.$parent.gameover = true;
-          $scope.$parent.$apply();
-        });
 
         $scope.$watchGroup(['$parentgameover', '$parent.playlist'], function(newValues) {
           return;

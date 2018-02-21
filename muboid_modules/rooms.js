@@ -58,7 +58,6 @@ var Rooms = function (){
       guests:[],
       admins:[roomConfig.owner.socketId],
       owner:roomConfig.owner,
-      adminCode:roomConfig.adminCode,
       guestPerm:roomConfig.guestPerm,
       adminPwd:null
     };
@@ -142,8 +141,7 @@ var Rooms = function (){
   };
 
   //remove, return current and past
-  this.removeSong = function(roomName,index, user){
-    console.info(user);
+  this.removeSong = function(roomName,index,user,hard){
     if(!(roomName in rooms)){
       return {
         success:false,
@@ -152,7 +150,6 @@ var Rooms = function (){
     }
 
     var room = rooms[roomName];
-    console.info(room.owner);
     if(room.locked && room.owner.socketId !== user.socketId && room.admins.indexOf(user.socketId) === -1){
       return {
         success:false,
@@ -170,8 +167,7 @@ var Rooms = function (){
         msg:'Unauthorized'
       };
     }
-    if(user.socketId === room.owner.socketId && user.name === 'owner'){
-      console.warn('slicing');
+    if(!hard){
       history.push(playlist[index]);
     }
 
@@ -298,7 +294,7 @@ var Rooms = function (){
     }
   };
 
-  this.joinRoom = function(roomName,user,adminCode){
+  this.joinRoom = function(roomName,user){
     if(!user.name){
       return {
         success:false,
@@ -323,9 +319,6 @@ var Rooms = function (){
         socketId: user.socketId
       });
     }
-    console.warn('joined');
-    console.info(room.guests);
-    console.info(room.admins);
     return {
       success:true,
       data: {
