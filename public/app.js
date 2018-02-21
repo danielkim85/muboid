@@ -219,7 +219,6 @@ app.controller('MuBoidCtrl', function ($scope, $timeout,$window) {
   });
 
   $scope.socket.on('connect', function(){
-    alert($scope.roomName);
     if($scope.roomName) {
       $scope.socket.emit('join', $scope.roomName, {
         name: $scope.username,
@@ -234,6 +233,7 @@ app.controller('MuBoidCtrl', function ($scope, $timeout,$window) {
   }
 
   $scope.reconnect = function(){
+    $scope.wait = true;
     $scope.socket = io.connect(protocol + host + ':' + port,{
       'sync disconnect on unload': true,
       reconnection: true,

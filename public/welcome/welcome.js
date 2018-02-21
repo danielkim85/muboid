@@ -134,7 +134,7 @@ angular.module('welcome', ['youtube'])
 
         //server tells me i have joined a room
         socket.on('joined', function(response){
-          alert('joined');
+          $scope.wait = false;
           if(!response.success){
             $scope.errMsg = response.msg;
             $scope.$apply();
