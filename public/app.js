@@ -226,7 +226,7 @@ app.controller('MuBoidCtrl', function ($scope, $timeout,$window) {
     $scope.socket.emit('clientDisconnect',id);
   }
 
-  if(id = getParameterByName('connect')){
+  $scope.reconnect = function(){
     $scope.socket = io.connect(protocol + host + ':' + port,{
       'sync disconnect on unload': true,
       reconnection: true,
@@ -234,9 +234,18 @@ app.controller('MuBoidCtrl', function ($scope, $timeout,$window) {
       reconnectionDelayMax : 5000,
       reconnectionAttempts: Infinity
     });
-  }
+    console.warn($scope.roomName);
+    $scope.socket.emit('join',$scope.roomName,{
+      name:$scope.username,
+      socketId:$scope.socket.id,
+      reconnect:true
+    },$scope.adminCode);
+  };
 
   window.onbeforeunload = function() {
+    $scope.socket.on('connect', function(){
+      //do nothing
+    });
     $scope.socket.emit('leave',$scope.roomName,$scope.user,!$scope.guest);
     return undefined;
   };

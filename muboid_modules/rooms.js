@@ -314,7 +314,7 @@ var Rooms = function (){
       };
     }
 
-    if(nameExists(roomName,user.name)){
+    if(!user.reconnect && nameExists(roomName,user.name)){
       return {
         success:false,
         msg:'Name already exists.'
@@ -339,6 +339,8 @@ var Rooms = function (){
       socketId:user.socketId
     });
 
+    console.warn('joined');
+    console.warn(room.guests);
 
     return {
       success:true,
