@@ -16,11 +16,11 @@ var Rooms = function (){
     return this;
   };
 
-  function nameExists(roomName,myName){
+  function usernameExists(roomName,myUsername){
     var ret = false;
     //TODOD inefficient
     rooms[roomName].guests.forEach(function(guest){
-      if(guest.name === myName){
+      if(guest.username === myUsername){
         ret = true;
       }
     });
@@ -143,6 +143,7 @@ var Rooms = function (){
 
   //remove, return current and past
   this.removeSong = function(roomName,index, user){
+    console.info(user);
     if(!(roomName in rooms)){
       return {
         success:false,
@@ -151,6 +152,7 @@ var Rooms = function (){
     }
 
     var room = rooms[roomName];
+    console.info(room.owner);
     if(room.locked && room.owner.socketId !== user.socketId && room.admins.indexOf(user.socketId) === -1){
       return {
         success:false,
@@ -168,7 +170,11 @@ var Rooms = function (){
         msg:'Unauthorized'
       };
     }
-    history.push(playlist[index]);
+    if(user.socketId === room.owner.socketId && user.name === 'owner'){
+      console.warn('slicing');
+      history.push(playlist[index]);
+    }
+
     playlist.splice(index,1);
     return {
       success:true,
@@ -300,13 +306,6 @@ var Rooms = function (){
       };
     }
 
-    if(user.name.toLowerCase() === 'owner'){
-      return {
-        success:false,
-        msg:'Name is reserved.'
-      };
-    }
-
     if(!(roomName in rooms)){
       return {
         success:false,
@@ -314,33 +313,19 @@ var Rooms = function (){
       };
     }
 
-    if(!user.reconnect && nameExists(roomName,user.name)){
-      return {
-        success:false,
-        msg:'Name already exists.'
-      };
-    }
 
-    var isAdmin = false;
     var room = rooms[roomName];
-    if(adminCode && room.adminCode){
-      if(adminCode !== room.adminCode){
-        return {
-          success:false,
-          msg:'Unauthorized'
-        };
-      }
-      isAdmin = true;
-      room.admins.push(user.socketId);
+    var isAdmin = room.admins.indexOf(user.socketId) !== -1;
+
+    if(usernameExists(roomName,user.username)) {
+      room.guests.push({
+        name: user.name,
+        socketId: user.socketId
+      });
     }
-
-    room.guests.push({
-      name:user.name,
-      socketId:user.socketId
-    });
-
     console.warn('joined');
-
+    console.info(room.guests);
+    console.info(room.admins);
     return {
       success:true,
       data: {

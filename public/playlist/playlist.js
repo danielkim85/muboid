@@ -13,7 +13,7 @@ angular.module('playlist', [])
           $scope.$parent.wait = true;
           $scope.$parent.user = {
             name:'owner',
-            socketId:socket.id
+            socketId:$scope.$parent.username
           };
           var roomConfig = {
             owner : $scope.$parent.user,
@@ -41,7 +41,7 @@ angular.module('playlist', [])
           var songCopy = $.extend(true,{},song);
           $scope.searchTerm = '';
           var insertPosition = $scope.$parent.playlist.length >= 10 ? 10 : 0;
-          var index = $scope.$parent.roomName || $scope.$parent.guest ? 2 : insertPosition;
+          var index = $scope.$parent.roomName || $scope.$parent.guest ? 5 : insertPosition;
 
           if(!songCopy.owner.name){
             songCopy.owner.name = 'host';

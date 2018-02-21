@@ -189,8 +189,14 @@ angular.module('youtube', [])
       data = [];
       var def = $q.defer();
       if(!$scope.signedIn){
-        gapi.auth2.getAuthInstance().signIn();
-        $scope.$parent.action = 'random';
+        gapi.auth2.getAuthInstance().signIn().then(
+          function(success) {
+            $scope.$parent.action = 'random';
+          },
+          function(error) {
+            window.location.reload();
+          }
+        );
       }
       else{
         doPopulatePlaylist($scope,def);
@@ -201,8 +207,14 @@ angular.module('youtube', [])
     factory.getPlaylists = function($scope){
       var def = $q.defer();
       if(!$scope.signedIn){
-        gapi.auth2.getAuthInstance().signIn();
-        $scope.$parent.action = 'playlists';
+        gapi.auth2.getAuthInstance().signIn().then(
+          function(success) {
+            $scope.$parent.action = 'playlists';
+          },
+          function(error) {
+            window.location.reload();
+          }
+        );
       }
       else {
         gapi.client.youtube.playlists.list({
@@ -248,8 +260,14 @@ angular.module('youtube', [])
       data = [];
       var def = $q.defer();
       if(!$scope.signedIn){
-        gapi.auth2.getAuthInstance().signIn();
-        $scope.$parent.action = 'playlist';
+        gapi.auth2.getAuthInstance().signIn().then(
+          function(success) {
+            $scope.$parent.action = 'playlist';
+          },
+          function(error) {
+            window.location.reload();
+          }
+        );
       }
       else {
         doGetPlaylist($scope,def,playlistId);

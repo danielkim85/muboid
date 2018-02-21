@@ -25,6 +25,7 @@ app.controller('MuBoidCtrl', function ($scope, $timeout,$window) {
 
   function handleSignoutClick() {
     gapi.auth2.getAuthInstance().signOut();
+    window.location.reload();
   }
 
   function initClient() {
@@ -50,7 +51,9 @@ app.controller('MuBoidCtrl', function ($scope, $timeout,$window) {
     $scope.signedIn = isSignedIn;
     $scope.$apply();
     if (isSignedIn) {
-      $scope.username = gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getName();
+      var profile = gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile();
+      $scope.name = profile.getName();
+      $scope.username = profile.getId();
       authorizeButton.style.display = 'none';
       signoutButton.style.display = 'block';
       if($scope.action === 'playlists'){
@@ -61,6 +64,9 @@ app.controller('MuBoidCtrl', function ($scope, $timeout,$window) {
       }
       else if($scope.action === 'random'){
         $scope.$broadcast('random');
+      }
+      else if($scope.action === 'join'){
+        $scope.$broadcast('join');
       }
     } else {
       authorizeButton.style.display = 'block';
@@ -222,9 +228,8 @@ app.controller('MuBoidCtrl', function ($scope, $timeout,$window) {
     if($scope.roomName && $scope.guest) {
       $scope.wait = true;
       $scope.socket.emit('join', $scope.roomName, {
-        name: $scope.username,
-        socketId: $scope.socket.id,
-        reconnect: true
+        name: $scope.name,
+        socketId: $scope.username
       }, $scope.adminCode);
     }
   });

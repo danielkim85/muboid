@@ -58,8 +58,8 @@
 	</head>
 	<body ng-app="MuBoidApp" ng-controller="MuBoidCtrl">
 
-		<button ng-hide="guest" type="button" class="btn btn-primary sign-action" id="authorize-button" style="display: none;">SIGN IN</button>
-		<button ng-hide="guest" type="button" class="btn btn-primary sign-action" id="signout-button" style="display: none;">SIGN OUT</button>
+		<button type="button" class="btn btn-primary sign-action" id="authorize-button" style="display: none;">SIGN IN</button>
+		<button type="button" class="btn btn-primary sign-action" id="signout-button" style="display: none;">SIGN OUT</button>
 
 		<div id="main">
 			<div ng-show="wait">Loading ...</div>
@@ -84,7 +84,7 @@
 			</playlist>
 		</div>
 
-		<footer ng-hide="guest"></footer>
+		<footer></footer>
 
 		<div class="sidebar">
 			<div>

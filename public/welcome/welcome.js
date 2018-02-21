@@ -125,16 +125,33 @@ angular.module('welcome', ['youtube'])
             $scope.joinDetail = true;
             return;
           }
+          if(!$scope.$parent.signedIn){
+            gapi.auth2.getAuthInstance().signIn().then(
+              function(success) {
+                $scope.$parent.action = 'join';
+              },
+              function(error) {
+                window.location.reload();
+              }
+            );
+          }
+          else {
+            $scope.$parent.wait = true;
+            socket.emit('join',joinRoomName,{
+              name:$scope.$parent.name,
+              socketId:$scope.$parent.username
+            },$scope.adminCode);
+          }
 
-          socket.emit('join',joinRoomName,{
-            name:$scope.username,
-            socketId:socket.id
-          },$scope.adminCode);
         };
+
+        $scope.$on('join', function () {
+          $scope.join($scope.joinRoomName);
+        });
 
         //server tells me i have joined a room
         socket.on('joined', function(response){
-
+          console.warn(response);
           if(!response.success){
             $scope.errMsg = response.msg;
             $scope.$apply();

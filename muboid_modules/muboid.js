@@ -5,19 +5,11 @@ function MuBoid(server) {
   var rooms = new Rooms();
 
   io.on('connection', function(socket){
-    console.warn('connected with');
-    console.warn(socket.id);
-    socket.on('disconnect', function () {
-      console.warn('disconnect!');
-    });
 
-    //test remove later
-    socket.on('clientDisconnect', function(socketId){
-      console.warn('disconnect');
-      io.sockets.connected[socketId].disconnect();
-    });
+    console.info('connected');
 
     socket.on('create', function(roomConfig){
+      console.warn(roomConfig);
       var roomName = rooms.createRoom(roomConfig);
       if(roomName !== null){
         socket.join(roomName);
@@ -78,8 +70,6 @@ function MuBoid(server) {
     socket.on('uploadPlaylist', function(roomName,playlist,user){
       rooms.uploadPlaylist(roomName,playlist,user);
     });
-
-
 
     socket.on('join', function(roomName,user,adminCode){
       console.warn(user);
