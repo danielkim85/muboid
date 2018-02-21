@@ -220,6 +220,7 @@ app.controller('MuBoidCtrl', function ($scope, $timeout,$window) {
 
   $scope.socket.on('connect', function(){
     if($scope.roomName) {
+      $scope.wait = true;
       $scope.socket.emit('join', $scope.roomName, {
         name: $scope.username,
         socketId: $scope.socket.id,
