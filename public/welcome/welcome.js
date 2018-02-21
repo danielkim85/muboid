@@ -134,7 +134,7 @@ angular.module('welcome', ['youtube'])
 
         //server tells me i have joined a room
         socket.on('joined', function(response){
-          $scope.wait = false;
+
           if(!response.success){
             $scope.errMsg = response.msg;
             $scope.$apply();
@@ -152,6 +152,7 @@ angular.module('welcome', ['youtube'])
           $scope.$parent.guestPerm  = response.data.guestPerm;
           $scope.$parent.history = response.data.history;
 
+          $scope.$parent.wait = false;
           $scope.$apply();
           $scope.$parent.registerSort();
 

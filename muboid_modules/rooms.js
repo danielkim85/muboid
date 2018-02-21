@@ -340,7 +340,6 @@ var Rooms = function (){
     });
 
     console.warn('joined');
-    console.warn(room.guests);
 
     return {
       success:true,

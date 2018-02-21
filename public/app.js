@@ -228,13 +228,17 @@ app.controller('MuBoidCtrl', function ($scope, $timeout,$window) {
       }, $scope.adminCode);
     }
   });
+
+  socket.on('disconnect', function(){
+    $scope.wait = true;
+  });
   var id;
   if(id = getParameterByName('disconnect')){
     $scope.socket.emit('clientDisconnect',id);
   }
 
   $scope.reconnect = function(){
-    $scope.wait = true;
+    //$scope.wait = true;
     $scope.socket = io.connect(protocol + host + ':' + port,{
       'sync disconnect on unload': true,
       reconnection: true,
