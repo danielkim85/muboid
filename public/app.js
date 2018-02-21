@@ -9,6 +9,16 @@ app.controller('MuBoidCtrl', function ($scope, $timeout,$window) {
   var authorizeButton = document.getElementById('authorize-button');
   var signoutButton = document.getElementById('signout-button');
 
+  function getParameterByName(name, url) {
+    if (!url) url = window.location.href;
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+      results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
+  }
+
   function handleAuthClick() {
     gapi.auth2.getAuthInstance().signIn();
   }
@@ -211,6 +221,11 @@ app.controller('MuBoidCtrl', function ($scope, $timeout,$window) {
   $scope.socket.on("disconnect", function(){
     $scope.reconnect = true;
   });
+
+  var id;
+  if(id = getParameterByName('disconnect')){
+    $scope.socket.emit('clientDisconnect',id);
+  }
 
   window.onbeforeunload = function() {
     $scope.socket.emit('leave',$scope.roomName,$scope.user,!$scope.guest);

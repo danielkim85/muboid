@@ -7,6 +7,13 @@ function MuBoid(server) {
   io.on('connection', function(socket){
 
     socket.on('disconnect', function () {
+      console.warn('disconnect!');
+      socket.emit('disconnect');
+    });
+
+    socket.on('clientDisconnect', function(socketId){
+      console.warn('disconnect');
+      io.sockets.connected[socketId].disconnect();
     });
 
     socket.on('create', function(roomConfig){
@@ -74,8 +81,8 @@ function MuBoid(server) {
 
 
     socket.on('join', function(roomName,user,adminCode){
+      console.warn(user);
       var ret = rooms.joinRoom(roomName,user,adminCode);
-
       if(ret.success){
         socket.join(roomName);
       }
