@@ -65,6 +65,7 @@
 			<div ng-show="wait">Loading ...</div>
 			<welcome ng-hide="go || wait || guest || playlistReview"></welcome>
 			<div id="gameover" ng-show="gameover">GAME OVER</div>
+			<div ng-show="reconnect">RECONNECT</div>
 
 			<div id="go" ng-show="roomName && !gameover && !guest">
 				<div id="headerBackground"></div>
