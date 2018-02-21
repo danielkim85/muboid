@@ -222,6 +222,10 @@ app.controller('MuBoidCtrl', function ($scope, $timeout,$window) {
     $scope.reconnect = true;
   });
 
+  $scope.socket.on("disconnected", function(){
+    $scope.reconnect = true;
+  });
+
   var id;
   if(id = getParameterByName('disconnect')){
     $scope.socket.emit('clientDisconnect',id);

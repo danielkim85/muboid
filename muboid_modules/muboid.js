@@ -8,7 +8,7 @@ function MuBoid(server) {
 
     socket.on('disconnect', function () {
       console.warn('disconnect!');
-      socket.emit('disconnect');
+      socket.emit('disconnected');
     });
 
     socket.on('clientDisconnect', function(socketId){
