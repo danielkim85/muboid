@@ -232,6 +232,7 @@ app.controller('MuBoidCtrl', function ($scope, $timeout,$window) {
   $scope.socket.on('disconnect', function(){
     alert('disconnected');
     $scope.wait = true;
+    $scope.$apply();
   });
   var id;
   if(id = getParameterByName('disconnect')){
