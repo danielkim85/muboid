@@ -218,17 +218,22 @@ app.controller('MuBoidCtrl', function ($scope, $timeout,$window) {
     reconnectionAttempts: Infinity
   });
 
-  $scope.socket.on("disconnect", function(){
-    $scope.reconnect = true;
+  $scope.socket.on('connect', function(){
+    alert($scope.roomName);
   });
-
-  $scope.socket.on("disconnected", function(){
-    $scope.reconnect = true;
-  });
-
   var id;
   if(id = getParameterByName('disconnect')){
     $scope.socket.emit('clientDisconnect',id);
+  }
+
+  if(id = getParameterByName('connect')){
+    $scope.socket = io.connect(protocol + host + ':' + port,{
+      'sync disconnect on unload': true,
+      reconnection: true,
+      reconnectionDelay: 1000,
+      reconnectionDelayMax : 5000,
+      reconnectionAttempts: Infinity
+    });
   }
 
   window.onbeforeunload = function() {

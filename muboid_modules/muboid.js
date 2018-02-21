@@ -10,7 +10,7 @@ function MuBoid(server) {
     socket.on('disconnect', function () {
       console.warn('disconnect!');
     });
-    
+
     //test remove later
     socket.on('clientDisconnect', function(socketId){
       console.warn('disconnect');
