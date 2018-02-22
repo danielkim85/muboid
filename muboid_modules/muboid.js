@@ -1,14 +1,16 @@
 var Rooms = require('../muboid_modules/rooms.js');
+var Users = require('../muboid_modules/users.js');
 
 function MuBoid(server) {
   var io = require('socket.io')(server);
   var rooms = new Rooms();
-
+  var users = new Users();
   io.on('connection', function(socket){
 
     socket.on('create', function(roomConfig){
       var roomName = rooms.createRoom(roomConfig);
       if(roomName !== null){
+        users.createRoom(roomConfig.owner.socketId,roomName);
         socket.join(roomName);
         socket.emit('created',roomName);
       }
@@ -17,11 +19,21 @@ function MuBoid(server) {
     socket.on('leave', function(roomName,user,isDelete){
       socket.leave(roomName);
       if(isDelete){
-        socket.broadcast.to(roomName).emit('gameover');
         rooms.deleteRoom(roomName);
+        socket.emit('roomDeleted',users.deleteRoom(user.socketId,roomName));
+        socket.broadcast.to(roomName).emit('gameover');
         return;
       }
       rooms.leaveRoom(roomName,user);
+    });
+
+    socket.on('startFire', function(roomName){
+      rooms.startFire(roomName);
+      socket.broadcast.to(roomName).emit('fireStarted');
+    });
+
+    socket.on('getMyRooms',function(socketId){
+      socket.emit('getMyRooms', users.getMyRooms(socketId));
     });
 
     socket.on('lockRoom', function(data){

@@ -66,15 +66,15 @@
 			<welcome ng-hide="go || wait || guest || playlistReview"></welcome>
 			<div id="gameover" ng-show="gameover">GAME OVER</div>
 
-			<div id="go" ng-show="roomName && !gameover && !guest">
+			<div id="go" ng-show="roomName && !gameover && isAdmin">
 				<div id="headerBackground"></div>
-				<div id="header" class="accent20">
+				<div id="header" class="accent20" ng-hide="fireStarted && !fire">
 					<clock minutes="{{minutes}}" seconds="{{seconds}}"></clock>
 					<div id="joinInfo">
 						MuBOID.COM JOIN @ <span style="color:#31b0d5">{{roomName}}</span>
 					</div>
 				</div>
-				<div id="container" class="accent20">
+				<div id="container" class="accent20" ng-show="fire">
 					<youtube-player id="player1" video-id="{{videoId1}}" playing="{{playing1}}"></youtube-player>
 					<youtube-player id="player2" video-id="{{videoId2}}" playing="{{playing2}}"></youtube-player>
 				</div>

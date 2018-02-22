@@ -108,3 +108,31 @@
 	<button type="button" class="btn btn-primary"
 					ng-click="join(joinRoomName)">JOIN</button>
 </div>
+
+<div ng-show="!createDetail && !joinDetail">
+	<button ng-show="joinDetail && !createDetail"
+					type="button" class="btn btn-default"
+					ng-click="back()">BACK</button>
+	<button type="button" class="btn btn-primary"
+					ng-click="getMyRooms();">My Rooms</button>
+</div>
+
+<div ng-show="myRoomsDetail">
+	<div>
+		<ul class="list-group">
+			<li class="list-group-item"
+					ng-repeat="myRoom in myRooms">
+				<div ng-click="joinMyRoom(myRoom)"
+						 style="margin-bottom:0px;">
+					{{myRoom}}
+				</div>
+				<i class="material-icons"
+					 style="color:rgb(217, 83, 79);font-size:12px;float:right;margin-top:-14px;"
+					 ng-click="deleteMyRoom(myRoom)">
+					delete_forever</i>
+			</li>
+		</ul>
+	</div>
+	<button type="button" class="btn btn-default"
+					ng-click="back()">BACK</button>
+</div>

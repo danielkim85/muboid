@@ -1,5 +1,5 @@
 <div id="info" class="accent20">
-	<div ng-show="$parent.roomName" id="nowPlayingContainer">
+	<div ng-show="$parent.fireStarted" id="nowPlayingContainer">
 		<div style="margin-bottom:10px;">
 			NOW PLAYING
 			<span class="like">
@@ -42,11 +42,11 @@
 
 		<div class="playlist-action" ng-show="$parent.roomName">
 			<button type="button" class="btn btn-primary"
-							ng-show="$parent.isAdmin" ng-click="$parent.doSwitch()">
-				NEXT
+							ng-show="$parent.isAdmin && !$parent.fireStarted && !$parent.fire" ng-click="$parent.start()">
+				START
 			</button>
 			<button type="button" class="btn btn-danger"
-							ng-show="!$parent.guest"
+							ng-show="$parent.isAdmin"
 							ng-click="lock($parent.isRoomLocked)">
 				<span ng-if="!$parent.isRoomLocked">
 					LOCK
@@ -102,21 +102,23 @@
 	</div>
 
 	<div ng-repeat="song in $parent.playlist"
-			 ng-class="{locked: $parent.$parent.roomName && $index <= 1,song:true,}">
+			 ng-class="{locked: $parent.$parent.fireStarted && $index <= 1,song:true,}">
 		<div class="titleContainer"
 				 videoId = {{song.id}}
 				 songOwner = {{song.owner}}
-		 		 ng-hide="$index == 0 && $parent.$parent.roomName">
+		 		 ng-hide="$index == 0 && $parent.$parent.fireStarted">
 			<span class="glyphicon glyphicon-lock"
-						ng-show="$parent.$parent.roomName && $index <= 1"></span>
-			<i class="material-icons handle" style="font-size:12px;">sort</i>
+						ng-show="$parent.$parent.fireStarted && $index <= 1 || $parent.$parent.isRoomLocked"></span>
+			<i class="material-icons handle"
+				 ng-show="!$parent.$parent.isRoomLocked"
+				 style="font-size:12px;">sort</i>
 			<i class="material-icons"
 				 style="color:rgb(217, 83, 79);font-size:12px;"
 				 ng-click="remove($index)"
 				 ng-show="($parent.$parent.isAdmin ||
 									!$parent.$parent.guest ||
 									(song.owner.socketId === $parent.$parent.user.socketId && !$parent.$parent.isRoomLocked)) &&
-									!($parent.$parent.roomName && $index <= 1)">
+									!($parent.$parent.fireStarted && $index <= 1)">
 				delete_forever</i>
 			<a title="Open this song in YouTube" href="https://www.youtube.com/watch?v={{song.id}}" target="_blank">
 				{{$index}}

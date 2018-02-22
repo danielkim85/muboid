@@ -26,15 +26,17 @@ angular.module('welcome', ['youtube'])
 
           //server tells me room has been created
           socket.on('created', function(roomName){
+            $scope.$parent.isAdmin = true;
             $scope.$parent.roomName = roomName;
-            $scope.$parent.wait = true;
-            $scope.$parent.start();
+            $scope.$parent.wait = false;
+            $scope.$parent.socket.emit('uploadPlaylist',roomName, $scope.$parent.playlist,$scope.$parent.user);
             $scope.$apply();
           });
 
           //server tells me i have joined a room
           socket.on('joined', function(response){
             if(!response.success){
+              $scope.$parent.wait = false;
               $scope.errMsg = response.msg;
               $scope.$apply();
               return;
@@ -43,7 +45,7 @@ angular.module('welcome', ['youtube'])
             $scope.$parent.isRoomLocked = response.data.locked;
             $scope.$parent.isAdmin = response.data.isAdmin;
             $scope.$parent.user = response.data.user;
-
+            $scope.$parent.fireStarted = response.data.fireStarted;
             $scope.errMsg = false;
             $scope.$parent.guest = true;
             $scope.$parent.playlist = response.data.playlist;
@@ -56,7 +58,20 @@ angular.module('welcome', ['youtube'])
             $scope.$parent.registerSort();
 
             var elem = $('.history:last').length > 0 ? $('.history:last')[0] :$('.song:first')[0];
-            elem.scrollIntoView();
+
+            if(elem !== undefined){
+              elem.scrollIntoView();
+            }
+          });
+
+          socket.on('getMyRooms', function(response){
+            $scope.myRooms = response;
+            $scope.$apply();
+          });
+
+          socket.on('roomDeleted', function(response){
+            $scope.myRooms = response;
+            $scope.$apply();
           });
         });
 
@@ -65,6 +80,9 @@ angular.module('welcome', ['youtube'])
         var myPlaylistId;
         var isRandom = true;
         $scope.start = function(){
+
+          $scope.$parent.wait = true;
+
           $scope.$parent.initSocket();
 
           $scope.$parent.registerSort();
@@ -73,13 +91,20 @@ angular.module('welcome', ['youtube'])
             $scope.getPlaylists();
             return;
           }
+          $scope.$parent.user = {
+            socketId:$scope.$parent.username
+          }
+          $scope.roomConfig = {
+            owner : $scope.$parent.user,
+            guestPerm : $scope.$parent.guestPerm
+          };
 
           if(isRandom){
             $scope.random();
-            return;
           }
-
-          $scope.getPlaylist();
+          else{
+            $scope.getPlaylist();
+          }
         };
 
         //get songs for single playlist
@@ -105,16 +130,51 @@ angular.module('welcome', ['youtube'])
             $scope.getPlaylistId(playlistId);
           });
         };
+
         $scope.getPlaylist = function(){
-          $scope.$parent.user = {socketId:socket.id};
-          $scope.$parent.wait = true;
           $scope.$parent.playlistReview = true;
           youtubeFactory.getPlaylist($scope.$parent, myPlaylistId)
             .then(function (songs) {
               $scope.$parent.playlistId = myPlaylistId;
               $scope.$parent.playlist = songs;
-              $scope.$parent.wait = false;
+              socket.emit('create',$scope.roomConfig);
             });
+        };
+
+        $scope.getMyRooms = function(){
+          if(!$scope.$parent.signedIn){
+            gapi.auth2.getAuthInstance().signIn().then(
+              function(success) {
+                $scope.$parent.action = 'myRooms';
+              },
+              function(error) {
+                window.location.reload();
+              }
+            );
+          }
+          else {
+            $scope.myRoomsDetail = true;
+            $scope.joinDetail = true;
+            $scope.createDetail = true;
+            $scope.$parent.initSocket(function(){
+              socket.emit('getMyRooms',$scope.$parent.username);
+            });
+          }
+        };
+
+        $scope.$on('myRooms', function () {
+          $scope.getMyRooms();
+        });
+
+        $scope.deleteMyRoom = function(roomName){
+          socket.emit('leave',roomName,{socketId:$scope.$parent.username},true);
+        };
+
+        $scope.joinMyRoom = function(myRoom){
+          $scope.joinDetail = true;
+          $scope.createDetail = false;
+          $scope.myRoomsDetail = false
+          $scope.joinRoomName = parseInt(myRoom);
         };
 
         $scope.$on('getPlaylist', function () {
@@ -123,14 +183,12 @@ angular.module('welcome', ['youtube'])
 
         //create random songs from youtube
         $scope.random = function(){
-          $scope.$parent.user = {socketId:socket.id};
-          $scope.$parent.wait = true;
           $scope.$parent.playlistReview = true;
           youtubeFactory.populatePlaylist($scope.$parent)
             .then(function (data) {
               console.info('playlist size ' + data.length);
               $scope.$parent.playlist = shuffle(data);
-              $scope.$parent.wait = false;
+              socket.emit('create',$scope.roomConfig);
             });
         };
 
@@ -140,7 +198,6 @@ angular.module('welcome', ['youtube'])
 
         //get user's list of playlists
         $scope.getPlaylists = function(){
-          $scope.$parent.wait = true;
           youtubeFactory.getPlaylists($scope.$parent)
             .then(function (data) {
               $scope.$parent.wait = false;
@@ -188,8 +245,10 @@ angular.module('welcome', ['youtube'])
         };
 
         $scope.back = function(){
+          $scope.joinRoomName = undefined;
           $scope.joinDetail = false;
           $scope.createDetail = false;
+          $scope.myRoomsDetail = false;
         };
 
         $scope.$watch('qPlaylist',function(newValue){

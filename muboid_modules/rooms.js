@@ -56,12 +56,24 @@ var Rooms = function (){
       history:[],
       locked:false,
       guests:[],
+      fireStarted : false,
       admins:[roomConfig.owner.socketId],
       owner:roomConfig.owner,
       guestPerm:roomConfig.guestPerm,
       adminPwd:null
     };
     return roomName;
+  };
+
+  this.startFire = function(roomName){
+    if(!(roomName in rooms)){
+      return {
+        success:false,
+        msg:'Room not found'
+      };
+    }
+    rooms[roomName].fireStarted = true;
+    return;
   };
 
   this.deleteRoom = function(roomName){
@@ -309,7 +321,6 @@ var Rooms = function (){
       };
     }
 
-
     var room = rooms[roomName];
     var isAdmin = room.admins.indexOf(user.socketId) !== -1;
 
@@ -328,7 +339,8 @@ var Rooms = function (){
         roomName:roomName,
         isAdmin : isAdmin,
         guestPerm:room.guestPerm,
-        locked:room.locked
+        locked:room.locked,
+        fireStarted:room.fireStarted
       }
     };
   };

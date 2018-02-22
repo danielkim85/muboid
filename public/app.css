@@ -8,7 +8,7 @@ html, body {
 }
 
 body{
-	background: url("https://cdn.gratisography.com/photos/391H.jpg");
+	background: url("https://cdn.gratisography.com/photos/219H.jpg");
 	background-size: 1920px;
 }
 
@@ -21,10 +21,6 @@ body{
 
 .accent20{
 	font-size:20px;
-}
-
-#go{
-	margin-bottom:10px;
 }
 
 #main{

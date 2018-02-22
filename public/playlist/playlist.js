@@ -51,19 +51,6 @@ angular.module('playlist', [])
 
         });
 
-        $scope.start = function(){
-          $scope.$parent.wait = true;
-          $scope.$parent.user = {
-            name:'owner',
-            socketId:$scope.$parent.username
-          };
-          var roomConfig = {
-            owner : $scope.$parent.user,
-            guestPerm : $scope.$parent.guestPerm
-          };
-          socket.emit('create',roomConfig);
-        };
-
         $scope.manage = function(){
           window.open('https://www.youtube.com/playlist?list=' + $scope.playlistId);
         };

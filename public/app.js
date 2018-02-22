@@ -68,6 +68,9 @@ app.controller('MuBoidCtrl', function ($scope, $timeout,$window) {
       else if($scope.action === 'join'){
         $scope.$broadcast('join');
       }
+      else if($scope.action === 'myRooms'){
+        $scope.$broadcast('myRooms');
+      }
     } else {
       authorizeButton.style.display = 'block';
       signoutButton.style.display = 'none';
@@ -201,14 +204,14 @@ app.controller('MuBoidCtrl', function ($scope, $timeout,$window) {
 
   //firestarter
   $scope.start = function(){
-    $scope.socket.emit('uploadPlaylist',$scope.roomName, $scope.playlist,$scope.user);
-    $scope.wait = false;
+    $scope.fire = true;
+    $scope.fireStarted = true;
+    $scope.socket.emit('startFire',$scope.roomName);
     $scope.videoId1 = $scope.playlist[0].id;
     $scope.playing1 = true;
     $scope.videoId2 = $scope.playlist[1].id;
     $scope.playing2 = false;
 
-    $scope.$apply();
     $scope.registerSort();
   };
 
@@ -245,6 +248,11 @@ app.controller('MuBoidCtrl', function ($scope, $timeout,$window) {
       }
     });
 
+    $scope.socket.on('fireStarted', function(){
+      $scope.fireStarted = true;
+      $scope.$apply();
+    });
+
     $scope.$broadcast('socketInit');
     if(callback){
       callback();
@@ -255,7 +263,7 @@ app.controller('MuBoidCtrl', function ($scope, $timeout,$window) {
     $scope.socket.on('connect', function(){
       //do nothing
     });
-    $scope.socket.emit('leave',$scope.roomName,$scope.user,!$scope.guest);
+    $scope.socket.emit('leave',$scope.roomName.toString(),$scope.user,$scope.isAdmin && $scope.fireStarted);
     return undefined;
   };
 
