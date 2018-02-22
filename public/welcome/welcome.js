@@ -12,6 +12,16 @@ function shuffle(array) {
   return array;
 }
 
+function getParameterByName(name, url) {
+  if (!url) url = window.location.href;
+  name = name.replace(/[\[\]]/g, "\\$&");
+  var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+    results = regex.exec(url);
+  if (!results) return null;
+  if (!results[2]) return '';
+  return decodeURIComponent(results[2].replace(/\+/g, " "));
+}
+
 angular.module('welcome', ['youtube'])
   .directive('welcome', function($timeout,youtubeFactory){
     return{
@@ -290,6 +300,11 @@ angular.module('welcome', ['youtube'])
         });
 
         $scope.changeDuration(duration_);
+
+        var qsJoin = getParameterByName('join');
+        if(qsJoin){
+          $scope.joinMyRoom(qsJoin);
+        }
       }
     };
   });

@@ -7,8 +7,8 @@
 </div>
 <div id="playerAction">
 	<i class="material-icons"
-		 ng-click="$parent.doSwitch()"
-		 ng-show="$parent.roomName && !$parent.gameover &&
+		 ng-click="fastForward()"
+		 ng-show="$parent.roomName && !$parent.gameover && $parent.fireStarted &&
 		 ($parent.isAdmin || !$parent.guest)">
 		fast_forward
 	</i>

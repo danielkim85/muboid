@@ -53,7 +53,7 @@ playlist #search input{
 playlist #searchResult, playlist #songContainer{
 	overflow-x:auto;
 	flex-flow:column;
-	margin-bottom: 25px;
+	margin-bottom: 10px;
 }
 
 playlist #searchResult{

@@ -32,6 +32,10 @@ function MuBoid(server) {
       socket.broadcast.to(roomName).emit('fireStarted');
     });
 
+    socket.on('fastForward', function(roomName){
+      socket.broadcast.to(roomName).emit('fastForward');
+    });
+
     socket.on('getMyRooms',function(socketId){
       socket.emit('getMyRooms', users.getMyRooms(socketId));
     });

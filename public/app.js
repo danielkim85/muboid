@@ -9,16 +9,6 @@ app.controller('MuBoidCtrl', function ($scope, $timeout,$window) {
   var authorizeButton = document.getElementById('authorize-button');
   var signoutButton = document.getElementById('signout-button');
 
-  function getParameterByName(name, url) {
-    if (!url) url = window.location.href;
-    name = name.replace(/[\[\]]/g, "\\$&");
-    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
-      results = regex.exec(url);
-    if (!results) return null;
-    if (!results[2]) return '';
-    return decodeURIComponent(results[2].replace(/\+/g, " "));
-  }
-
   function handleAuthClick() {
     gapi.auth2.getAuthInstance().signIn();
   }
@@ -253,6 +243,12 @@ app.controller('MuBoidCtrl', function ($scope, $timeout,$window) {
       $scope.$apply();
     });
 
+    $scope.socket.on('fastForward',function(){
+      if($scope.fire){
+        $scope.doSwitch();
+      }
+    });
+
     $scope.$broadcast('socketInit');
     if(callback){
       callback();
@@ -263,7 +259,7 @@ app.controller('MuBoidCtrl', function ($scope, $timeout,$window) {
     $scope.socket.on('connect', function(){
       //do nothing
     });
-    $scope.socket.emit('leave',$scope.roomName.toString(),$scope.user,$scope.isAdmin && $scope.fireStarted);
+    $scope.socket.emit('leave',$scope.roomName.toString(),$scope.user,$scope.isAdmin && $scope.fire);
     return undefined;
   };
 

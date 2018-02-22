@@ -99,6 +99,13 @@ angular.module('footer', [])
           return isFullscreen() ? exitFullscreen() : launchIntoFullscreen();
         };
 
+        $scope.fastForward = function(){
+          if($scope.$parent.fire){
+            $scope.$parent.doSwitch();
+          }else{
+            $scope.$parent.socket.emit('fastForward',$scope.$parent.roomName);
+          }
+        }
       }
     };
   });
