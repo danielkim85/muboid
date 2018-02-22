@@ -1,8 +1,8 @@
 # MuBOID
 
-MuBOID is the social video presentation service using YouTube API.
+MuBOID is the open music/video playlist platform using YouTube API.
 
-Visit MuBoid.com for demo.
+Visit MuBOID.com for demo.
 
 ## Getting Started
 
