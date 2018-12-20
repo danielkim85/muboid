@@ -76,7 +76,7 @@
 							 ng-model="qPlaylist">
 			</li>
 			<li class="list-group-item"
-					ng-repeat="playlist in searchedPlaylist"
+					ng-repeat="playlist  in searchedPlaylist"
 					ng-click="searchedPlaylistClicked(playlist)">
 				{{playlist.snippet.title}}
 			</li>
@@ -84,12 +84,20 @@
 	</div>
 </div>
 
+<div ng-hide="createDetail || joinDetail || myRoomsDetail">
+	<button ng-show="!joinDetail && createDetail"
+			type="button" class="btn btn-default"
+			ng-click="back()">BACK</button>
+	<button type="button" class="btn btn-primary btn-success"
+			ng-click="start(true)">QUICK START</button>
+</div>
+
 <div ng-hide="joinDetail">
 	<button ng-show="!joinDetail && createDetail"
 					type="button" class="btn btn-default"
 					ng-click="back()">BACK</button>
 	<button type="button" class="btn btn-primary"
-					ng-click="start()">START</button>
+					ng-click="start()">CREATE</button>
 </div>
 
 
@@ -114,7 +122,7 @@
 					type="button" class="btn btn-default"
 					ng-click="back()">BACK</button>
 	<button type="button" class="btn btn-primary"
-					ng-click="getMyRooms();">My Rooms</button>
+					ng-click="getMyRooms();">MY ROOMS</button>
 </div>
 
 <div ng-show="myRoomsDetail">

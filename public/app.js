@@ -259,7 +259,7 @@ app.controller('MuBoidCtrl', function ($scope, $timeout,$window) {
     $scope.socket.on('connect', function(){
       //do nothing
     });
-    $scope.socket.emit('leave',$scope.roomName.toString(),$scope.user,$scope.isAdmin && $scope.fire);
+    $scope.socket.emit('leave',$scope.roomName.toString(),$scope.user,$scope.isAdmin);
     return undefined;
   };
 

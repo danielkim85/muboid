@@ -1,21 +1,21 @@
+/* color pallet
+https://coolors.co/ef476f-ffd166-06d6a0-118ab2-073b4c */
+
 html, body {
-	background-color: #323232;
+	background-image: url("https://i.pinimg.com/originals/68/d0/71/68d07172cb417bac5564375b08d9edc5.jpg");
+	background-repeat: repeat;
 	color: #fff;
 	font-family: 'Press Start 2P', cursive;
 	height:100%;
 	text-transform:uppercase;
-	font-size:10px;
-}
-
-body{
-	background-size: 1920px;
+	font-size:12px;
 }
 
 .accent10 {
-	font-size:10px;
+	font-size:12px;
 }
 .accent12 {
-	font-size: 12px;
+	font-size: 14px;
 }
 
 .accent20{
@@ -23,7 +23,7 @@ body{
 }
 
 #main{
-	background-color: rgba(0, 0, 0, 0.70);
+	background-color: #073B4C;
 	margin:auto;
 	padding:20px;
 	height:100%;
@@ -96,11 +96,15 @@ body{
 }
 
 .btn{
-	font-size:10px;
+	font-size:12px;
 }
 
 .btn-default{
 	background-color:#fff;
+}
+
+.btn-secondary{
+	background-color:#06D6A0;
 }
 
 .material-icons{
@@ -113,7 +117,7 @@ body{
 	font-size:inherit;
 }
 .ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button{
-	font-size:10px;
+	font-size:12px;
 }
 
 @media only screen and (max-width: 768px) {

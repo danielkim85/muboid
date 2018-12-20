@@ -89,14 +89,14 @@ angular.module('welcome', ['youtube'])
         $scope.$parent.guestPerm.sortSong = true;
         var myPlaylistId;
         var isRandom = true;
-        $scope.start = function(){
+        $scope.start = function(quickstart){
 
           $scope.$parent.wait = true;
 
           $scope.$parent.initSocket();
 
           $scope.$parent.registerSort();
-          if(!$scope.createDetail) {
+          if(!$scope.createDetail && !quickstart) {
             $scope.createDetail = true;
             $scope.getPlaylists();
             return;
