@@ -121,7 +121,6 @@ app.controller('MuBoidCtrl', function ($scope, $timeout,$window) {
     $scope.playlist = playlist;
     $scope.$apply();
     $scope.sortPlaylist();
-
   };
 
   $scope.deregisterSort = function() {

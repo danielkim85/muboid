@@ -45,9 +45,12 @@
 							ng-show="$parent.isAdmin && !$parent.fireStarted && !$parent.fire" ng-click="$parent.start()">
 				START
 			</button>
-			<button type="button" class="btn btn-danger"
-							ng-show="$parent.isAdmin"
-							ng-click="lock($parent.isRoomLocked)">
+			<button type="button"
+					class="btn btn-danger"
+					data-intro="Lock the playlist so nobody can change the playlist."
+					data-position="bottom"
+					ng-show="$parent.isAdmin"
+					ng-click="lock($parent.isRoomLocked)">
 				<span ng-if="!$parent.isRoomLocked">
 					LOCK
 				</span>
@@ -110,8 +113,13 @@
 			<span class="glyphicon glyphicon-lock"
 						ng-show="$parent.$parent.fireStarted && $index <= 1 || $parent.$parent.isRoomLocked"></span>
 			<i class="material-icons handle"
-				 ng-show="!$parent.$parent.isRoomLocked"
-				 style="font-size:12px;">sort</i>
+			   ng-show="!$parent.$parent.isRoomLocked && $first"
+			   data-intro="Drag this to change the order."
+			   data-position="bottom"
+			   style="font-size:12px;">sort</i>
+			<i class="material-icons handle"
+			   ng-show="!$parent.$parent.isRoomLocked && !$first"
+			   style="font-size:12px;">sort</i>
 			<i class="material-icons"
 				 style="color:rgb(217, 83, 79);font-size:12px;"
 				 ng-click="remove($index)"

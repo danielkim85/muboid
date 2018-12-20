@@ -41,6 +41,9 @@ angular.module('welcome', ['youtube'])
             $scope.$parent.wait = false;
             $scope.$parent.socket.emit('uploadPlaylist',roomName, $scope.$parent.playlist,$scope.$parent.user);
             $scope.$apply();
+
+            //overlay
+            $('body').chardinJs('start');
           });
 
           //server tells me i have joined a room
@@ -196,7 +199,6 @@ angular.module('welcome', ['youtube'])
           $scope.$parent.playlistReview = true;
           youtubeFactory.populatePlaylist($scope.$parent)
             .then(function (data) {
-              console.info('playlist size ' + data.length);
               $scope.$parent.playlist = shuffle(data);
               socket.emit('create',$scope.roomConfig);
             });

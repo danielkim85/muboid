@@ -25,6 +25,7 @@
 		<link href="https://code.jquery.com/ui/1.12.1/themes/black-tie/jquery-ui.css"
 		      rel="stylesheet">
 		<link rel="stylesheet" href="/third-party/bootstrap-slider/css/bootstrap-slider.min.css" />
+		<link rel="stylesheet" href="/third-party/chardin/chardinjs.css" />
 
 		<link rel='stylesheet' href='/footer/footer.css' />
 		<link rel='stylesheet' href='/welcome/welcome.css' />
@@ -40,6 +41,7 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
 		<script type="text/javascript" src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 		<script src="/third-party/bootstrap-slider/bootstrap-slider.min.js"></script>
+		<script src="/third-party/chardin/chardinjs.min.js"></script>
 
 		<meta name="google-signin-scope" content="profile email">
 		<meta name="google-signin-client_id" content="586555634098-j5ul1cm0c5bj7vo87d8u5volijrneh40.apps.googleusercontent.com">
@@ -71,7 +73,10 @@
 				<div id="header" class="accent20" ng-hide="fireStarted && !fire">
 					<clock minutes="{{minutes}}" seconds="{{seconds}}"></clock>
 					<div id="joinInfo">
-						MuBOID.COM JOIN @ <span style="color:#31b0d5">{{roomName}}</span>
+						MuBOID.COM JOIN @ <span id="code"
+												style="color:#31b0d5"
+												data-intro="Others can join this room using this code."
+												data-position="right">{{roomName}}</span>
 					</div>
 				</div>
 				<div id="container" class="accent20" ng-show="fire">
