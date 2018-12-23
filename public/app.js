@@ -193,6 +193,7 @@ app.controller('MuBoidCtrl', function ($scope, $timeout,$window) {
 
   //firestarter
   $scope.start = function(){
+    $('body').chardinJs('stop');
     $scope.fire = true;
     $scope.fireStarted = true;
     $scope.socket.emit('startFire',$scope.roomName);
