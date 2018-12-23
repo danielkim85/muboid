@@ -2,7 +2,7 @@
 https://coolors.co/ef476f-ffd166-06d6a0-118ab2-073b4c */
 
 html, body {
-	background-image: url("https://i.pinimg.com/originals/68/d0/71/68d07172cb417bac5564375b08d9edc5.jpg");
+	background-image: url("img/bg.jpg");
 	background-repeat: repeat;
 	color: #fff;
 	font-family: 'Press Start 2P', cursive;
@@ -120,6 +120,14 @@ html, body {
 	font-size:12px;
 }
 
+/*chardinjs override*/
+.chardinjs-helper-layer.chardinjs-bottom{
+	margin-top:5px;
+}
+
+.chardinjs-helper-layer.chardinjs-left{
+	margin-left:-5px;
+}
 @media only screen and (max-width: 768px) {
 	/* For mobile phones: */
 	#main{
@@ -136,6 +144,12 @@ html, body {
 	}
 	.accent20{
 		font-size:16px;
+	}
+	welcome .help-label{
+		display:none;
+	}
+	.chardinjs-helper-layer, .chardinjs-overlay{
+		display:none !important;
 	}
 }
 

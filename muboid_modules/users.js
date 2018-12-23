@@ -23,12 +23,10 @@ var Users = function (){
   };
 
   this.deleteRoom = function(username,roomName){
-    console.info(username);
     if(!(username in users)){
       return [];
     }
     users[username].remove(roomName);
-    console.warn(users[username]);
     return users[username];
   };
 

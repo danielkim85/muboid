@@ -41,8 +41,12 @@
 		</div>
 
 		<div class="playlist-action" ng-show="$parent.roomName">
-			<button type="button" class="btn btn-primary"
-							ng-show="$parent.isAdmin && !$parent.fireStarted && !$parent.fire" ng-click="$parent.start()">
+			<button type="button"
+							class="btn btn-primary"
+							ng-show="$parent.isAdmin && !$parent.fireStarted && !$parent.fire"
+							data-intro="Start playing the songs!"
+							data-position="left"
+							ng-click="$parent.start()">
 				START
 			</button>
 			<button type="button"
@@ -64,7 +68,11 @@
 
 <div id="search" ng-hide="(!$parent.isAdmin && $parent.guest && !$parent.guestPerm.addSong) ||
 													($parent.isRoomLocked && !$parent.isAdmin && $parent.guest)">
-	<input type="text" class="form-control accent10" ng-model="searchTerm" placeholder="Search for...">
+	<input type="text"
+				 class="form-control accent10" ng-model="searchTerm"
+				 data-intro="Add songs by searching."
+				 data-position="bottom"
+				 placeholder="Search for...">
 </div>
 
 <div id="searchResult" ng-show="searchResult.length > 0">

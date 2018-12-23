@@ -49,3 +49,8 @@ welcome .no-padding{
 	padding-left:0px !important;
 	padding-bottom:6px;
 }
+
+welcome .help-label{
+	position:relative;
+	top:2px;
+}

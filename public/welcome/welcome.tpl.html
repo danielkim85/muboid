@@ -4,7 +4,7 @@
 	<span style="color:orange;margin-left:-14px;">u</span>
 	<span style="color:yellow;margin-left:-14px;">B</span>
 	<span style="color:green;margin-left:-14px;">O</span>
-	<span style="color:blue;margin-left:-14px;">I</span>
+	<span style="color:#118AB2;margin-left:-14px;">I</span>
 	<span style="color:violet;margin-left:-14px;">D</span>.COM
 </div>
 
@@ -14,7 +14,7 @@
 
 <div ng-show="createDetail && !joinDetail" ng-init="$parent.guestPerm = {}">
 	<div>
-		<span class="col-xs-6 no-padding">Song duration</span>
+		<span class="col-xs-6 no-padding">Song start - end time</span>
 		<span style="color:#ec971f;">{{duration}}</span>
 	</div>
 	<div>
@@ -55,7 +55,7 @@
 
 	<div>
 		<span class="col-xs-6 no-padding">Pick your playlist</span>
-		<button type="button" class="btn btn-primary btn-sub" style="width:75px;"
+		<button type="button" class="btn btn-primary btn-sub" style="width:90px;"
 						ng-click="manage($parent.name)">
 			MANAGE
 		</button>
@@ -63,7 +63,7 @@
 	<div>
 		<ul class="list-group">
 			<li class="list-group-item active"
-					ng-click="getPlaylistId(playlist.id,$event,true)">Random songs</li>
+					ng-click="getPlaylistId(playlist.id,$event,true)">Auto generate</li>
 			<li class="list-group-item"
 					ng-repeat="playlist in playlists"
 					playlistId="{{playlist.id}}"
@@ -71,8 +71,8 @@
 				{{playlist.snippet.title}}
 			</li>
 			<li class="list-group-item">
-				<input type="text" style="width:100%;border:0;"
-							 placeholder="Search playlist"
+				<input type="text" style="width:100%;padding-left:5px !important;"
+							 placeholder="Search others' playlists"
 							 ng-model="qPlaylist">
 			</li>
 			<li class="list-group-item"
@@ -90,6 +90,9 @@
 			ng-click="back()">BACK</button>
 	<button type="button" class="btn btn-primary btn-success"
 			ng-click="start(true)">QUICK START</button>
+	<span class="help-label"
+				ng-hide="!joinDetail && createDetail">
+		with pregenerated settings and songs.</span>
 </div>
 
 <div ng-hide="joinDetail">
@@ -98,6 +101,10 @@
 					ng-click="back()">BACK</button>
 	<button type="button" class="btn btn-primary"
 					ng-click="start()">CREATE</button>
+	<span class="help-label"
+				ng-hide="!joinDetail && createDetail">
+		and manage custom settings and songs.
+	</span>
 </div>
 
 
@@ -115,6 +122,11 @@
 					ng-click="back()">BACK</button>
 	<button type="button" class="btn btn-primary"
 					ng-click="join(joinRoomName)">JOIN</button>
+	<span class="help-label"
+				ng-hide="joinDetail && !createDetail">
+		your friends' rooms.
+	</span>
+
 </div>
 
 <div ng-show="!createDetail && !joinDetail">
