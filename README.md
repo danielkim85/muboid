@@ -29,8 +29,11 @@ grunt
 
 ### Obtain YouTube API key
 
-Insert the key in /public/api-key.js
+Create /public/api-key.js and define CLIENT_ID.
 
+```
+var CLIENT_ID = 'MY_API_KEY';
+```
 ### Starting the Server
 
 ```
