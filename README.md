@@ -2,7 +2,7 @@
 
 MuBOID is the open music/video playlist platform using YouTube API.
 
-Visit MuBOID.com for demo.
+Visit [MuBOID.com](http://muboid.com/).
 
 ## Getting Started
 
