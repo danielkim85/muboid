@@ -23,7 +23,7 @@ html, body {
 }
 
 #main{
-	background-color: #073B4C;
+	background-color: rgba(0, 0, 0, 0.7);
 	margin:auto;
 	padding:20px;
 	height:100%;
@@ -74,7 +74,7 @@ html, body {
 }
 
 .sidebar a{
-	color: white;
+	color: #000;
 }
 
 .form-check-inline {
