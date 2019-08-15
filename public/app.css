@@ -1,30 +1,29 @@
+/* color pallet
+https://coolors.co/ef476f-ffd166-06d6a0-118ab2-073b4c */
+
 html, body {
-	background-color: #323232;
+	background-image: url("img/bg.jpg");
+	background-repeat: repeat;
 	color: #fff;
 	font-family: 'Press Start 2P', cursive;
 	height:100%;
 	text-transform:uppercase;
-	font-size:10px;
-}
-
-body{
-	background: url("https://static.collectui.com/shots/3572449/orange-pattern-large");
-	background-repeat:repeat;
+	font-size:12px;
 }
 
 .accent10 {
-	font-size:10px;
+	font-size:14px;
 }
 .accent12 {
-	font-size: 12px;
+	font-size:16px;
 }
 
 .accent20{
-	font-size:20px;
+	font-size:18px;
 }
 
 #main{
-	background-color: rgba(0, 0, 0, 0.70);
+	background-color: #073B4C;
 	margin:auto;
 	padding:20px;
 	height:100%;
@@ -75,7 +74,7 @@ body{
 }
 
 .sidebar a{
-	color: #000;
+	color: white;
 }
 
 .form-check-inline {
@@ -97,11 +96,15 @@ body{
 }
 
 .btn{
-	font-size:10px;
+	font-size:12px;
 }
 
 .btn-default{
 	background-color:#fff;
+}
+
+.btn-secondary{
+	background-color:#06D6A0;
 }
 
 .material-icons{
@@ -114,9 +117,17 @@ body{
 	font-size:inherit;
 }
 .ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button{
-	font-size:10px;
+	font-size:12px;
 }
 
+/*chardinjs override*/
+.chardinjs-helper-layer.chardinjs-bottom{
+	margin-top:5px;
+}
+
+.chardinjs-helper-layer.chardinjs-left{
+	margin-left:-5px;
+}
 @media only screen and (max-width: 768px) {
 	/* For mobile phones: */
 	#main{
@@ -133,6 +144,12 @@ body{
 	}
 	.accent20{
 		font-size:16px;
+	}
+	welcome .help-label{
+		display:none;
+	}
+	.chardinjs-helper-layer, .chardinjs-overlay{
+		display:none !important;
 	}
 }
 

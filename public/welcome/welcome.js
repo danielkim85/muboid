@@ -41,6 +41,9 @@ angular.module('welcome', ['youtube'])
             $scope.$parent.wait = false;
             $scope.$parent.socket.emit('uploadPlaylist',roomName, $scope.$parent.playlist,$scope.$parent.user);
             $scope.$apply();
+
+            //overlay
+            $('body').chardinJs('start');
           });
 
           //server tells me i have joined a room
@@ -89,14 +92,14 @@ angular.module('welcome', ['youtube'])
         $scope.$parent.guestPerm.sortSong = true;
         var myPlaylistId;
         var isRandom = true;
-        $scope.start = function(){
+        $scope.start = function(quickstart){
 
           $scope.$parent.wait = true;
 
           $scope.$parent.initSocket();
 
           $scope.$parent.registerSort();
-          if(!$scope.createDetail) {
+          if(!$scope.createDetail && !quickstart) {
             $scope.createDetail = true;
             $scope.getPlaylists();
             return;

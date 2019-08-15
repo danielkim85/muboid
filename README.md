@@ -1,8 +1,8 @@
 # MuBOID
 
-MuBOID is the social video presentation service using YouTube API.
+MuBOID is the open music/video playlist platform using YouTube API.
 
-Visit MuBoid.com for demo.
+Visit [MuBOID.com](http://muboid.com/).
 
 ## Getting Started
 
@@ -29,8 +29,11 @@ grunt
 
 ### Obtain YouTube API key
 
-Insert the key in /public/api-key.js
+Create /public/api-key.js and define CLIENT_ID.
 
+```
+var CLIENT_ID = 'MY_API_KEY';
+```
 ### Starting the Server
 
 ```

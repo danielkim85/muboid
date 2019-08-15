@@ -111,6 +111,10 @@ playlist .inactive{
 	color:grey;
 }
 
+playlist .titleContainer{
+	line-height:20px;
+}
+
 @media only screen and (max-width: 768px) {
 	/* For mobile phones: */
 	playlist .close {

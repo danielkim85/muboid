@@ -97,6 +97,7 @@ angular.module('playlist', [])
         };
 
         $scope.lock = function(unlock){
+          $('body').chardinJs('stop');
           socket.emit('lockRoom',{
             roomName : $scope.$parent.roomName,
             user : $scope.$parent.user,

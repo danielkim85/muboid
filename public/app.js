@@ -121,7 +121,6 @@ app.controller('MuBoidCtrl', function ($scope, $timeout,$window) {
     $scope.playlist = playlist;
     $scope.$apply();
     $scope.sortPlaylist();
-
   };
 
   $scope.deregisterSort = function() {
@@ -194,6 +193,7 @@ app.controller('MuBoidCtrl', function ($scope, $timeout,$window) {
 
   //firestarter
   $scope.start = function(){
+    $('body').chardinJs('stop');
     $scope.fire = true;
     $scope.fireStarted = true;
     $scope.socket.emit('startFire',$scope.roomName);
@@ -259,7 +259,7 @@ app.controller('MuBoidCtrl', function ($scope, $timeout,$window) {
     $scope.socket.on('connect', function(){
       //do nothing
     });
-    $scope.socket.emit('leave',$scope.roomName.toString(),$scope.user,$scope.isAdmin && $scope.fire);
+    $scope.socket.emit('leave',$scope.roomName.toString(),$scope.user,$scope.isAdmin);
     return undefined;
   };
 
