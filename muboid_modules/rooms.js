@@ -73,7 +73,7 @@ var Rooms = function (){
       };
     }
     rooms[roomName].fireStarted = true;
-    return;
+
   };
 
   this.deleteRoom = function(roomName){

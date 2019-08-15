@@ -103,7 +103,7 @@ angular.module('welcome', ['youtube'])
           }
           $scope.$parent.user = {
             socketId:$scope.$parent.username
-          }
+          };
           $scope.roomConfig = {
             owner : $scope.$parent.user,
             guestPerm : $scope.$parent.guestPerm
@@ -183,7 +183,7 @@ angular.module('welcome', ['youtube'])
         $scope.joinMyRoom = function(myRoom){
           $scope.joinDetail = true;
           $scope.createDetail = false;
-          $scope.myRoomsDetail = false
+          $scope.myRoomsDetail = false;
           $scope.joinRoomName = parseInt(myRoom);
         };
 
@@ -196,7 +196,6 @@ angular.module('welcome', ['youtube'])
           $scope.$parent.playlistReview = true;
           youtubeFactory.populatePlaylist($scope.$parent)
             .then(function (data) {
-              console.info('playlist size ' + data.length);
               $scope.$parent.playlist = shuffle(data);
               socket.emit('create',$scope.roomConfig);
             });

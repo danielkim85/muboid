@@ -8,8 +8,8 @@ html, body {
 }
 
 body{
-	background: url("https://cdn.gratisography.com/photos/219H.jpg");
-	background-size: 1920px;
+	background: url("https://static.collectui.com/shots/3572449/orange-pattern-large");
+	background-repeat:repeat;
 }
 
 .accent10 {
@@ -75,7 +75,7 @@ body{
 }
 
 .sidebar a{
-	color: white;
+	color: #000;
 }
 
 .form-check-inline {

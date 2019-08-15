@@ -22,6 +22,7 @@ playlist #info .btn{
 playlist{
 	display: flex;
 	flex-flow: column;
+	height:inherit;
 }
 
 playlist #songContainer .song:first-child {
@@ -54,6 +55,7 @@ playlist #searchResult, playlist #songContainer{
 	overflow-x:auto;
 	flex-flow:column;
 	margin-bottom: 10px;
+	height:inherit;
 }
 
 playlist #searchResult{

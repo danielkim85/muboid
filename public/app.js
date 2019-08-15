@@ -190,7 +190,7 @@ app.controller('MuBoidCtrl', function ($scope, $timeout,$window) {
       $scope.minutes++;
     }
     $scope.registerSort(true);
-  }
+  };
 
   //firestarter
   $scope.start = function(){
