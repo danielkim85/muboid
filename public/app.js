@@ -22,6 +22,7 @@ app.controller('MuBoidCtrl', function ($scope, $timeout,$window) {
     gapi.client.init({
       discoveryDocs: DISCOVERY_DOCS,
       clientId: CLIENT_ID,
+      //fetch_basic_profile:true
       scope: SCOPES
     }).then(function () {
       // Listen for sign-in state changes.
@@ -207,7 +208,7 @@ app.controller('MuBoidCtrl', function ($scope, $timeout,$window) {
 
   $scope.initSocket = function(callback){
     //socket
-    var protocol = "http://";
+    var protocol = "//";
     var host =  window.location.hostname;
     var port =  host === 'localhost' ? '3000' : '80';
     $scope.socket = io.connect(protocol + host + ':' + port,{
