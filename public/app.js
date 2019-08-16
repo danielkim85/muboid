@@ -210,7 +210,7 @@ app.controller('MuBoidCtrl', function ($scope, $timeout,$window) {
     //socket
     var protocol = "//";
     var host =  window.location.hostname;
-    var port =  host === 'localhost' ? '3000' : '80';
+    var port =  host === 'localhost' ? '3000' : '443';
     $scope.socket = io.connect(protocol + host + ':' + port,{
       'sync disconnect on unload': true,
       secure:true,
