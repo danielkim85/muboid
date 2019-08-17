@@ -146,6 +146,20 @@ angular.module('welcome', ['youtube'])
 
         $scope.getPlaylist = function(){
           $scope.$parent.playlistReview = true;
+
+          //create empty playlist
+          if(myPlaylistId === null){
+            $scope.$parent.playlist = [{
+              id:'u07cFymU0e0',
+              owner:$scope.$parent.user,
+              title:'Katy Perry - Small Talk',
+              likes : [],
+              hates : []
+            }];
+            socket.emit('create',$scope.roomConfig);
+            return;
+          }
+
           youtubeFactory.getPlaylist($scope.$parent, myPlaylistId)
             .then(function (songs) {
               $scope.$parent.playlistId = myPlaylistId;
@@ -199,6 +213,7 @@ angular.module('welcome', ['youtube'])
           $scope.$parent.playlistReview = true;
           youtubeFactory.populatePlaylist($scope.$parent)
             .then(function (data) {
+              console.info(data);
               $scope.$parent.playlist = shuffle(data);
               socket.emit('create',$scope.roomConfig);
             });

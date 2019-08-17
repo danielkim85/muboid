@@ -65,11 +65,15 @@
 			<li class="list-group-item active"
 					ng-click="getPlaylistId(playlist.id,$event,true)">Auto generate</li>
 			<li class="list-group-item"
+					playlistId="null"
+					ng-click="getPlaylistId(null,$event)">Create empty</li>
+			<li class="list-group-item"
 					ng-repeat="playlist in playlists"
 					playlistId="{{playlist.id}}"
 					ng-click="getPlaylistId(playlist.id,$event)">
 				{{playlist.snippet.title}}
 			</li>
+			<!-- disable until verification
 			<li class="list-group-item">
 				<input type="text" style="width:100%;padding-left:5px !important;"
 							 placeholder="Search others' playlists"
@@ -80,6 +84,7 @@
 					ng-click="searchedPlaylistClicked(playlist)">
 				{{playlist.snippet.title}}
 			</li>
+			-->
 		</ul>
 	</div>
 </div>
@@ -126,7 +131,6 @@
 				ng-hide="joinDetail && !createDetail">
 		your friends' rooms.
 	</span>
-
 </div>
 
 <div ng-show="!createDetail && !joinDetail">

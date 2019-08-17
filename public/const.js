@@ -1,6 +1,9 @@
 //youtube api related
 var DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/youtube/v3/rest"];
-var SCOPES = 'https://www.googleapis.com/auth/youtube.readonly';
+
+//disable youtube scope until verification
+//var SCOPES = 'https://www.googleapis.com/auth/youtube.readonly';
+var SCOPES = 'profile';
 
 //youtube player constants
 var DEFAULT_MAX = 135;

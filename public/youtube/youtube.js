@@ -150,7 +150,7 @@ angular.module('youtube', [])
 
     function doPopulatePlaylist($scope,def,nextPageToken){
 
-      var params = {
+      let params = {
         'part': 'snippet',
         'maxResults' : 50,
         'chart' : 'mostPopular',
@@ -161,6 +161,36 @@ angular.module('youtube', [])
       if(nextPageToken !== undefined){
         params.pageToken = nextPageToken;
       }
+
+      //begin http workaround
+      params.key = YOUTUBE_API_KEY;
+      $http({
+        method: 'GET',
+        url: 'https://www.googleapis.com/youtube/v3/videos',
+        params: params
+      }).then(function successCallback(response) {
+        response.data.items.forEach(function(item){
+          if(shouldAddtoPlaylist(item)){
+            data.push({
+              id:item.id,
+              owner:$scope.user,
+              title:item.snippet.title,
+              likes : [],
+              hates : []
+            });
+          }
+        });
+        if(data.length >= TARGET_LENGTH){
+          def.resolve(data);
+        }
+        else{
+          doPopulatePlaylist($scope,def,response.data.nextPageToken);
+        }
+      }, function errorCallback(response) {
+        console.error(response);
+      });
+
+      /* disabling gapi until verification
 
       gapi.client.youtube.videos.list(params).then(function (response) {
         //do some processing below
@@ -183,6 +213,7 @@ angular.module('youtube', [])
           doPopulatePlaylist($scope,def,response.result.nextPageToken);
         }
       });
+      */
     }
 
     factory.populatePlaylist = function($scope){
@@ -277,29 +308,62 @@ angular.module('youtube', [])
       return def.promise;
     };
 
-  var maxResults = 10;
-  factory.searchPlaylist = function($scope,q){
-    data = [];
-    var def = $q.defer();
-    gapi.client.youtube.search.list({
-      part: 'snippet',
-      q: q,
-      type: 'playlist',
-      maxResults : maxResults
-    })
-      .then(function (response) {
-        //for whatever reasons, it spills beyond the max results. so force return.
-        for(var i = 0; i < maxResults; i++){
-          data.push(response.result.items[i]);
-        }
-        def.resolve(data);
-      });
-    return def.promise;
-  };
+    var maxResults = 10;
+    factory.searchPlaylist = function($scope,q){
+      data = [];
+      var def = $q.defer();
+      gapi.client.youtube.search.list({
+        part: 'snippet',
+        q: q,
+        type: 'playlist',
+        maxResults : maxResults
+      })
+        .then(function (response) {
+          //for whatever reasons, it spills beyond the max results. so force return.
+          for(var i = 0; i < maxResults; i++){
+            data.push(response.result.items[i]);
+          }
+          def.resolve(data);
+        });
+      return def.promise;
+    };
 
     factory.search = function($scope,q){
       data = [];
-      var def = $q.defer();
+      const def = $q.defer();
+
+      let params = {
+        part: 'snippet',
+        q: q,
+        videoDuration: 'medium',
+        videoCategoryId: 10,
+        type: 'video',
+        maxResults : maxResults
+      };
+
+      //begin http workaround
+      params.key = YOUTUBE_API_KEY;
+      $http({
+        method: 'GET',
+        url: 'https://www.googleapis.com/youtube/v3/search',
+        params: params
+      }).then(function successCallback(response) {
+        response.data.items.forEach(function(item){
+          data.push({
+            id:item.id.videoId,
+            title:item.snippet.title,
+            owner:$scope.user,
+            likes : [],
+            hates : []
+          });
+        });
+        def.resolve(data);
+      }, function errorCallback(response) {
+        console.error(response);
+      });
+
+      /* disabling gapi until verification
+
       gapi.client.youtube.search.list({
         part: 'snippet',
         q: q,
@@ -320,6 +384,7 @@ angular.module('youtube', [])
           });
           def.resolve(data);
         });
+       */
       return def.promise;
     };
 
