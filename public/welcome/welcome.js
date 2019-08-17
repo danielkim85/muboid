@@ -213,7 +213,6 @@ angular.module('welcome', ['youtube'])
           $scope.$parent.playlistReview = true;
           youtubeFactory.populatePlaylist($scope.$parent)
             .then(function (data) {
-              console.info(data);
               $scope.$parent.playlist = shuffle(data);
               socket.emit('create',$scope.roomConfig);
             });
