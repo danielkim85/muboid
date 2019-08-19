@@ -1,3 +1,7 @@
+function htmlDecode(value) {
+  return $("<textarea/>").html(value).text();
+}
+
 angular.module('youtube', [])
   .directive('youtubePlayer', function($timeout){
     return{
@@ -351,7 +355,7 @@ angular.module('youtube', [])
         response.data.items.forEach(function(item){
           data.push({
             id:item.id.videoId,
-            title:item.snippet.title,
+            title:htmlDecode(item.snippet.title),
             owner:$scope.user,
             likes : [],
             hates : []
