@@ -1,5 +1,5 @@
 angular.module('playlist', [])
-  .directive('playlist', function(youtubeFactory){
+  .directive('playlist', function($timeout,youtubeFactory){
     return{
       scope:{
         playlistId:'@'
@@ -105,12 +105,16 @@ angular.module('playlist', [])
           $scope.$parent.isRoomLocked = !unlock;
         };
 
+        let searchTimer;
         $scope.$watch('searchTerm',function(newValue){
+          $timeout.cancel(searchTimer);
           if(newValue && newValue.length > 2){
-            youtubeFactory.search($scope.$parent,newValue)
-              .then(function(response){
-                $scope.searchResult = response;
-              });
+            searchTimer = $timeout(function(){
+              youtubeFactory.search($scope.$parent,newValue)
+                .then(function(response){
+                  $scope.searchResult = response;
+                });
+            },1000);
           }
           else{
             $scope.searchResult = [];
@@ -118,7 +122,7 @@ angular.module('playlist', [])
         });
 
         $(document).keyup(function(e) {
-          if (e.keyCode == 27) {
+          if (e.keyCode === 27) {
             $scope.searchTerm = '';
           }
         });
